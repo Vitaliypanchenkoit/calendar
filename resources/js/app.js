@@ -8,7 +8,8 @@ Vue.use(VueRouter)
 import routes from './route'
 
 const router = new VueRouter({
-    routes
+    mode: 'history',
+    routes: routes,
 })
 let calendar = document.getElementById('calendar');
 if (calendar) {

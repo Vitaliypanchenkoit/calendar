@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+//    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
 });
 
 require __DIR__.'/auth.php';

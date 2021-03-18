@@ -25,6 +25,6 @@ class HomeController extends Controller
     public function index()
     {
         $now = now();
-        return redirect('/c/' . $now->year . '/' . $now->month . '/');
+        return view('home', ['year' => $now->year, 'month' => $now->month]);
     }
 }

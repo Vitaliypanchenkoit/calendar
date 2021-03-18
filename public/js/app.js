@@ -3807,11 +3807,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Month",
   props: {
-    'year': Number,
-    'month': Number
+    'currentYear': Number,
+    'currentMonth': Number
+  },
+  data: function data() {
+    return {
+      years: [],
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', ' December']
+    };
+  },
+  mounted: function mounted() {
+    for (var i = this.$props.currentYear - 20; i < this.$props.currentYear + 20; i++) {
+      this.years.push(i);
+    }
   }
 });
 
@@ -3837,6 +3862,7 @@ __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 vue__WEBPACK_IMPORTED_MODULE_0__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_1__.default);
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
+  mode: 'history',
   routes: _route__WEBPACK_IMPORTED_MODULE_2__.default
 });
 var calendar = document.getElementById('calendar');
@@ -3906,8 +3932,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_Month__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Month */ "./resources/js/components/Month.vue");
 
-var routes = [{
-  path: '/c/:year/:month',
+var routes = [// { path: '/c/:year/:month', name: 'month', component: Month },
+{
+  path: '/',
   name: 'month',
   component: _components_Month__WEBPACK_IMPORTED_MODULE_0__.default
 }];
@@ -39329,7 +39356,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("p", [_vm._v("hfhfh")])
+  return _c("div", [
+    _c("div", { staticClass: "calendar_nav" }, [
+      _c("div", { staticClass: "calendar_nav__current" }, [
+        _c("div", { staticClass: "calendar_nav__current-month" }, [
+          _vm._v(_vm._s(this.months[_vm.currentMonth - 1]))
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "calendar_nav__current-year" }, [
+          _vm._v(_vm._s(_vm.currentYear))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_nav__year" }, [
+        _c(
+          "select",
+          { attrs: { name: "year" } },
+          _vm._l(this.years, function(year) {
+            return _c("option", { domProps: { value: year } }, [
+              _vm._v(_vm._s(year))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_nav__month" })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "calendar_body" })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
