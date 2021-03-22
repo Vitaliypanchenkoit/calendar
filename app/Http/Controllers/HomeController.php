@@ -24,7 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $now = now();
-        return view('home', ['year' => $now->year, 'month' => $now->month]);
+        return view('home');
     }
 }

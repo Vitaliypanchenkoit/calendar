@@ -4,3 +4,33 @@ h1 {
 #calendar {
     margin: 0 1em;
 }
+.arrow {
+    display: inline-block;
+    margin-left: 8px;
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    transition: all .4s ease;
+    text-decoration: none;
+    color: transparent;
+    cursor: pointer;
+}
+.arrow-right {
+    transform: rotate(135deg);
+    right: 0;
+}
+.arrow-left {
+    transform: rotate(-45deg);
+    left: 0;
+}
+.arrow-up {
+    transform: rotate(45deg);
+    left: 175px;
+}
+.arrow-down {
+    transform: rotate(-135deg);
+    right: 175px;
+}
+

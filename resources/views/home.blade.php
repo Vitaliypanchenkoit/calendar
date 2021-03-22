@@ -2,6 +2,6 @@
 
 @section('content')
     <div id="calendar">
-        <router-view :currentYear={{ $year }} :currentMonth={{ $month }}></router-view>
+        <router-view></router-view>
     </div>
 @endsection
