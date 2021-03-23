@@ -3830,17 +3830,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Month",
   props: {},
   data: function data() {
     return {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', ' December'],
-      days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+      days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       currentYear: '',
       currentMonth: '',
       currentDate: '',
-      dates: {}
+      dates: {},
+      prevMonthDates: {}
     };
   },
   mounted: function mounted() {
@@ -3848,9 +3857,34 @@ __webpack_require__.r(__webpack_exports__);
     this.currentYear = now.getFullYear();
     this.currentMonth = now.getMonth();
     this.currentDate = now.getDate();
-    var daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-    var weekDayOfFirst = new Date(this.currentYear, this.currentMonth, 1).getDay();
-    console.log(weekDayOfFirst);
+    this.generateMonthDates(this.currentYear, this.currentMonth);
+  },
+  methods: {
+    generateMonthDates: function generateMonthDates(year, month) {
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var daysInPrevMonth = new Date(year, month, 0).getDate();
+      var weekDay = new Date(year, month, 1).getDay();
+      var prevOffset = 0;
+
+      if (weekDay === 0) {
+        prevOffset = 6;
+      } else {
+        prevOffset = weekDay - 1;
+      }
+
+      for (var i = daysInPrevMonth; i > daysInPrevMonth - prevOffset; i--) {
+        this.prevMonthDates[i] = '';
+      }
+
+      for (var _i = 1; _i <= daysInMonth; _i++) {
+        this.dates[_i] = {
+          'weekDay': weekDay
+        };
+        weekDay = weekDay === 6 ? 0 : weekDay + 1;
+      }
+
+      console.log(this.dates);
+    }
   }
 });
 
@@ -8414,7 +8448,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar_nav__current[data-v-f64549b6] {\n    display: flex;\n    flex-wrap: wrap;\n    font-size: 32px;\n}\n.calendar_nav__current-month[data-v-f64549b6] {\n    margin-right: 1em;\n}\n.arrow[data-v-f64549b6] {\n    display: inline-block;\n    margin-left: 8px;\n    width: 20px;\n    height: 20px;\n    background: transparent;\n    border-top: 2px solid gray;\n    border-left: 2px solid gray;\n    transition: all .4s ease;\n    text-decoration: none;\n    color: transparent;\n    cursor: pointer;\n    vertical-align: middle;\n}\n.arrow-right[data-v-f64549b6] {\n    position: relative;\n    transform: rotate(135deg);\n    right: 8px;\n}\n.arrow-left[data-v-f64549b6] {\n    transform: rotate(-45deg);\n    left: 0;\n}\n.calendar_body[data-v-f64549b6] {\n    margin: 20px 10px;\n}\n.calendar_body__days[data-v-f64549b6] {\n    display: flex;\n    justify-content: space-between;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar_nav__current[data-v-f64549b6] {\n    display: flex;\n    flex-wrap: wrap;\n    font-size: 32px;\n}\n.calendar_nav__current-month[data-v-f64549b6] {\n    margin-right: 1em;\n}\n.arrow[data-v-f64549b6] {\n    display: inline-block;\n    margin-left: 8px;\n    width: 20px;\n    height: 20px;\n    background: transparent;\n    border-top: 2px solid gray;\n    border-left: 2px solid gray;\n    transition: all .4s ease;\n    text-decoration: none;\n    color: transparent;\n    cursor: pointer;\n    vertical-align: middle;\n}\n.arrow-right[data-v-f64549b6] {\n    position: relative;\n    transform: rotate(135deg);\n    right: 8px;\n}\n.arrow-left[data-v-f64549b6] {\n    transform: rotate(-45deg);\n    left: 0;\n}\n.calendar_body[data-v-f64549b6] {\n    margin: 20px 10px;\n}\n.calendar_body__days[data-v-f64549b6] {\n    display: flex;\n}\n.calendar_body__dates[data-v-f64549b6] {\n    display: flex;\n    flex-wrap: wrap;\n}\n.calendar_body__date[data-v-f64549b6],\n.calendar_body__day[data-v-f64549b6] {\n    width: 14%;\n    text-align: center;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -39805,9 +39839,9 @@ var render = function() {
               staticClass: "calendar_nav__prev-month arrow arrow-left"
             }),
             _vm._v(
-              "\n                " +
+              "\n                    " +
                 _vm._s(this.months[this.currentMonth]) +
-                "\n                "
+                "\n                    "
             ),
             _c("span", {
               staticClass: "calendar_nav__next-month arrow arrow-right"
@@ -39819,9 +39853,9 @@ var render = function() {
               staticClass: "calendar_nav__prev-year arrow arrow-left"
             }),
             _vm._v(
-              "\n                " +
+              "\n                    " +
                 _vm._s(this.currentYear) +
-                "\n                "
+                "\n                    "
             ),
             _c("span", {
               staticClass: "calendar_nav__next-year arrow arrow-right"
@@ -39832,29 +39866,56 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "calendar_body" }, [
-      _c(
-        "div",
-        { staticClass: "calendar_body__days" },
-        _vm._l(this.days, function(weekDay) {
-          return _c("div", { staticClass: "calendar_body__day" }, [
-            _vm._v(_vm._s(weekDay))
-          ])
-        }),
-        0
-      ),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "calendar_body__dates" },
-        _vm._l(this.dates, function(date) {
-          return _c("div", { staticClass: "calendar_body__date" })
-        }),
-        0
+        [
+          _vm._l(this.prevMonthDates, function(date, index) {
+            return _c("div", { staticClass: "calendar_body__date" }, [
+              _vm._v(_vm._s(index))
+            ])
+          }),
+          _vm._v(" "),
+          _vm._l(this.dates, function(date, index) {
+            return _c(
+              "div",
+              {
+                staticClass: "calendar_body__date",
+                attrs: { weekDay: date.weekDay }
+              },
+              [_vm._v(_vm._s(index))]
+            )
+          })
+        ],
+        2
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "calendar_body__days" }, [
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Mo")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Tu")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("We")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Th")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Fr")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Sa")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Su")])
+    ])
+  }
+]
 render._withStripped = true
 
 

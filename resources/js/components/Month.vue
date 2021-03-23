@@ -16,10 +16,18 @@
         </div>
         <div class="calendar_body">
             <div class="calendar_body__days">
-                <div class="calendar_body__day" v-for="weekDay in this.days">{{ weekDay }}</div>
+<!--                <div class="calendar_body__day" v-for="weekDay in this.days">{{ // weekDay }}</div>-->
+                <div class="calendar_body__day">Mo</div>
+                <div class="calendar_body__day">Tu</div>
+                <div class="calendar_body__day">We</div>
+                <div class="calendar_body__day">Th</div>
+                <div class="calendar_body__day">Fr</div>
+                <div class="calendar_body__day">Sa</div>
+                <div class="calendar_body__day">Su</div>
             </div>
             <div class="calendar_body__dates">
-                <div class="calendar_body__date" v-for="date in this.dates"></div>
+                <div class="calendar_body__date" v-for="(date, index) in this.prevMonthDates">{{ index }}</div>
+                <div class="calendar_body__date" v-for="(date, index) in this.dates" :weekDay="date.weekDay">{{ index }}</div>
             </div>
         </div>
     </div>
@@ -34,11 +42,12 @@ export default {
     data() {
         return {
             months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',' December'],
-            days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+            days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
             currentYear: '',
             currentMonth: '',
             currentDate: '',
             dates: {},
+            prevMonthDates: {},
         }
     },
     mounted() {
@@ -46,11 +55,32 @@ export default {
         this.currentYear = now.getFullYear();
         this.currentMonth = now.getMonth();
         this.currentDate = now.getDate();
-        let daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-        let weekDayOfFirst = new Date(this.currentYear, this.currentMonth, 1).getDay();
-        console.log(weekDayOfFirst);
+        this.generateMonthDates(this.currentYear, this.currentMonth);
 
     },
+    methods: {
+        generateMonthDates(year, month) {
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+            let daysInPrevMonth = new Date(year, month, 0).getDate();
+            let weekDay = new Date(year, month, 1).getDay();
+            let prevOffset = 0;
+            if (weekDay === 0) {
+                prevOffset = 6;
+            } else {
+                prevOffset = weekDay - 1;
+            }
+            for (let i = daysInPrevMonth; i > (daysInPrevMonth - prevOffset); i--) {
+                this.prevMonthDates[i] = '';
+            }
+
+            for (let i = 1; i <= daysInMonth ; i++) {
+                this.dates[i] = {'weekDay': weekDay};
+                weekDay = weekDay === 6 ? 0 : weekDay + 1;
+            }
+            console.log(this.dates);
+        }
+
+    }
 
 }
 </script>
@@ -92,7 +122,16 @@ export default {
 }
 .calendar_body__days {
     display: flex;
-    justify-content: space-between;
+}
+
+.calendar_body__dates {
+    display: flex;
+    flex-wrap: wrap;
+}
+.calendar_body__date,
+.calendar_body__day {
+    width: 14%;
+    text-align: center;
 }
 
 
