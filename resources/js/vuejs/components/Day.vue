@@ -1,4 +1,5 @@
 <template>
+		<div>{{date}}}</div>
 
 </template>
 
@@ -6,9 +7,7 @@
 export default {
     name: "Day",
     props: {
-        'year': Number,
-        'month': Number,
-        'date': Number,
+        'date': String,
     },
 }
 </script>

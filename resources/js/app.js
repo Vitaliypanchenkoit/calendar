@@ -2,18 +2,18 @@ require('./bootstrap');
 require('alpinejs');
 
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
+import App from './vuejs/App'
+import router from './vuejs/router/router'
+import store from './vuejs/store/store'
 
-import routes from './route'
+Vue.config.productionTip = false
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes,
-})
 let calendar = document.getElementById('calendar');
+
 if (calendar) {
-    const app = new Vue({
-        router
+    new Vue({
+        router,
+        store,
+        render: h => h(App)
     }).$mount('#calendar')
 }

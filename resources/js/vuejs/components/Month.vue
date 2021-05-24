@@ -27,7 +27,14 @@
             </div>
             <div class="calendar_body__dates">
                 <div class="calendar_body__date" v-for="(date, index) in this.prevMonthDates">{{ index }}</div>
-                <div class="calendar_body__date" v-for="(date, index) in this.dates" :weekDay="date.weekDay">{{ index }}</div>
+								<router-link
+										class="calendar_body__date"
+										:to="{name: 'day', params: {date: index}}"
+										v-for="(date, index) in this.dates" :key="index" :weekDay="date.weekDay"
+								>
+										{{ index }}
+								</router-link>
+<!--                <div class="calendar_body__date" v-for="(date, index) in this.dates" :weekDay="date.weekDay" >{{ index }}</div>-->
             </div>
         </div>
     </div>
@@ -132,6 +139,16 @@ export default {
 .calendar_body__day {
     width: 14%;
     text-align: center;
+}
+
+.calendar_body__date {
+  border: 1px solid #000000;
+  margin: 0.1em;
+  padding: 0.2em;
+}
+
+.calendar_body__date:hover {
+  cursor: pointer;
 }
 
 

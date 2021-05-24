@@ -13,7 +13,7 @@
         "@tailwindcss/forms": "^0.2.1",
         "alpinejs": "^2.7.3",
         "autoprefixer": "^10.1.0",
-        "axios": "^0.21",
+        "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
         "jquery": "^3.2",
         "laravel-mix": "^6.0.6",
@@ -30,6 +30,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "vue-router": "^3.5.1"
+        "vue-router": "^3.5.1",
+        "vuex": "^3.6.2"
     }
 }

@@ -9,4 +9,9 @@
 
 ## Server requirements
 PHP 8.0
+MySql 8.0.25
 Laravel 8.27.0
+Composer 2.0.14
+Nodejs 14.16.1
+npm 7.12.0
+
