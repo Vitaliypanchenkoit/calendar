@@ -12,7 +12,7 @@ const routes = [
     component: Month,
   },
   {
-    path: '/:date',
+    path: '/:year/:month/:date',
     name: 'day',
     component: Day,
   },

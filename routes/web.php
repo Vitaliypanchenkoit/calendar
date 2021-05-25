@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarDateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -17,6 +18,8 @@ use App\Http\Controllers\HomeController;
 Route::middleware('auth:web')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 //    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
+
+    Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
 });
 
 require __DIR__.'/auth.php';

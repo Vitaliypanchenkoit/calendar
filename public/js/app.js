@@ -3851,6 +3851,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _store_modules_month__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/modules/month */ "./resources/js/vuejs/store/modules/month.js");
 //
 //
 //
@@ -3893,9 +3894,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Month",
-  props: {},
+  props: {
+    year: Number,
+    month: Number
+  },
   data: function data() {
     return {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', ' December'],
@@ -3912,6 +3918,10 @@ __webpack_require__.r(__webpack_exports__);
     this.currentYear = now.getFullYear();
     this.currentMonth = now.getMonth();
     this.currentDate = now.getDate();
+    this.$store.dispatch(_store_modules_month__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getDates, {
+      year: this.year,
+      month: this.month
+    });
     this.generateMonthDates(this.currentYear, this.currentMonth);
   },
   methods: {
@@ -4038,15 +4048,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = 'http://calendar.loc/api';
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = 'http://calendar.loc';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((axios__WEBPACK_IMPORTED_MODULE_0___default()));
 
 /***/ }),
 
-/***/ "./resources/js/vuejs/api/month.js":
-/*!*****************************************!*\
-  !*** ./resources/js/vuejs/api/month.js ***!
-  \*****************************************/
+/***/ "./resources/js/vuejs/api/month-api.js":
+/*!*********************************************!*\
+  !*** ./resources/js/vuejs/api/month-api.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -4057,8 +4067,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/axios */ "./resources/js/vuejs/api/axios.js");
 
 
-var getDates = function getDates(apiUrl) {
-  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.get(apiUrl);
+var getDates = function getDates(apiUrl, year, month) {
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.get(apiUrl, {
+    params: {
+      year: year,
+      month: month
+    }
+  });
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4092,7 +4107,7 @@ var routes = [{
   name: 'month',
   component: _components_Month__WEBPACK_IMPORTED_MODULE_0__.default
 }, {
-  path: '/:date',
+  path: '/:year/:month/:date',
   name: 'day',
   component: _components_Day__WEBPACK_IMPORTED_MODULE_1__.default
 }];
@@ -4117,12 +4132,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "actionTypes": () => (/* binding */ actionTypes),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _api_month__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/month */ "./resources/js/vuejs/api/month.js");
+/* harmony import */ var _api_month_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/month-api */ "./resources/js/vuejs/api/month-api.js");
 var _mutations;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+var apiUrl = '/month';
 var state = {
   dates: null,
   isLoading: false,
@@ -4148,10 +4164,11 @@ var actionTypes = {
 };
 
 var actions = _defineProperty({}, actionTypes.getDates, function (context, _ref) {
-  var apiUrl = _ref.apiUrl;
+  var year = _ref.year,
+      month = _ref.month;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getDatesStart);
-    _api_month__WEBPACK_IMPORTED_MODULE_0__.default.getDates(apiUrl).then(function (response) {
+    _api_month_api__WEBPACK_IMPORTED_MODULE_0__.default.getDates(apiUrl, year, month).then(function (response) {
       context.commit(mutationTypes.getDatesSuccess, response.data);
       resolve(response.data);
     })["catch"](function () {
@@ -40273,7 +40290,10 @@ var render = function() {
         "div",
         { staticClass: "calendar_body__dates" },
         [
-          _vm._l(this.prevMonthDates, function(date, index) {
+          _vm._v(
+            "\n\t\t\t\t\t\t\t\t" + _vm._s(_vm.dates) + "\n                "
+          ),
+          _vm._l(this.prevMonthDates, function(dates, index) {
             return _c("div", { staticClass: "calendar_body__date" }, [
               _vm._v(_vm._s(index))
             ])
@@ -40286,7 +40306,7 @@ var render = function() {
                 key: index,
                 staticClass: "calendar_body__date",
                 attrs: {
-                  to: { name: "day", params: { date: index } },
+                  to: { name: "day", params: { year: date[index] } },
                   weekDay: date.weekDay
                 }
               },

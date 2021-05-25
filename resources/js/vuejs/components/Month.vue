@@ -26,10 +26,11 @@
                 <div class="calendar_body__day">Su</div>
             </div>
             <div class="calendar_body__dates">
-                <div class="calendar_body__date" v-for="(date, index) in this.prevMonthDates">{{ index }}</div>
+								{{dates}}
+                <div class="calendar_body__date" v-for="(dates, index) in this.prevMonthDates">{{ index }}</div>
 								<router-link
 										class="calendar_body__date"
-										:to="{name: 'day', params: {date: index}}"
+										:to="{name: 'day', params: {year: date[index]}}"
 										v-for="(date, index) in this.dates" :key="index" :weekDay="date.weekDay"
 								>
 										{{ index }}
@@ -41,10 +42,12 @@
 </template>
 
 <script>
+import {actionTypes} from '../store/modules/month'
 export default {
     name: "Month",
     props: {
-
+    		year: Number,
+    		month: Number,
     },
     data() {
         return {
@@ -62,6 +65,8 @@ export default {
         this.currentYear = now.getFullYear();
         this.currentMonth = now.getMonth();
         this.currentDate = now.getDate();
+
+				this.$store.dispatch(actionTypes.getDates, {year: this.year, month: this.month})
         this.generateMonthDates(this.currentYear, this.currentMonth);
 
     },

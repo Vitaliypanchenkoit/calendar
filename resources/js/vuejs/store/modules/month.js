@@ -1,4 +1,7 @@
-import monthApi from '../../api/month'
+import monthApi from '../../api/month-api'
+
+const apiUrl = '/month';
+
 const state = {
 		dates: null,
 		isLoading: false,
@@ -32,10 +35,10 @@ export const actionTypes = {
 }
 
 const actions = {
-		[actionTypes.getDates](context, {apiUrl}) {
+		[actionTypes.getDates](context, {year, month}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.getDatesStart)
-						monthApi.getDates(apiUrl)
+						monthApi.getDates(apiUrl, year, month)
 								.then(response => {
 										context.commit(mutationTypes.getDatesSuccess, response.data)
 										resolve(response.data)
