@@ -43,55 +43,35 @@
 
 <script>
 import {actionTypes} from '../store/modules/month'
+let now = new Date();
 export default {
     name: "Month",
     props: {
-    		year: Number,
-    		month: Number,
+    		year: {
+    				type: Number,
+						default: now.getFullYear()
+				},
+				month: {
+						type: Number,
+						default: now.getMonth()
+				},
     },
     data() {
         return {
             months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',' December'],
             days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            currentYear: '',
-            currentMonth: '',
-            currentDate: '',
+            currentYear: now.getFullYear(),
+            currentMonth: now.getMonth(),
+            currentDate: now.getDate(),
             dates: {},
             prevMonthDates: {},
         }
     },
     mounted() {
-        let now = new Date();
-        this.currentYear = now.getFullYear();
-        this.currentMonth = now.getMonth();
-        this.currentDate = now.getDate();
-
-				this.$store.dispatch(actionTypes.getDates, {year: this.year, month: this.month})
-        this.generateMonthDates(this.currentYear, this.currentMonth);
+				this.$store.dispatch(actionTypes.getData, {year: this.year, month: this.month})
 
     },
     methods: {
-        generateMonthDates(year, month) {
-            let daysInMonth = new Date(year, month + 1, 0).getDate();
-            let daysInPrevMonth = new Date(year, month, 0).getDate();
-            let weekDay = new Date(year, month, 1).getDay();
-            let prevOffset = 0;
-            if (weekDay === 0) {
-                prevOffset = 6;
-            } else {
-                prevOffset = weekDay - 1;
-            }
-            for (let i = daysInPrevMonth; i > (daysInPrevMonth - prevOffset); i--) {
-                this.prevMonthDates[i] = '';
-            }
-
-            for (let i = 1; i <= daysInMonth ; i++) {
-                this.dates[i] = {'weekDay': weekDay};
-                weekDay = weekDay === 6 ? 0 : weekDay + 1;
-            }
-            console.log(this.dates);
-        }
-
     }
 
 }

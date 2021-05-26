@@ -3896,61 +3896,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+var now = new Date();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Month",
   props: {
-    year: Number,
-    month: Number
+    year: {
+      type: Number,
+      "default": now.getFullYear()
+    },
+    month: {
+      type: Number,
+      "default": now.getMonth()
+    }
   },
   data: function data() {
     return {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', ' December'],
       days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-      currentYear: '',
-      currentMonth: '',
-      currentDate: '',
+      currentYear: now.getFullYear(),
+      currentMonth: now.getMonth(),
+      currentDate: now.getDate(),
       dates: {},
       prevMonthDates: {}
     };
   },
   mounted: function mounted() {
-    var now = new Date();
-    this.currentYear = now.getFullYear();
-    this.currentMonth = now.getMonth();
-    this.currentDate = now.getDate();
-    this.$store.dispatch(_store_modules_month__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getDates, {
+    this.$store.dispatch(_store_modules_month__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getData, {
       year: this.year,
       month: this.month
     });
-    this.generateMonthDates(this.currentYear, this.currentMonth);
   },
-  methods: {
-    generateMonthDates: function generateMonthDates(year, month) {
-      var daysInMonth = new Date(year, month + 1, 0).getDate();
-      var daysInPrevMonth = new Date(year, month, 0).getDate();
-      var weekDay = new Date(year, month, 1).getDay();
-      var prevOffset = 0;
-
-      if (weekDay === 0) {
-        prevOffset = 6;
-      } else {
-        prevOffset = weekDay - 1;
-      }
-
-      for (var i = daysInPrevMonth; i > daysInPrevMonth - prevOffset; i--) {
-        this.prevMonthDates[i] = '';
-      }
-
-      for (var _i = 1; _i <= daysInMonth; _i++) {
-        this.dates[_i] = {
-          'weekDay': weekDay
-        };
-        weekDay = weekDay === 6 ? 0 : weekDay + 1;
-      }
-
-      console.log(this.dates);
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -4067,7 +4043,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/axios */ "./resources/js/vuejs/api/axios.js");
 
 
-var getDates = function getDates(apiUrl, year, month) {
+var getData = function getData(apiUrl, year, month) {
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.get(apiUrl, {
     params: {
       year: year,
@@ -4077,7 +4053,7 @@ var getDates = function getDates(apiUrl, year, month) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getDates: getDates
+  getData: getData
 });
 
 /***/ }),
@@ -4140,39 +4116,81 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var apiUrl = '/month';
 var state = {
-  dates: null,
+  dates: [],
+  prevMonthDates: [],
+  events: [],
+  news: [],
+  reminders: [],
   isLoading: false,
-  error: null
+  errors: null
 };
 var mutationTypes = {
-  getDatesStart: '[month] Get dates start',
-  getDatesSuccess: '[month] Get dates success',
-  getDatesFailure: '[month] Get feed failure'
+  getDataStart: '[month] Get data start',
+  getDataSuccess: '[month] Get data success',
+  getDataFailure: '[month] Get data failure'
 };
-var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDatesStart, function (state) {
+var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
+  console.log(1);
   state.isLoading = true;
-  state.dates = null;
-}), _defineProperty(_mutations, mutationTypes.getDatesSuccess, function (state, payload) {
+  state.dates = [];
+  state.prevMonthDates = [];
+  state.events = [];
+  state.news = [];
+  state.reminders = [];
+  state.errors = null;
+}), _defineProperty(_mutations, mutationTypes.getDataSuccess, function (state, payload) {
+  console.log(2);
   state.isLoading = false;
   state.dates = payload;
-}), _defineProperty(_mutations, mutationTypes.getDatesFailure, function (state) {
+}), _defineProperty(_mutations, mutationTypes.getDataFailure, function (state, payload) {
+  console.log(3);
   state.isLoading = false;
-  state.dates = null;
+  state.dates = [];
+  state.prevMonthDates = [];
+  state.events = [];
+  state.news = [];
+  state.reminders = [];
+  state.errors = payload;
 }), _mutations);
 var actionTypes = {
-  getDates: '[month] Get dates'
+  getData: '[month] Get data of each date'
 };
 
-var actions = _defineProperty({}, actionTypes.getDates, function (context, _ref) {
+var actions = _defineProperty({}, actionTypes.getData, function (context, _ref) {
   var year = _ref.year,
       month = _ref.month;
+  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  var daysInPrevMonth = new Date(year, month, 0).getDate();
+  /* ??? */
+
+  var weekDay = new Date(year, month, 1).getDay();
+  var prevOffset = 0;
+
+  if (weekDay === 0) {
+    prevOffset = 6;
+  } else {
+    prevOffset = weekDay - 1;
+  }
+
+  for (var i = daysInPrevMonth; i > daysInPrevMonth - prevOffset; i--) {
+    state.prevMonthDates[i] = '';
+  }
+  /* ??? */
+
+
+  for (var _i = 1; _i <= daysInMonth; _i++) {
+    state.dates[_i] = new Date(year, month, _i);
+  }
+
+  console.log(state.prevMonthDates);
   return new Promise(function (resolve) {
-    context.commit(mutationTypes.getDatesStart);
-    _api_month_api__WEBPACK_IMPORTED_MODULE_0__.default.getDates(apiUrl, year, month).then(function (response) {
-      context.commit(mutationTypes.getDatesSuccess, response.data);
+    context.commit(mutationTypes.getDataStart);
+    _api_month_api__WEBPACK_IMPORTED_MODULE_0__.default.getData(apiUrl, year, month).then(function (response) {
+      console.log(response);
+      context.commit(mutationTypes.getDataSuccess, response.data);
       resolve(response.data);
-    })["catch"](function () {
-      context.commit(mutationTypes.getDatesFailure);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.getDataFailure, e.response.data);
     });
   });
 });

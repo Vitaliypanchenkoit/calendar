@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 
-const getDates = (apiUrl, year, month) => {
+const getData = (apiUrl, year, month) => {
 		return axios.get(apiUrl, {
 				params: {
 						year: year,
@@ -10,5 +10,5 @@ const getDates = (apiUrl, year, month) => {
 }
 
 export default {
-		getDates
+		getData
 }

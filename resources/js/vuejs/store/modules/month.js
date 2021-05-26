@@ -3,48 +3,91 @@ import monthApi from '../../api/month-api'
 const apiUrl = '/month';
 
 const state = {
-		dates: null,
+		dates: [],
+		prevMonthDates: [],
+		events: [],
+		news: [],
+		reminders: [],
 		isLoading: false,
-		error: null
+		errors: null
 }
 
 export const mutationTypes = {
-		getDatesStart: '[month] Get dates start',
-		getDatesSuccess: '[month] Get dates success',
-		getDatesFailure: '[month] Get feed failure',
+		getDataStart: '[month] Get data start',
+		getDataSuccess: '[month] Get data success',
+		getDataFailure: '[month] Get data failure',
 }
 
 const mutations = {
-		[mutationTypes.getDatesStart](state) {
+		[mutationTypes.getDataStart](state) {
+				console.log(1);
 				state.isLoading = true
-				state.dates = null
+				state.dates = []
+				state.prevMonthDates = []
+				state.events = []
+				state.news = []
+				state.reminders = []
+				state.errors = null
 		},
-		[mutationTypes.getDatesSuccess](state, payload) {
+		[mutationTypes.getDataSuccess](state, payload) {
+				console.log(2);
 				state.isLoading = false
 				state.dates = payload
+
 		},
-		[mutationTypes.getDatesFailure](state) {
+		[mutationTypes.getDataFailure](state, payload) {
+				console.log(3);
 				state.isLoading = false
-				state.dates = null
+				state.dates = []
+				state.prevMonthDates = []
+				state.events = []
+				state.news = []
+				state.reminders = []
+				state.errors = payload
 		}
 
 }
 
 export const actionTypes = {
-		getDates: '[month] Get dates'
+		getData: '[month] Get data of each date'
 }
 
 const actions = {
-		[actionTypes.getDates](context, {year, month}) {
+		[actionTypes.getData](context, {year, month}) {
+
+				let daysInMonth = new Date(year, month + 1, 0).getDate();
+				let daysInPrevMonth = new Date(year, month, 0).getDate();
+
+				/* ??? */
+				let weekDay = new Date(year, month, 1).getDay();
+				let prevOffset = 0;
+				if (weekDay === 0) {
+						prevOffset = 6;
+				} else {
+						prevOffset = weekDay - 1;
+				}
+				for (let i = daysInPrevMonth; i > (daysInPrevMonth - prevOffset); i--) {
+						state.prevMonthDates[i] = '';
+				}
+
+				/* ??? */
+
+				for (let i = 1; i <= daysInMonth ; i++) {
+						state.dates[i] = new Date(year, month, i);
+				}
+				console.log(state.prevMonthDates);
+
+
 				return new Promise(resolve => {
-						context.commit(mutationTypes.getDatesStart)
-						monthApi.getDates(apiUrl, year, month)
+						context.commit(mutationTypes.getDataStart)
+						monthApi.getData(apiUrl, year, month)
 								.then(response => {
-										context.commit(mutationTypes.getDatesSuccess, response.data)
+										console.log(response);
+										context.commit(mutationTypes.getDataSuccess, response.data)
 										resolve(response.data)
 								})
-								.catch(() => {
-										context.commit(mutationTypes.getDatesFailure)
+								.catch((e) => {
+										context.commit(mutationTypes.getDataFailure, e.response.data)
 								})
 				})
 		}
