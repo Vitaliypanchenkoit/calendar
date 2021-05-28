@@ -69,7 +69,6 @@ export default {
     },
     mounted() {
 				this.$store.dispatch(actionTypes.getData, {year: this.year, month: this.month})
-
     },
     methods: {
     }

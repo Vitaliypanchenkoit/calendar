@@ -18,17 +18,16 @@ class CreateNewsTable extends Migration
             $table->string('title');
             $table->date('date');
             $table->time('time');
-            $table->unsignedBigInteger('author_id');
-            $table->text('content');
-            $table->timestamps();
-        });
 
-        Schema::table('news', function (Blueprint $table) {
-            $table->foreign('author_id')
-                ->references('id')
-                ->on('users')
+            $table->foreignId('author_id')
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->text('content');
+            $table->timestamps();
+
+            $table->index('date');
         });
 
     }
@@ -41,6 +40,7 @@ class CreateNewsTable extends Migration
     public function down()
     {
         Schema::table('news', function (Blueprint $table) {
+            $table->dropIndex(['date']);
             $table->dropForeign(['author_id']);
         });
         Schema::dropIfExists('news');

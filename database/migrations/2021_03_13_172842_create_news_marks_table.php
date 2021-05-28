@@ -15,27 +15,20 @@ class CreateNewsMarksTable extends Migration
     {
         Schema::create('news_marks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('news_id');
-            $table->unsignedBigInteger('user_id');
+
+            $table->foreignId('news_id')
+                ->constrained('news')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->boolean('important');
             $table->boolean('read');
             $table->timestamps();
-        });
-
-        Schema::table('news_marks', function (Blueprint $table) {
-            $table->foreign('news_id')
-                ->references('id')
-                ->on('news')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-        });
-
-        Schema::table('news_marks', function (Blueprint $table) {
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
 
     }
@@ -49,9 +42,6 @@ class CreateNewsMarksTable extends Migration
     {
         Schema::table('news_marks', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-        });
-
-        Schema::table('news_marks', function (Blueprint $table) {
             $table->dropForeign(['news_id']);
         });
 

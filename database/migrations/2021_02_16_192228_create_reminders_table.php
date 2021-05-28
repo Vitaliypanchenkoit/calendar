@@ -16,19 +16,19 @@ class CreateRemindersTable extends Migration
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->date('date');
             $table->time('time');
             $table->time('time_hold');
-            $table->unsignedBigInteger('author_id');
-            $table->text('content')->nullable();
-            $table->timestamps();
-        });
 
-        Schema::table('reminders', function (Blueprint $table) {
-            $table->foreign('author_id')
-                ->references('id')
-                ->on('users')
+            $table->foreignId('author_id')
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->text('content')->nullable();
+            $table->timestamps();
+
+            $table->index('date');
         });
     }
 
@@ -40,6 +40,7 @@ class CreateRemindersTable extends Migration
     public function down()
     {
         Schema::table('reminders', function (Blueprint $table) {
+            $table->dropIndex(['date']);
             $table->dropForeign(['author_id']);
         });
         Schema::dropIfExists('reminders');

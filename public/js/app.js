@@ -4116,11 +4116,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var apiUrl = '/month';
 var state = {
-  dates: [],
+  data: {},
   prevMonthDates: [],
-  events: [],
-  news: [],
-  reminders: [],
   isLoading: false,
   errors: null
 };
@@ -4132,24 +4129,18 @@ var mutationTypes = {
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
   console.log(1);
   state.isLoading = true;
-  state.dates = [];
+  state.data = {};
   state.prevMonthDates = [];
-  state.events = [];
-  state.news = [];
-  state.reminders = [];
   state.errors = null;
 }), _defineProperty(_mutations, mutationTypes.getDataSuccess, function (state, payload) {
   console.log(2);
   state.isLoading = false;
-  state.dates = payload;
+  state.data = payload;
 }), _defineProperty(_mutations, mutationTypes.getDataFailure, function (state, payload) {
   console.log(3);
   state.isLoading = false;
-  state.dates = [];
+  state.data = {};
   state.prevMonthDates = [];
-  state.events = [];
-  state.news = [];
-  state.reminders = [];
   state.errors = payload;
 }), _mutations);
 var actionTypes = {
@@ -4159,7 +4150,7 @@ var actionTypes = {
 var actions = _defineProperty({}, actionTypes.getData, function (context, _ref) {
   var year = _ref.year,
       month = _ref.month;
-  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  // let daysInMonth = new Date(year, month + 1, 0).getDate();
   var daysInPrevMonth = new Date(year, month, 0).getDate();
   /* ??? */
 
@@ -4176,16 +4167,15 @@ var actions = _defineProperty({}, actionTypes.getData, function (context, _ref) 
     state.prevMonthDates[i] = '';
   }
   /* ??? */
+  // for (let i = 1; i <= daysInMonth ; i++) {
+  // 		state.dates[i] = new Date(year, month, i);
+  // }
 
-
-  for (var _i = 1; _i <= daysInMonth; _i++) {
-    state.dates[_i] = new Date(year, month, _i);
-  }
 
   console.log(state.prevMonthDates);
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getDataStart);
-    _api_month_api__WEBPACK_IMPORTED_MODULE_0__.default.getData(apiUrl, year, month).then(function (response) {
+    _api_month_api__WEBPACK_IMPORTED_MODULE_0__.default.getData(apiUrl, year, month + 1).then(function (response) {
       console.log(response);
       context.commit(mutationTypes.getDataSuccess, response.data);
       resolve(response.data);

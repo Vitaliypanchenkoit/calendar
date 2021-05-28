@@ -15,27 +15,20 @@ class CreateEventMarksTable extends Migration
     {
         Schema::create('event_marks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
-            $table->unsignedBigInteger('user_id');
+
+            $table->foreignId('event_id')
+                ->constrained('events')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->boolean('take_part');
             $table->boolean('not_interesting');
             $table->timestamps();
-        });
-
-        Schema::table('event_marks', function (Blueprint $table) {
-            $table->foreign('event_id')
-                ->references('id')
-                ->on('events')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-        });
-
-        Schema::table('event_marks', function (Blueprint $table) {
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
 
@@ -48,9 +41,6 @@ class CreateEventMarksTable extends Migration
     {
         Schema::table('event_marks', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-        });
-
-        Schema::table('event_marks', function (Blueprint $table) {
             $table->dropForeign(['event_id']);
         });
 

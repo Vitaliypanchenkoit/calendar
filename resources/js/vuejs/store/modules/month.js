@@ -3,11 +3,8 @@ import monthApi from '../../api/month-api'
 const apiUrl = '/month';
 
 const state = {
-		dates: [],
+		data: {},
 		prevMonthDates: [],
-		events: [],
-		news: [],
-		reminders: [],
 		isLoading: false,
 		errors: null
 }
@@ -22,27 +19,21 @@ const mutations = {
 		[mutationTypes.getDataStart](state) {
 				console.log(1);
 				state.isLoading = true
-				state.dates = []
+				state.data = {}
 				state.prevMonthDates = []
-				state.events = []
-				state.news = []
-				state.reminders = []
 				state.errors = null
 		},
 		[mutationTypes.getDataSuccess](state, payload) {
 				console.log(2);
 				state.isLoading = false
-				state.dates = payload
+				state.data = payload
 
 		},
 		[mutationTypes.getDataFailure](state, payload) {
 				console.log(3);
 				state.isLoading = false
-				state.dates = []
+				state.data = {}
 				state.prevMonthDates = []
-				state.events = []
-				state.news = []
-				state.reminders = []
 				state.errors = payload
 		}
 
@@ -55,7 +46,7 @@ export const actionTypes = {
 const actions = {
 		[actionTypes.getData](context, {year, month}) {
 
-				let daysInMonth = new Date(year, month + 1, 0).getDate();
+				// let daysInMonth = new Date(year, month + 1, 0).getDate();
 				let daysInPrevMonth = new Date(year, month, 0).getDate();
 
 				/* ??? */
@@ -72,15 +63,15 @@ const actions = {
 
 				/* ??? */
 
-				for (let i = 1; i <= daysInMonth ; i++) {
-						state.dates[i] = new Date(year, month, i);
-				}
+				// for (let i = 1; i <= daysInMonth ; i++) {
+				// 		state.dates[i] = new Date(year, month, i);
+				// }
 				console.log(state.prevMonthDates);
 
 
 				return new Promise(resolve => {
 						context.commit(mutationTypes.getDataStart)
-						monthApi.getData(apiUrl, year, month)
+						monthApi.getData(apiUrl, year, month + 1)
 								.then(response => {
 										console.log(response);
 										context.commit(mutationTypes.getDataSuccess, response.data)
