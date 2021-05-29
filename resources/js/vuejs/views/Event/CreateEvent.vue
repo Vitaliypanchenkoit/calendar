@@ -1,14 +1,10 @@
 <template>
-		<div>{{date}}}</div>
 
 </template>
 
 <script>
 export default {
-    name: "Day",
-    props: {
-        'date': String,
-    },
+		name: "CreateEvent"
 }
 </script>
 

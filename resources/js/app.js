@@ -6,6 +6,8 @@ import App from './vuejs/App'
 import router from './vuejs/router/router'
 import store from './vuejs/store/store'
 
+import '../sass/main.scss';
+
 Vue.config.productionTip = false
 
 let calendar = document.getElementById('calendar');

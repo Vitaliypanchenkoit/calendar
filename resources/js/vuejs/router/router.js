@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Month from "../components/Month";
-import Day from "../components/Day";
+import Month from "../views/Month";
+import Date from "../views/Date";
+import CreateEvent from "../views/Event/CreateEvent";
 
 Vue.use(VueRouter);
 
@@ -14,8 +15,13 @@ const routes = [
   {
     path: '/:year/:month/:date',
     name: 'day',
-    component: Day,
+    component: Date,
   },
+		{
+				path: '/events/create',
+				name: 'createEvent',
+				component: CreateEvent,
+		},
 
 
 

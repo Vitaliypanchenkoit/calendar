@@ -14,4 +14,9 @@ Laravel 8.27.0
 Composer 2.0.14
 Nodejs 14.16.1
 npm 7.12.0
+vue js 2.5.17
 
+## Node packages
+1. badger-accordion
+https://vuejsexamples.com/badger-accordion-component-for-vue-2/
+https://github.com/stuartjnelson/badger-accordion

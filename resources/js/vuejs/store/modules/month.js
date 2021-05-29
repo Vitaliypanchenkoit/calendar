@@ -4,7 +4,6 @@ const apiUrl = '/month';
 
 const state = {
 		data: {},
-		prevMonthDates: [],
 		isLoading: false,
 		errors: null
 }
@@ -17,23 +16,18 @@ export const mutationTypes = {
 
 const mutations = {
 		[mutationTypes.getDataStart](state) {
-				console.log(1);
 				state.isLoading = true
 				state.data = {}
-				state.prevMonthDates = []
 				state.errors = null
 		},
 		[mutationTypes.getDataSuccess](state, payload) {
-				console.log(2);
 				state.isLoading = false
 				state.data = payload
 
 		},
 		[mutationTypes.getDataFailure](state, payload) {
-				console.log(3);
 				state.isLoading = false
 				state.data = {}
-				state.prevMonthDates = []
 				state.errors = payload
 		}
 
@@ -45,35 +39,20 @@ export const actionTypes = {
 
 const actions = {
 		[actionTypes.getData](context, {year, month}) {
-
-				// let daysInMonth = new Date(year, month + 1, 0).getDate();
-				let daysInPrevMonth = new Date(year, month, 0).getDate();
-
-				/* ??? */
 				let weekDay = new Date(year, month, 1).getDay();
-				let prevOffset = 0;
-				if (weekDay === 0) {
-						prevOffset = 6;
-				} else {
-						prevOffset = weekDay - 1;
+
+				let prevMonthOffset = weekDay === 0 ? 6 : weekDay - 1;
+
+				let prevMonth = [];
+				for (let i = prevMonthOffset; i > 0; i--) {
+						prevMonth.push(i);
 				}
-				for (let i = daysInPrevMonth; i > (daysInPrevMonth - prevOffset); i--) {
-						state.prevMonthDates[i] = '';
-				}
-
-				/* ??? */
-
-				// for (let i = 1; i <= daysInMonth ; i++) {
-				// 		state.dates[i] = new Date(year, month, i);
-				// }
-				console.log(state.prevMonthDates);
-
 
 				return new Promise(resolve => {
 						context.commit(mutationTypes.getDataStart)
 						monthApi.getData(apiUrl, year, month + 1)
 								.then(response => {
-										console.log(response);
+										response.data.prevMonthOffset = prevMonth;
 										context.commit(mutationTypes.getDataSuccess, response.data)
 										resolve(response.data)
 								})
