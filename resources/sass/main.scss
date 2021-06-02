@@ -2,7 +2,7 @@ h1 {
     font-size: 32px;
 }
 #calendar {
-    margin: 0 1em;
+    margin: 1em;
 }
 .calendar_nav__current {
     display: flex;
@@ -45,4 +45,18 @@ h1 {
     right: 175px;
 }
 
+
+.badger-accordion__panel {
+    max-height: 75vh;
+    overflow: hidden;
+}
+
+.badger-accordion__panel.-ba-is-hidden {
+    max-height: 0 !important;
+    visibility: hidden;
+}
+
+.badger-accordion--initialized .badger-accordion__panel {
+    transition: all ease-in-out 0.2s;
+}
 
