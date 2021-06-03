@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\CalendarDateController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ReminderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -20,6 +23,12 @@ Route::middleware('auth:web')->group(function () {
 //    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
 
     Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
+
+    Route::get('/reminders/edit', [ReminderController::class, 'edit'])->name('editReminder');
+
+    Route::get('/news/edit', [NewsController::class, 'edit'])->name('editNews');
+
+    Route::get('/events/edit', [EventController::class, 'edit'])->name('editEvent');
 });
 
 require __DIR__.'/auth.php';

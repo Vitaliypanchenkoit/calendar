@@ -22,6 +22,16 @@ const routes = [
 				name: 'createEvent',
 				component: CreateEvent,
 		},
+		{
+				path: '/news/create',
+				name: 'createNews',
+				component: CreateNews,
+		},
+		{
+				path: '/reminders/create',
+				name: 'createReminder',
+				component: CreateReminder,
+		},
 
 
 

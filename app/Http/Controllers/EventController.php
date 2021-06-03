@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidateEventIdRequest;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     /**
-     * Get the user that owns the profile.
+     * @param ValidateEventIdRequest $request
+     * @return mixed
      */
-    public function user()
+    public function edit(ValidateEventIdRequest $request)
     {
-        return $this->belongsTo('App\User');
+        $data = $request->validated();
+
+        return Event::find($data['id']);
+
     }
 }
