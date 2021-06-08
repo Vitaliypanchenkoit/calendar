@@ -60,3 +60,13 @@ h1 {
     transition: all ease-in-out 0.2s;
 }
 
+.form-group label {
+    display: block;
+}
+
+.form-group input {
+    display: block;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+

@@ -18,7 +18,8 @@ export const mutationTypes = {
 const mutations = {
 		[mutationTypes.getSingleReminderStart](state) {
 				state.isLoading = true
-				state.singleReminderData = {}
+				state.singleReminderData = {
+				}
 				state.errors = null
 		},
 		[mutationTypes.getSingleReminderSuccess](state, payload) {

@@ -2,7 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Month from "../views/Month";
 import Date from "../views/Date";
-import CreateEvent from "../views/Event/CreateEvent";
+import CreateEditEvent from "../views/Event/CreateEditEvent";
+import CreateEditNews from "../views/News/CreateEditNews";
+import CreateEditReminder from "../views/Reminder/CreateEditReminder";
 
 Vue.use(VueRouter);
 
@@ -20,17 +22,17 @@ const routes = [
 		{
 				path: '/events/create',
 				name: 'createEvent',
-				component: CreateEvent,
+				component: CreateEditEvent,
 		},
 		{
 				path: '/news/create',
 				name: 'createNews',
-				component: CreateNews,
+				component: CreateEditNews,
 		},
 		{
 				path: '/reminders/create',
 				name: 'createReminder',
-				component: CreateReminder,
+				component: CreateEditReminder,
 		},
 
 

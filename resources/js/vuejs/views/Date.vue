@@ -11,7 +11,7 @@
 										<div class="date-element__head">
 												<router-link
 														class="date-element__head-create-new"
-														:to="{name: 'createEvent'}"
+														:to="{name: 'createReminder'}"
 												>
 														Create new
 												</router-link>
@@ -41,7 +41,7 @@
 										<div class="date-element__head">
 												<router-link
 														class="date-element__head-create-new"
-														:to="{name: 'createEvent'}"
+														:to="{name: 'createNews'}"
 												>
 														Create new
 												</router-link>
