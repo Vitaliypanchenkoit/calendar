@@ -20,7 +20,7 @@ const routes = [
     component: Date,
   },
 		{
-				path: '/events/create',
+				path: '/events/create/',
 				name: 'createEvent',
 				component: CreateEditEvent,
 		},
@@ -30,7 +30,7 @@ const routes = [
 				component: CreateEditNews,
 		},
 		{
-				path: '/reminders/create',
+				path: '/reminders/create/',
 				name: 'createReminder',
 				component: CreateEditReminder,
 		},

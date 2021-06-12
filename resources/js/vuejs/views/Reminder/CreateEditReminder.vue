@@ -1,27 +1,24 @@
 <template>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div class="flex">
-						<div class="flex-1">
-								<label for="title">Title</label>
-								<input id="title" name="title" :value="reminderData.title" />
-						</div>
+				<div class="form-item mb-2">
+						<label for="title">Title</label>
+						<input id="title" class="flex-grow" :v-model="title" />
+						<span v-if="errors.title">{{ errors.title }}</span>
 				</div>
-				<div class="flex">
-						<div class="flex-1">
-								<label for="date">Date</label>
-								<input id="date" name="date" :value="reminderData.date" />
-						</div>
-						<div class="flex-1">
-								<label for="time">Time</label>
-								<input id="time" name="date" :value="reminderData.time" />
-						</div>
+				<div class="form-item mb-2">
+						<label>Date & Time</label>
+						<VueCtkDateTimePicker class="form-item" v-model="dateTime" :no-label="true" />
+						<span v-if="errors.dateTime">{{ errors.dateTime }}</span>
 				</div>
-				<div class="flex">
-						<div class="flex-1">
-								<label for="content">Content</label>
-								<textarea id="content" name="date" :value="reminderData.content" ></textarea>
-						</div>
+				<div class="form-item mb-2">
+						<label for="content">Content</label>
+						<textarea id="content" class="flex-grow" rows="8" :v-model="content" ></textarea>
+						<span v-if="errors.content">{{ errors.content }}</span>
 				</div>
+				<div class="form-item mb-2">
+						<div class="save-button" @click="submit()">Save</div>
+				</div>
+
 
 		</div>
 
@@ -30,12 +27,25 @@
 <script>
 import {actionTypes} from '../../store/modules/reminder'
 import {mapState} from 'vuex'
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 export default {
 		name: "CreateEditReminder",
 		props: {
 				reminderId: {
 						type: Number,
 						default: 0
+				}
+		},
+		components: {
+				VueCtkDateTimePicker
+		},
+		data() {
+				return {
+						prevRoute: {path: ''},
+						dateTime: '',
+						title: '',
+						content: ''
 				}
 		},
 		computed: {
@@ -46,17 +56,32 @@ export default {
 				}),
 		},
 		mounted() {
-				console.log(this.$store.state);
-				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.reminderId})
+				this.dateTime = this.prevRoute.path
+				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.reminderId}).then((reminder) => {
+						if (null != reminder) {
+								this.title = reminder.title
+								this.content = reminder.content
+								this.dateTime = reminder.dateTime
+						}
+				})
 		},
+		beforeRouteEnter(to, from, next) {
+				next(vm => {
+						vm.prevRoute = from
+				})
+		},
+		methods: {
+				submit() {
+						this.$store.dispatch(actionTypes.createReminder, {
+								title: this.title,
+								content: this.content,
+								dateTime: this.dateTime,
+						})
+				}
+		}
 }
 </script>
 
 <style scoped>
-.row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-}
 
 </style>

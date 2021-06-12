@@ -6,21 +6,32 @@ const state = {
 		reminders: {},
 		singleReminderData: {},
 		isLoading: false,
-		errors: null
+		errors: {
+				title: '',
+				content: '',
+				dateTime: '',
+		}
 }
 
 export const mutationTypes = {
 		getSingleReminderStart: '[reminder] Get single reminder start',
 		getSingleReminderSuccess: '[reminder] Get single reminder success',
 		getSingleReminderFailure: '[reminder] Get single reminder failure',
+
+		saveReminderStart: '[reminder] Save reminder start',
+		saveReminderSuccess: '[reminder] Save reminder success',
+		saveReminderFailure: '[reminder] Save reminder failure',
 }
 
 const mutations = {
 		[mutationTypes.getSingleReminderStart](state) {
 				state.isLoading = true
-				state.singleReminderData = {
+				state.singleReminderData = {}
+				state.errors = {
+						title: '',
+						content: '',
+						dateTime: '',
 				}
-				state.errors = null
 		},
 		[mutationTypes.getSingleReminderSuccess](state, payload) {
 				state.isLoading = false
@@ -31,12 +42,35 @@ const mutations = {
 				state.isLoading = false
 				state.singleReminderData = {}
 				state.errors = payload
+		},
+
+		/* Save reminder */
+		[mutationTypes.saveReminderStart](state) {
+				state.isLoading = true
+				state.errors = {
+						title: '',
+						content: '',
+						dateTime: '',
+				}
+		},
+		[mutationTypes.saveReminderSuccess](state, payload) {
+				state.isLoading = false
+				state.singleReminderData = payload
+
+		},
+		[mutationTypes.saveReminderFailure](state, payload) {
+				state.isLoading = false
+				state.singleReminderData = {}
+				state.errors = payload
 		}
 
 }
 
 export const actionTypes = {
-		getSingleReminder: '[reminder] Get single reminder data'
+		getSingleReminder: '[reminder] Get single reminder data',
+		createReminder: '[reminder] Create reminder',
+		updateReminder: '[reminder] Update reminder',
+		deleteReminder: '[reminder] Delete reminder',
 }
 
 const actions = {
@@ -55,7 +89,21 @@ const actions = {
 										context.commit(mutationTypes.getSingleReminderFailure, e.response.data)
 								})
 				})
-		}
+		},
+
+		[actionTypes.createReminder](context, {id, title, content, dateTime}) {
+				return new Promise(resolve => {
+						context.commit(mutationTypes.saveReminderStart)
+						reminderApi.createReminder(apiUrl, id, title, content, dateTime)
+								.then(response => {
+										context.commit(mutationTypes.saveReminderSuccess, response.data)
+										resolve(response.data)
+								})
+								.catch((e) => {
+										context.commit(mutationTypes.saveReminderFailure, e.response.data)
+								})
+				})
+		},
 
 }
 

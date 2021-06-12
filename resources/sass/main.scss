@@ -64,9 +64,37 @@ h1 {
     display: block;
 }
 
-.form-group input {
+.form-item label {
     display: block;
-    border: 1px solid #000000;
+}
+
+.form-item input {
+    display: block;
+    width: 100%;
+    padding: 0.5em 1em;
+    border: 1px solid rgba(0,0,0,.2);
     border-radius: 5px;
 }
+
+.form-item textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5em 1em;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 5px;
+}
+
+.save-button {
+    padding: 0.5em 1em;
+    width: 120px;
+    text-align: center;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.save-button:hover {
+    background-color: rgba(229, 231, 235, 0.9);
+}
+
+
 

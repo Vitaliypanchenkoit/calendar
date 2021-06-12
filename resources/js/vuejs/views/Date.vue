@@ -11,7 +11,7 @@
 										<div class="date-element__head">
 												<router-link
 														class="date-element__head-create-new"
-														:to="{name: 'createReminder'}"
+														:to="{name: 'createReminder', props: {year: year, month: month, date: date}}"
 												>
 														Create new
 												</router-link>
