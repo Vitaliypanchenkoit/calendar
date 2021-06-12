@@ -2,18 +2,19 @@
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
-						<input id="title" class="flex-grow" :v-model="title" />
-						<span v-if="errors.title">{{ errors.title }}</span>
+						{{ title }}
+						<input id="title" class="flex-grow" v-model="title" />
+						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<label>Date & Time</label>
 						<VueCtkDateTimePicker class="form-item" v-model="dateTime" :no-label="true" />
-						<span v-if="errors.dateTime">{{ errors.dateTime }}</span>
+						<span class="text-red-600" v-if="errors.dateTime">{{ errors.dateTime[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
 						<textarea id="content" class="flex-grow" rows="8" :v-model="content" ></textarea>
-						<span v-if="errors.content">{{ errors.content }}</span>
+						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<div class="save-button" @click="submit()">Save</div>
@@ -44,7 +45,6 @@ export default {
 				return {
 						prevRoute: {path: ''},
 						dateTime: '',
-						title: '',
 						content: ''
 				}
 		},
@@ -54,6 +54,14 @@ export default {
 						isLoading: state => state.reminder.isLoading,
 						errors: state => state.reminder.errors,
 				}),
+				title: {
+						get() {
+								return this.value
+						},
+						set(value) {
+								this.$emit('input', value)
+						}
+				}
 		},
 		mounted() {
 				this.dateTime = this.prevRoute.path
@@ -72,6 +80,7 @@ export default {
 		},
 		methods: {
 				submit() {
+						console.log(this.title);
 						this.$store.dispatch(actionTypes.createReminder, {
 								title: this.title,
 								content: this.content,

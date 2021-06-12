@@ -9,6 +9,7 @@ const getReminder = (apiUrl, id) => {
 }
 
 const createReminder = (apiUrl, title, content, dateTime) => {
+		console.log(title);
 		return axios.post(apiUrl, {
 				params: {
 						title: title,

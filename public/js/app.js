@@ -4223,6 +4223,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -4244,11 +4245,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         path: ''
       },
       dateTime: '',
-      title: '',
       content: ''
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
     reminderData: function reminderData(state) {
       return state.reminder.singleReminderData;
     },
@@ -4258,7 +4258,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     errors: function errors(state) {
       return state.reminder.errors;
     }
-  })),
+  })), {}, {
+    title: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(value) {
+        this.$emit('input', value);
+      }
+    }
+  }),
   mounted: function mounted() {
     var _this = this;
 
@@ -4280,6 +4289,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     submit: function submit() {
+      console.log(this.title);
       this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.createReminder, {
         title: this.title,
         content: this.content,
@@ -4499,6 +4509,7 @@ var getReminder = function getReminder(apiUrl, id) {
 };
 
 var createReminder = function createReminder(apiUrl, title, content, dateTime) {
+  console.log(title);
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, {
     params: {
       title: title,
@@ -4896,17 +4907,17 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
     });
   });
 }), _defineProperty(_actions, actionTypes.createReminder, function (context, _ref2) {
-  var id = _ref2.id,
-      title = _ref2.title,
+  var title = _ref2.title,
       content = _ref2.content,
       dateTime = _ref2.dateTime;
+  console.log(dateTime);
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveReminderStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, id, title, content, dateTime).then(function (response) {
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, title, content, dateTime).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
       resolve(response.data);
     })["catch"](function (e) {
-      context.commit(mutationTypes.saveReminderFailure, e.response.data);
+      context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
     });
   });
 }), _actions);
@@ -68385,14 +68396,33 @@ var render = function() {
   return _c("div", { staticClass: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" }, [
     _c("div", { staticClass: "form-item mb-2" }, [
       _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
-      _vm._v(" "),
+      _vm._v("\n\t\t\t\t" + _vm._s(_vm.title) + "\n\t\t\t\t"),
       _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.title,
+            expression: "title"
+          }
+        ],
         staticClass: "flex-grow",
-        attrs: { id: "title", "v-model": _vm.title }
+        attrs: { id: "title" },
+        domProps: { value: _vm.title },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.title = $event.target.value
+          }
+        }
       }),
       _vm._v(" "),
       _vm.errors.title
-        ? _c("span", [_vm._v(_vm._s(_vm.errors.title))])
+        ? _c("span", { staticClass: "text-red-600" }, [
+            _vm._v(_vm._s(_vm.errors.title[0]))
+          ])
         : _vm._e()
     ]),
     _vm._v(" "),
@@ -68415,7 +68445,9 @@ var render = function() {
         }),
         _vm._v(" "),
         _vm.errors.dateTime
-          ? _c("span", [_vm._v(_vm._s(_vm.errors.dateTime))])
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.dateTime[0]))
+            ])
           : _vm._e()
       ],
       1
@@ -68430,7 +68462,9 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.errors.content
-        ? _c("span", [_vm._v(_vm._s(_vm.errors.content))])
+        ? _c("span", { staticClass: "text-red-600" }, [
+            _vm._v(_vm._s(_vm.errors.content[0]))
+          ])
         : _vm._e()
     ]),
     _vm._v(" "),

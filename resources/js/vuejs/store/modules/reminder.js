@@ -91,16 +91,17 @@ const actions = {
 				})
 		},
 
-		[actionTypes.createReminder](context, {id, title, content, dateTime}) {
+		[actionTypes.createReminder](context, {title, content, dateTime}) {
+				console.log(dateTime);
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveReminderStart)
-						reminderApi.createReminder(apiUrl, id, title, content, dateTime)
+						reminderApi.createReminder(apiUrl, title, content, dateTime)
 								.then(response => {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
 										resolve(response.data)
 								})
 								.catch((e) => {
-										context.commit(mutationTypes.saveReminderFailure, e.response.data)
+										context.commit(mutationTypes.saveReminderFailure, e.response.data.errors)
 								})
 				})
 		},
