@@ -1,4 +1,5 @@
 import reminderApi from '../../api/reminder-api'
+import router from "../../router/router";
 
 const apiUrl = '/reminders';
 
@@ -55,7 +56,7 @@ const mutations = {
 		},
 		[mutationTypes.saveReminderSuccess](state, payload) {
 				state.isLoading = false
-				state.singleReminderData = payload
+				state.singleReminderData = {}
 
 		},
 		[mutationTypes.saveReminderFailure](state, payload) {
@@ -92,7 +93,6 @@ const actions = {
 		},
 
 		[actionTypes.createReminder](context, {title, content, dateTime}) {
-				console.log(dateTime);
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveReminderStart)
 						reminderApi.createReminder(apiUrl, title, content, dateTime)

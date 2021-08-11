@@ -1,8 +1,8 @@
 <template>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<go-home-button></go-home-button>
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
-						{{ title }}
 						<input id="title" class="flex-grow" v-model="title" />
 						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
@@ -13,7 +13,7 @@
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
-						<textarea id="content" class="flex-grow" rows="8" :v-model="content" ></textarea>
+						<textarea id="content" class="flex-grow" rows="8" v-model="content"></textarea>
 						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -30,6 +30,7 @@ import {actionTypes} from '../../store/modules/reminder'
 import {mapState} from 'vuex'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+import GoHomeButton from "../../components/GoHomeButton";
 export default {
 		name: "CreateEditReminder",
 		props: {
@@ -39,13 +40,15 @@ export default {
 				}
 		},
 		components: {
-				VueCtkDateTimePicker
+				VueCtkDateTimePicker,
+				GoHomeButton
 		},
 		data() {
 				return {
 						prevRoute: {path: ''},
 						dateTime: '',
-						content: ''
+						content: '',
+						title: ''
 				}
 		},
 		computed: {
@@ -54,17 +57,8 @@ export default {
 						isLoading: state => state.reminder.isLoading,
 						errors: state => state.reminder.errors,
 				}),
-				title: {
-						get() {
-								return this.value
-						},
-						set(value) {
-								this.$emit('input', value)
-						}
-				}
 		},
 		mounted() {
-				this.dateTime = this.prevRoute.path
 				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.reminderId}).then((reminder) => {
 						if (null != reminder) {
 								this.title = reminder.title
@@ -80,7 +74,6 @@ export default {
 		},
 		methods: {
 				submit() {
-						console.log(this.title);
 						this.$store.dispatch(actionTypes.createReminder, {
 								title: this.title,
 								content: this.content,

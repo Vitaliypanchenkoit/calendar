@@ -18,7 +18,7 @@ class CreateRemindersTable extends Migration
             $table->string('title');
             $table->date('date');
             $table->time('time');
-            $table->time('time_hold');
+            $table->time('time_hold')->default(0);
 
             $table->foreignId('author_id')
                 ->constrained('users')

@@ -14,22 +14,16 @@ use Illuminate\Support\Carbon;
 class CalendarDateController extends Controller
 {
     /**
-     * @var CalendarRepository
-     */
-    private CalendarRepository $calendarRepository;
-
-    /**
      * CalendarDateController constructor.
      * @param CalendarRepository $calendarRepository
      */
-    public function __construct(CalendarRepository $calendarRepository)
+    public function __construct(private CalendarRepository $calendarRepository)
     {
-        $this->calendarRepository = $calendarRepository;
-
     }
 
     /**
      * @param GetMonthDataRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getMonthData(GetMonthDataRequest $request)
     {
