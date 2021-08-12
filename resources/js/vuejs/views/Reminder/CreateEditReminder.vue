@@ -1,6 +1,7 @@
 <template>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<go-home-button></go-home-button>
+				<div class="success mb-4">{{ successMessage }}</div>
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
 						<input id="title" class="flex-grow" v-model="title" />
@@ -46,21 +47,42 @@ export default {
 		data() {
 				return {
 						prevRoute: {path: ''},
-						dateTime: '',
-						content: '',
-						title: ''
 				}
 		},
 		computed: {
 				...mapState({
-						reminderData: state => state.reminder.singleReminderData,
 						isLoading: state => state.reminder.isLoading,
 						errors: state => state.reminder.errors,
+						successMessage: state => state.reminder.successMessage,
 				}),
+				title: {
+						get () {
+								return this.$store.state.reminder.singleReminderData.title
+						},
+						set (value) {
+								this.$store.dispatch(actionTypes.getInputValue, {name: 'title', value: value})
+						}
+				},
+				content: {
+						get () {
+								return this.$store.state.reminder.singleReminderData.content
+						},
+						set (value) {
+								this.$store.dispatch(actionTypes.getInputValue, {name: 'content', value: value})
+						}
+				},
+				dateTime: {
+						get () {
+								return this.$store.state.reminder.singleReminderData.dateTime
+						},
+						set (value) {
+								this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
+						}
+				},
 		},
 		mounted() {
 				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.reminderId}).then((reminder) => {
-						if (null != reminder) {
+						if (undefined !== reminder) {
 								this.title = reminder.title
 								this.content = reminder.content
 								this.dateTime = reminder.dateTime

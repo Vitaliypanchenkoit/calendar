@@ -1,17 +1,21 @@
 import reminderApi from '../../api/reminder-api'
-import router from "../../router/router";
 
 const apiUrl = '/reminders';
 
 const state = {
 		reminders: {},
-		singleReminderData: {},
+		singleReminderData: {
+				title: '',
+				content: '',
+				dateTime: '',
+		},
 		isLoading: false,
 		errors: {
 				title: '',
 				content: '',
 				dateTime: '',
-		}
+		},
+		successMessage: '',
 }
 
 export const mutationTypes = {
@@ -22,12 +26,19 @@ export const mutationTypes = {
 		saveReminderStart: '[reminder] Save reminder start',
 		saveReminderSuccess: '[reminder] Save reminder success',
 		saveReminderFailure: '[reminder] Save reminder failure',
+
+		getInputValue: '[reminder] Get value from input',
 }
 
 const mutations = {
 		[mutationTypes.getSingleReminderStart](state) {
 				state.isLoading = true
-				state.singleReminderData = {}
+				state.successMessage = '';
+				state.singleReminderData = {
+						title: '',
+						content: '',
+						dateTime: '',
+				}
 				state.errors = {
 						title: '',
 						content: '',
@@ -41,13 +52,18 @@ const mutations = {
 		},
 		[mutationTypes.getSingleReminderFailure](state, payload) {
 				state.isLoading = false
-				state.singleReminderData = {}
+				state.singleReminderData = {
+						title: '',
+						content: '',
+						dateTime: '',
+				}
 				state.errors = payload
 		},
 
 		/* Save reminder */
 		[mutationTypes.saveReminderStart](state) {
 				state.isLoading = true
+				state.successMessage = '';
 				state.errors = {
 						title: '',
 						content: '',
@@ -56,14 +72,29 @@ const mutations = {
 		},
 		[mutationTypes.saveReminderSuccess](state, payload) {
 				state.isLoading = false
-				state.singleReminderData = {}
+				state.successMessage = 'The Reminder was created successfully';
+				state.singleReminderData = {
+						title: '',
+						content: '',
+						dateTime: '',
+				}
 
 		},
 		[mutationTypes.saveReminderFailure](state, payload) {
 				state.isLoading = false
-				state.singleReminderData = {}
+				state.singleReminderData = {
+						title: '',
+						content: '',
+						dateTime: '',
+				}
 				state.errors = payload
-		}
+		},
+
+		/* Input data */
+		[mutationTypes.getInputValue](state, payload) {
+				state.singleReminderData[payload.name] = payload.value;
+		},
+
 
 }
 
@@ -72,6 +103,7 @@ export const actionTypes = {
 		createReminder: '[reminder] Create reminder',
 		updateReminder: '[reminder] Update reminder',
 		deleteReminder: '[reminder] Delete reminder',
+		getInputValue: '[reminder] Get input value',
 }
 
 const actions = {
@@ -98,13 +130,17 @@ const actions = {
 						reminderApi.createReminder(apiUrl, title, content, dateTime)
 								.then(response => {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
-										resolve(response.data)
 								})
 								.catch((e) => {
 										context.commit(mutationTypes.saveReminderFailure, e.response.data.errors)
 								})
 				})
 		},
+
+		[actionTypes.getInputValue](context, {name, value}){
+				context.commit(mutationTypes.getInputValue, {name, value})
+		},
+
 
 }
 

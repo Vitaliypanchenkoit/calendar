@@ -4250,6 +4250,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -4271,30 +4272,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       prevRoute: {
         path: ''
-      },
-      dateTime: '',
-      content: '',
-      title: ''
+      }
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
-    reminderData: function reminderData(state) {
-      return state.reminder.singleReminderData;
-    },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     isLoading: function isLoading(state) {
       return state.reminder.isLoading;
     },
     errors: function errors(state) {
       return state.reminder.errors;
+    },
+    successMessage: function successMessage(state) {
+      return state.reminder.successMessage;
     }
-  })),
+  })), {}, {
+    title: {
+      get: function get() {
+        return this.$store.state.reminder.singleReminderData.title;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+          name: 'title',
+          value: value
+        });
+      }
+    },
+    content: {
+      get: function get() {
+        return this.$store.state.reminder.singleReminderData.content;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+          name: 'content',
+          value: value
+        });
+      }
+    },
+    dateTime: {
+      get: function get() {
+        return this.$store.state.reminder.singleReminderData.dateTime;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+          name: 'dateTime',
+          value: value
+        });
+      }
+    }
+  }),
   mounted: function mounted() {
     var _this = this;
 
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
       id: this.reminderId
     }).then(function (reminder) {
-      if (null != reminder) {
+      if (undefined !== reminder) {
         _this.title = reminder.title;
         _this.content = reminder.content;
         _this.dateTime = reminder.dateTime;
@@ -4845,23 +4877,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/reminder-api */ "./resources/js/vuejs/api/reminder-api.js");
-/* harmony import */ var _router_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router/router */ "./resources/js/vuejs/router/router.js");
 var _mutations, _actions;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-
 var apiUrl = '/reminders';
 var state = {
   reminders: {},
-  singleReminderData: {},
+  singleReminderData: {
+    title: '',
+    content: '',
+    dateTime: ''
+  },
   isLoading: false,
   errors: {
     title: '',
     content: '',
     dateTime: ''
-  }
+  },
+  successMessage: ''
 };
 var mutationTypes = {
   getSingleReminderStart: '[reminder] Get single reminder start',
@@ -4869,11 +4904,17 @@ var mutationTypes = {
   getSingleReminderFailure: '[reminder] Get single reminder failure',
   saveReminderStart: '[reminder] Save reminder start',
   saveReminderSuccess: '[reminder] Save reminder success',
-  saveReminderFailure: '[reminder] Save reminder failure'
+  saveReminderFailure: '[reminder] Save reminder failure',
+  getInputValue: '[reminder] Get value from input'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getSingleReminderStart, function (state) {
   state.isLoading = true;
-  state.singleReminderData = {};
+  state.successMessage = '';
+  state.singleReminderData = {
+    title: '',
+    content: '',
+    dateTime: ''
+  };
   state.errors = {
     title: '',
     content: '',
@@ -4884,10 +4925,15 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   state.singleReminderData = payload;
 }), _defineProperty(_mutations, mutationTypes.getSingleReminderFailure, function (state, payload) {
   state.isLoading = false;
-  state.singleReminderData = {};
+  state.singleReminderData = {
+    title: '',
+    content: '',
+    dateTime: ''
+  };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.saveReminderStart, function (state) {
   state.isLoading = true;
+  state.successMessage = '';
   state.errors = {
     title: '',
     content: '',
@@ -4895,17 +4941,29 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
 }), _defineProperty(_mutations, mutationTypes.saveReminderSuccess, function (state, payload) {
   state.isLoading = false;
-  state.singleReminderData = {};
+  state.successMessage = 'The Reminder was created successfully';
+  state.singleReminderData = {
+    title: '',
+    content: '',
+    dateTime: ''
+  };
 }), _defineProperty(_mutations, mutationTypes.saveReminderFailure, function (state, payload) {
   state.isLoading = false;
-  state.singleReminderData = {};
+  state.singleReminderData = {
+    title: '',
+    content: '',
+    dateTime: ''
+  };
   state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
+  state.singleReminderData[payload.name] = payload.value;
 }), _mutations);
 var actionTypes = {
   getSingleReminder: '[reminder] Get single reminder data',
   createReminder: '[reminder] Create reminder',
   updateReminder: '[reminder] Update reminder',
-  deleteReminder: '[reminder] Delete reminder'
+  deleteReminder: '[reminder] Delete reminder',
+  getInputValue: '[reminder] Get input value'
 };
 var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleReminder, function (context, _ref) {
   var id = _ref.id;
@@ -4931,10 +4989,16 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
     context.commit(mutationTypes.saveReminderStart);
     _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, title, content, dateTime).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
-      resolve(response.data);
     })["catch"](function (e) {
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
     });
+  });
+}), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref3) {
+  var name = _ref3.name,
+      value = _ref3.value;
+  context.commit(mutationTypes.getInputValue, {
+    name: name,
+    value: value
   });
 }), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9445,7 +9509,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 32px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 32px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -68659,6 +68723,10 @@ var render = function() {
     { staticClass: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
     [
       _c("go-home-button"),
+      _vm._v(" "),
+      _c("div", { staticClass: "success mb-4" }, [
+        _vm._v(_vm._s(_vm.successMessage))
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-item mb-2" }, [
         _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
