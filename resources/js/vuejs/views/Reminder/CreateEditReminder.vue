@@ -20,8 +20,6 @@
 				<div class="form-item mb-2">
 						<div class="save-button" @click="submit()">Save</div>
 				</div>
-
-
 		</div>
 
 </template>

@@ -75,9 +75,9 @@ export default {
 		data() {
 				return {
 						isVisible: {
-								reminders: false,
-								news: false,
-								events: false,
+								reminders: true,
+								news: true,
+								events: true,
 						},
 				}
 		},
