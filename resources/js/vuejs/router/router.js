@@ -19,6 +19,7 @@ const routes = [
     name: 'day',
     component: Date,
   },
+		/* CREATE */
 		{
 				path: '/events/create/',
 				name: 'createEvent',
@@ -35,9 +36,22 @@ const routes = [
 				component: CreateEditReminder,
 		},
 
-
-
-
+		/* EDIT */
+		{
+				path: '/events/edit/:id',
+				name: 'editEvent',
+				component: CreateEditEvent,
+		},
+		{
+				path: '/news/edit/:id',
+				name: 'editNews',
+				component: CreateEditNews,
+		},
+		{
+				path: '/reminders/edit/:id',
+				name: 'editReminder',
+				component: CreateEditReminder,
+		},
 ];
 
 const router = new VueRouter({

@@ -20,7 +20,19 @@
 														<div class="arrow" :class="[isVisible.reminders ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.reminders}">dfgdfg</div>
+										<div class="date-element__body" :class="{visible: isVisible.reminders}">
+												<div v-for="reminder in reminders" class="date-element__body-item body-item relative">
+														<div class="body-item__time">{{ reminder.time }}</div>
+														<div class="body-item__title">{{ reminder.title }}</div>
+														<div class="body-item__content">{{ reminder.title }}</div>
+														<router-link
+																class="body-item__edit absolute"
+																:to="{name: 'createEditReminder', props: {reminderId:  reminder.id}}"
+														>
+																<<<< Edit
+														</router-link>
+												</div>
+										</div>
 								</div>
 								<div class="date-element news">
 										<div class="date-element__head">
@@ -90,9 +102,44 @@ export default {
 				},
 				date: function () {
 						return this.$route.params.date
-				}
+				},
+				events: function () {
+						return this.$route.params.events.length ? this.$route.params.events.sort(function (a, b) {
+								if (a['time'] < b['time']) {
+										return -1;
+								}
+								if (a['time'] > b['time']) {
+										return 1;
+								}
+								return 0;
+						}) : [];
+						return this.$route.params.events
+				},
+				news: function () {
+						return this.$route.params.news.length ? this.$route.params.news.sort(function (a, b) {
+								if (a['time'] < b['time']) {
+										return -1;
+								}
+								if (a['time'] > b['time']) {
+										return 1;
+								}
+								return 0;
+						}) : [];
+				},
+				reminders: function () {
+						return this.$route.params.reminders.length ? this.$route.params.reminders.sort(function (a, b) {
+								if (a['time'] < b['time']) {
+										return -1;
+								}
+								if (a['time'] > b['time']) {
+										return 1;
+								}
+								return 0;
+						}) : [];
+				},
 		},
 		mounted() {
+    		console.log(this.$route.params);
 		},
 		methods: {
     		toggleElementBody: function(element) {
@@ -126,6 +173,19 @@ export default {
 		border-top: none;
 }
 
+.date-element__body-item {
+		padding: 0.5rem 0 2rem 0;
+		border-bottom: 1px dotted grey;
+}
+.body-item__time {
+		font-size: 20px;
+		font-weight: bold;
+}
+.body-item__title {
+		font-weight: bold;
+		margin-bottom: 1rem;
+}
+
 .date-element__body.visible {
 		display: block;
 }
@@ -145,6 +205,10 @@ export default {
 		height: 100%;
 		width: 30px;
 		cursor: pointer;
+}
+.body-item__edit {
+		top: 0.5rem;
+		right: 0;
 }
 
 .arrow-down,

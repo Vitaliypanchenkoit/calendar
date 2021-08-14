@@ -8,15 +8,22 @@
 </p>
 
 ## Server requirements
-PHP 8.0
-MySql 8.0.25
-Laravel 8.27.0
-Composer 2.0.14
-Nodejs 14.16.1
-npm 7.12.0
-vue js 2.5.17
+PHP 8.0 <br>
+MySql 8.0.25 <br>
+Laravel 8.27.0 <br>
+Composer 2.0.14 <br>
+Nodejs 14.16.1 <br>
+npm 7.12.0 <br>
+vue js 2.5.17 <br>
+redis-server 5.0.7 (for caching data) <br>
 
 ## Node packages
-1. badger-accordion
-https://vuejsexamples.com/badger-accordion-component-for-vue-2/
-https://github.com/stuartjnelson/badger-accordion
+1. badger-accordion <br>
+https://vuejsexamples.com/badger-accordion-component-for-vue-2/ <br>
+https://github.com/stuartjnelson/badger-accordion <br>
+
+## Реализация паттернов
+=== PROXY === <br>
+(app/Services/CalendarProxyService) <br>
+Данный паттерн используется при получении данных (новостей, напоминаний, событий). Если запрос на получение данных происходит впрвые,
+данные получаем из базы данных и тут же кешируем. При повторном запросе, данные получаем из кеша. Драйвер кеширования - Redis. <br>

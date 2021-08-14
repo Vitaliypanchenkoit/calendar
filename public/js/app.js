@@ -4011,6 +4011,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4026,9 +4038,9 @@ var now = new Date();
   data: function data() {
     return {
       isVisible: {
-        reminders: false,
-        news: false,
-        events: false
+        reminders: true,
+        news: true,
+        events: true
       }
     };
   },
@@ -4041,9 +4053,51 @@ var now = new Date();
     },
     date: function date() {
       return this.$route.params.date;
+    },
+    events: function events() {
+      return this.$route.params.events.length ? this.$route.params.events.sort(function (a, b) {
+        if (a['time'] < b['time']) {
+          return -1;
+        }
+
+        if (a['time'] > b['time']) {
+          return 1;
+        }
+
+        return 0;
+      }) : [];
+      return this.$route.params.events;
+    },
+    news: function news() {
+      return this.$route.params.news.length ? this.$route.params.news.sort(function (a, b) {
+        if (a['time'] < b['time']) {
+          return -1;
+        }
+
+        if (a['time'] > b['time']) {
+          return 1;
+        }
+
+        return 0;
+      }) : [];
+    },
+    reminders: function reminders() {
+      return this.$route.params.reminders.length ? this.$route.params.reminders.sort(function (a, b) {
+        if (a['time'] < b['time']) {
+          return -1;
+        }
+
+        if (a['time'] > b['time']) {
+          return 1;
+        }
+
+        return 0;
+      }) : [];
     }
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    console.log(this.$route.params);
+  },
   methods: {
     toggleElementBody: function toggleElementBody(element) {
       this.isVisible[element] = !this.isVisible[element];
@@ -4095,6 +4149,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -4223,8 +4281,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -4619,7 +4675,9 @@ var routes = [{
   path: '/:year/:month/:date',
   name: 'day',
   component: _views_Date__WEBPACK_IMPORTED_MODULE_1__.default
-}, {
+},
+/* CREATE */
+{
   path: '/events/create/',
   name: 'createEvent',
   component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__.default
@@ -4630,6 +4688,20 @@ var routes = [{
 }, {
   path: '/reminders/create/',
   name: 'createReminder',
+  component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__.default
+},
+/* EDIT */
+{
+  path: '/events/edit/:id',
+  name: 'editEvent',
+  component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__.default
+}, {
+  path: '/news/edit/:id',
+  name: 'editNews',
+  component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_3__.default
+}, {
+  path: '/reminders/edit/:id',
+  name: 'editReminder',
   component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__.default
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_6__.default({
@@ -9587,7 +9659,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.date-element__head-create-new[data-v-fe7d9ee6] {\n\t\tcursor: pointer;\n}\n.date-element__head-create-new[data-v-fe7d9ee6]:hover {\n\t\ttext-decoration: underline;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.arrow-down[data-v-fe7d9ee6],\n.arrow-up[data-v-fe7d9ee6] {\n\t\twidth: 10px;\n\t\theight: 10px;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.date-element__head-create-new[data-v-fe7d9ee6] {\n\t\tcursor: pointer;\n}\n.date-element__head-create-new[data-v-fe7d9ee6]:hover {\n\t\ttext-decoration: underline;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 0;\n}\n.arrow-down[data-v-fe7d9ee6],\n.arrow-up[data-v-fe7d9ee6] {\n\t\twidth: 10px;\n\t\theight: 10px;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9611,7 +9683,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar_body[data-v-5b6128b1] {\n    margin: 20px 10px;\n}\n.calendar_body__days[data-v-5b6128b1] {\n    display: flex;\n}\n.calendar_body__dates[data-v-5b6128b1] {\n    display: flex;\n    flex-wrap: wrap;\n}\n.calendar_body__date[data-v-5b6128b1],\n.calendar_body__day[data-v-5b6128b1] {\n    width: 14%;\n    text-align: center;\n}\n.calendar_body__date[data-v-5b6128b1] {\n  border: 1px solid #000000;\n  margin: 0.1em;\n  padding: 0.2em;\n}\n.calendar_body__date.prev_month[data-v-5b6128b1] {\n\t\tborder: none;\n}\n.calendar_body__date[data-v-5b6128b1]:hover {\n  cursor: pointer;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar_body[data-v-5b6128b1] {\n    margin: 20px 10px;\n}\n.calendar_body__days[data-v-5b6128b1] {\n    display: flex;\n}\n.calendar_body__dates[data-v-5b6128b1] {\n    display: flex;\n    flex-wrap: wrap;\n}\n.calendar_body__date[data-v-5b6128b1],\n.calendar_body__day[data-v-5b6128b1] {\n    width: 14%;\n    text-align: center;\n}\n.calendar_body__date[data-v-5b6128b1] {\n  border: 1px solid #000000;\n  margin: 0.1em;\n  padding: 0.2em;\n}\n.calendar_body__date.prev_month[data-v-5b6128b1] {\n\t\tborder: none;\n}\n.calendar_body__date[data-v-5b6128b1]:not(.prev_month):hover {\n  \tcursor: pointer;\n\t\tbackground: #ffffff;\n}\n.calendar_body__date-item[data-v-5b6128b1] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\tpadding: 0 0.6rem;\n}\n.calendar_body__events[data-v-5b6128b1] {\n\t\tcolor: #059669\n}\n.calendar_body__news[data-v-5b6128b1] {\n\t\tcolor: #2563EB\n}\n.calendar_body__reminders[data-v-5b6128b1] {\n\t\tcolor: #D97706\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -68432,7 +68504,45 @@ var render = function() {
                 staticClass: "date-element__body",
                 class: { visible: _vm.isVisible.reminders }
               },
-              [_vm._v("dfgdfg")]
+              _vm._l(_vm.reminders, function(reminder) {
+                return _c(
+                  "div",
+                  { staticClass: "date-element__body-item body-item relative" },
+                  [
+                    _c("div", { staticClass: "body-item__time" }, [
+                      _vm._v(_vm._s(reminder.time))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__title" }, [
+                      _vm._v(_vm._s(reminder.title))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__content" }, [
+                      _vm._v(_vm._s(reminder.title))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "body-item__edit absolute",
+                        attrs: {
+                          to: {
+                            name: "createEditReminder",
+                            props: { reminderId: reminder.id }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit\n\t\t\t\t\t\t\t\t\t\t\t\t"
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
             )
           ]),
           _vm._v(" "),
@@ -68632,13 +68742,61 @@ var render = function() {
                 attrs: {
                   to: {
                     name: "day",
-                    params: { year: _vm.year, month: _vm.month + 1, date: date }
+                    params: {
+                      year: _vm.year,
+                      month: _vm.month + 1,
+                      date: date,
+                      events: _vm.monthData.events[date],
+                      news: _vm.monthData.news[date],
+                      reminders: _vm.monthData.reminders[date]
+                    }
                   }
                 }
               },
               [
-                _vm._v(
-                  "\n\t\t\t\t\t\t\t\t\t\t" + _vm._s(date) + "\n\t\t\t\t\t\t\t\t"
+                _c("div", { staticClass: "calendar_body__date-number" }, [
+                  _vm._v(_vm._s(date))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "calendar_body__events calendar_body__date-item"
+                  },
+                  [
+                    _c("span", [_vm._v("Events: ")]),
+                    _c("span", [
+                      _vm._v(_vm._s(_vm.monthData.events[date].length))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "calendar_body__news calendar_body__date-item"
+                  },
+                  [
+                    _c("span", [_vm._v("News: ")]),
+                    _c("span", [
+                      _vm._v(_vm._s(_vm.monthData.news[date].length))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "calendar_body__reminders calendar_body__date-item"
+                  },
+                  [
+                    _c("span", [_vm._v("Reminders: ")]),
+                    _c("span", [
+                      _vm._v(_vm._s(_vm.monthData.reminders[date].length))
+                    ])
+                  ]
                 )
               ]
             )

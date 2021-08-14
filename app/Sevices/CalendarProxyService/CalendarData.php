@@ -10,8 +10,14 @@ use Illuminate\Support\Facades\Cache;
 
 class CalendarData implements CalendarDataInterface
 {
+    /**
+     * @var CalendarRepository
+     */
     private CalendarRepository $calendarRepository;
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->calendarRepository = new CalendarRepository();
@@ -28,7 +34,7 @@ class CalendarData implements CalendarDataInterface
         $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);
 
-        Cache::put($date, json_encode(['news' => $result['news'], 'events' => $result['events'], 'reminders' => $result['reminders']]));
+        Cache::put(auth()->user()->id . '_' . $date, json_encode(['news' => $result['news'], 'events' => $result['events'], 'reminders' => $result['reminders']]));
 
         return $result;
 
