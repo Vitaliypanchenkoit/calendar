@@ -4023,6 +4023,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4041,7 +4042,9 @@ var now = new Date();
         reminders: true,
         news: true,
         events: true
-      }
+      },
+      nowDate: now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate(),
+      nowTime: now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds()
     };
   },
   computed: {
@@ -68521,23 +68524,26 @@ var render = function() {
                       _vm._v(_vm._s(reminder.title))
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "body-item__edit absolute",
-                        attrs: {
-                          to: {
-                            name: "createEditReminder",
-                            props: { reminderId: reminder.id }
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit\n\t\t\t\t\t\t\t\t\t\t\t\t"
+                    new Date(reminder.date + " " + reminder.time).getTime() >=
+                    Date.now() + 1000 * 120 * 60
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "body-item__edit absolute",
+                            attrs: {
+                              to: {
+                                name: "createEditReminder",
+                                props: { reminderId: reminder.id }
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit\n\t\t\t\t\t\t\t\t\t\t\t\t"
+                            )
+                          ]
                         )
-                      ]
-                    )
+                      : _vm._e()
                   ],
                   1
                 )
