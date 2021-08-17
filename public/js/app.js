@@ -4318,7 +4318,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateEditReminder",
   props: {
-    reminderId: {
+    id: {
       type: Number,
       "default": 0
     }
@@ -4383,7 +4383,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
-      id: this.reminderId
+      id: this.id
     }).then(function (reminder) {
       if (undefined !== reminder) {
         _this.title = reminder.title;
@@ -68532,14 +68532,15 @@ var render = function() {
                             staticClass: "body-item__edit absolute",
                             attrs: {
                               to: {
-                                name: "createEditReminder",
-                                props: { reminderId: reminder.id }
+                                name: "editReminder",
+                                params: { id: reminder.id },
+                                props: { id: reminder.id }
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit\n\t\t\t\t\t\t\t\t\t\t\t\t"
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit time\n\t\t\t\t\t\t\t\t\t\t\t\t"
                             )
                           ]
                         )

@@ -33,7 +33,7 @@ import GoHomeButton from "../../components/GoHomeButton";
 export default {
 		name: "CreateEditReminder",
 		props: {
-				reminderId: {
+				id: {
 						type: Number,
 						default: 0
 				}
@@ -79,7 +79,7 @@ export default {
 				},
 		},
 		mounted() {
-				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.reminderId}).then((reminder) => {
+				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id}).then((reminder) => {
 						if (undefined !== reminder) {
 								this.title = reminder.title
 								this.content = reminder.content

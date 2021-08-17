@@ -28,9 +28,9 @@
 														<router-link
 																v-if="new Date(reminder.date + ' ' + reminder.time).getTime() >= (Date.now() + 1000 * 120 * 60)"
 																class="body-item__edit absolute"
-																:to="{name: 'createEditReminder', props: {reminderId:  reminder.id}}"
+																:to="{name: 'editReminder', params: {id:  reminder.id}, props: {id:  reminder.id}}"
 														>
-																<<<< Edit
+																<<<< Edit time
 														</router-link>
 												</div>
 										</div>

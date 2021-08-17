@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CacheHelper;
 use App\Http\Requests\Reminder\CreateReminderRequest;
 use App\Http\Requests\ValidateReminderIdRequest;
 use App\Http\Resources\ReminderResource;
@@ -9,6 +10,7 @@ use App\Models\Reminder;
 use App\PersistModule\PersistReminder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ReminderController extends Controller
 {
@@ -27,6 +29,9 @@ class ReminderController extends Controller
 
             $persistModule = new PersistReminder();
             $reminder = $persistModule->create($data);
+
+            CacheHelper::createOrUpdateRecord(CacheHelper::REMINDERS, $data['date'], $reminder);
+
             return new ReminderResource($reminder);
 
         } catch (\Throwable $e) {
