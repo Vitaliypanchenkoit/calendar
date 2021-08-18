@@ -40,16 +40,19 @@ const routes = [
 		{
 				path: '/events/edit/:id',
 				name: 'editEvent',
+				props: true,
 				component: CreateEditEvent,
 		},
 		{
 				path: '/news/edit/:id',
 				name: 'editNews',
+				props: true,
 				component: CreateEditNews,
 		},
 		{
 				path: '/reminders/edit/:id',
 				name: 'editReminder',
+				props: true,
 				component: CreateEditReminder,
 		},
 ];

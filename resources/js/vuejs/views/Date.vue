@@ -142,7 +142,6 @@ export default {
 				},
 		},
 		mounted() {
-    		console.log(this.$route.params);
 		},
 		methods: {
     		toggleElementBody: function(element) {

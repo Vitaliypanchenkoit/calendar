@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CacheHelper;
 use App\Http\Requests\Reminder\CreateReminderRequest;
-use App\Http\Requests\ValidateReminderIdRequest;
+use App\Http\Requests\Reminder\ValidateReminderIdRequest;
 use App\Http\Resources\ReminderResource;
 use App\Models\Reminder;
 use App\PersistModule\PersistReminder;

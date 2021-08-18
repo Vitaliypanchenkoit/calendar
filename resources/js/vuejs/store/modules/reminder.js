@@ -46,9 +46,9 @@ const mutations = {
 				}
 		},
 		[mutationTypes.getSingleReminderSuccess](state, payload) {
-				state.isLoading = false
-				state.singleReminderData = payload
-
+			state.isLoading = false
+			state.singleReminderData = payload
+			state.singleReminderData.dateTime = payload.date + ' ' + payload.time
 		},
 		[mutationTypes.getSingleReminderFailure](state, payload) {
 				state.isLoading = false
@@ -92,6 +92,8 @@ const mutations = {
 
 		/* Input data */
 		[mutationTypes.getInputValue](state, payload) {
+			console.log('--------');
+			console.log(payload);
 				state.singleReminderData[payload.name] = payload.value;
 		},
 
@@ -138,6 +140,8 @@ const actions = {
 		},
 
 		[actionTypes.getInputValue](context, {name, value}){
+			console.log(name	);
+			console.log(value	);
 				context.commit(mutationTypes.getInputValue, {name, value})
 		},
 

@@ -4,7 +4,8 @@
 				<div class="success mb-4">{{ successMessage }}</div>
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
-						<input id="title" class="flex-grow" v-model="title" />
+						<input id="title" class="flex-grow" v-model="title" v-if="!id"/>
+						<div class="disabled-input" v-else>{{ title }}</div>
 						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -14,7 +15,8 @@
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
-						<textarea id="content" class="flex-grow" rows="8" v-model="content"></textarea>
+						<textarea id="content" class="flex-grow" rows="8" v-model="content" v-if="!id"></textarea>
+						<div class="disabled-textarea" v-else>{{ content }}</div>
 						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -74,18 +76,13 @@ export default {
 								return this.$store.state.reminder.singleReminderData.dateTime
 						},
 						set (value) {
+								console.log(value);
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
 						}
 				},
 		},
 		mounted() {
-				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id}).then((reminder) => {
-						if (undefined !== reminder) {
-								this.title = reminder.title
-								this.content = reminder.content
-								this.dateTime = reminder.dateTime
-						}
-				})
+				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id});
 		},
 		beforeRouteEnter(to, from, next) {
 				next(vm => {

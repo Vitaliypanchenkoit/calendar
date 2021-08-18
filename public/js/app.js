@@ -4098,9 +4098,7 @@ var now = new Date();
       }) : [];
     }
   },
-  mounted: function mounted() {
-    console.log(this.$route.params);
-  },
+  mounted: function mounted() {},
   methods: {
     toggleElementBody: function toggleElementBody(element) {
       this.isVisible[element] = !this.isVisible[element];
@@ -4310,6 +4308,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -4372,6 +4372,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.$store.state.reminder.singleReminderData.dateTime;
       },
       set: function set(value) {
+        console.log(value);
         this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
           name: 'dateTime',
           value: value
@@ -4380,16 +4381,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    var _this = this;
-
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
       id: this.id
-    }).then(function (reminder) {
-      if (undefined !== reminder) {
-        _this.title = reminder.title;
-        _this.content = reminder.content;
-        _this.dateTime = reminder.dateTime;
-      }
     });
   },
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -4697,14 +4690,17 @@ var routes = [{
 {
   path: '/events/edit/:id',
   name: 'editEvent',
+  props: true,
   component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__.default
 }, {
   path: '/news/edit/:id',
   name: 'editNews',
+  props: true,
   component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_3__.default
 }, {
   path: '/reminders/edit/:id',
   name: 'editReminder',
+  props: true,
   component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__.default
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_6__.default({
@@ -4998,6 +4994,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
 }), _defineProperty(_mutations, mutationTypes.getSingleReminderSuccess, function (state, payload) {
   state.isLoading = false;
   state.singleReminderData = payload;
+  state.singleReminderData.dateTime = payload.date + ' ' + payload.time;
 }), _defineProperty(_mutations, mutationTypes.getSingleReminderFailure, function (state, payload) {
   state.isLoading = false;
   state.singleReminderData = {
@@ -5031,6 +5028,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
+  console.log('--------');
+  console.log(payload);
   state.singleReminderData[payload.name] = payload.value;
 }), _mutations);
 var actionTypes = {
@@ -5071,6 +5070,8 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
 }), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref3) {
   var name = _ref3.name,
       value = _ref3.value;
+  console.log(name);
+  console.log(value);
   context.commit(mutationTypes.getInputValue, {
     name: name,
     value: value
@@ -9584,7 +9585,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 32px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 32px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input,\n.form-item .disabled-input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea,\n.form-item .disabled-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item .disabled-textarea {\n  height: 160px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -68896,27 +68897,31 @@ var render = function() {
       _c("div", { staticClass: "form-item mb-2" }, [
         _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
         _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.title,
-              expression: "title"
-            }
-          ],
-          staticClass: "flex-grow",
-          attrs: { id: "title" },
-          domProps: { value: _vm.title },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+        !_vm.id
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "title" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
               }
-              _vm.title = $event.target.value
-            }
-          }
-        }),
+            })
+          : _c("div", { staticClass: "disabled-input" }, [
+              _vm._v(_vm._s(_vm.title))
+            ]),
         _vm._v(" "),
         _vm.errors.title
           ? _c("span", { staticClass: "text-red-600" }, [
@@ -68955,27 +68960,31 @@ var render = function() {
       _c("div", { staticClass: "form-item mb-2" }, [
         _c("label", { attrs: { for: "content" } }, [_vm._v("Content")]),
         _vm._v(" "),
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.content,
-              expression: "content"
-            }
-          ],
-          staticClass: "flex-grow",
-          attrs: { id: "content", rows: "8" },
-          domProps: { value: _vm.content },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+        !_vm.id
+          ? _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.content,
+                  expression: "content"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "content", rows: "8" },
+              domProps: { value: _vm.content },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.content = $event.target.value
+                }
               }
-              _vm.content = $event.target.value
-            }
-          }
-        }),
+            })
+          : _c("div", { staticClass: "disabled-textarea" }, [
+              _vm._v(_vm._s(_vm.content))
+            ]),
         _vm._v(" "),
         _vm.errors.content
           ? _c("span", { staticClass: "text-red-600" }, [
