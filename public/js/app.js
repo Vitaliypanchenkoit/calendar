@@ -4367,20 +4367,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    dateTime: {
-      get: function get() {
-        console.log(this.$store.state.reminder.singleReminderData.dateTime);
-        return this.$store.state.reminder.singleReminderData.dateTime;
-      },
-      set: function set(value) {
-        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
-          name: 'dateTime',
-          value: value
-        });
-      }
+    dateTime: function dateTime() {
+      return this.$store.getters.dateTime;
     }
   }),
-  mounted: function mounted() {
+  created: function created() {
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
       id: this.id
     });
@@ -4396,6 +4387,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: this.title,
         content: this.content,
         dateTime: this.dateTime
+      });
+    },
+    handleDateTimeUpdate: function handleDateTimeUpdate(value) {
+      this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+        name: 'dateTime',
+        value: value
       });
     }
   }
@@ -4950,7 +4947,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/reminder-api */ "./resources/js/vuejs/api/reminder-api.js");
 var _mutations, _actions;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var apiUrl = '/reminders';
@@ -5028,8 +5030,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
-  state.singleReminderData[payload.name] = payload.value;
-  console.log(state.singleReminderData);
+  console.log(state, payload.name);
+  state.singleReminderData = _objectSpread(_objectSpread({}, state.singleReminderData), {}, _defineProperty({}, payload.name, payload.value));
 }), _mutations);
 var actionTypes = {
   getSingleReminder: '[reminder] Get single reminder data',
@@ -5066,9 +5068,24 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
     });
   });
-}), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref3) {
-  var name = _ref3.name,
-      value = _ref3.value;
+}), _defineProperty(_actions, actionTypes.updateReminder, function (context, _ref3) {
+  var id = _ref3.id,
+      title = _ref3.title,
+      content = _ref3.content,
+      dateTime = _ref3.dateTime;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.saveReminderStart);
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.updateReminder(apiUrl, id, title, content, dateTime).then(function (response) {
+      context.commit(mutationTypes.saveReminderSuccess, response.data);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref4) {
+  var name = _ref4.name,
+      value = _ref4.value;
+  console.log(name);
+  console.log(value);
   context.commit(mutationTypes.getInputValue, {
     name: name,
     value: value
@@ -5077,7 +5094,12 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
   actions: actions,
-  mutations: mutations
+  mutations: mutations,
+  getters: {
+    dateTime: function dateTime(state) {
+      return state.singleReminderData.dateTime;
+    }
+  }
 });
 
 /***/ }),
@@ -68935,14 +68957,8 @@ var render = function() {
           _vm._v(" "),
           _c("VueCtkDateTimePicker", {
             staticClass: "form-item",
-            attrs: { "no-label": true },
-            model: {
-              value: _vm.dateTime,
-              callback: function($$v) {
-                _vm.dateTime = $$v
-              },
-              expression: "dateTime"
-            }
+            attrs: { value: _vm.dateTime, "no-label": true },
+            on: { input: _vm.handleDateTimeUpdate }
           }),
           _vm._v(" "),
           _vm.errors.dateTime

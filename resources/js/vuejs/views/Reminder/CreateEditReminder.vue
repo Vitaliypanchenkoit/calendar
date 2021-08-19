@@ -10,7 +10,7 @@
 				</div>
 				<div class="form-item mb-2">
 						<label>Date & Time</label>
-						<VueCtkDateTimePicker class="form-item" v-model="dateTime" :no-label="true" />
+						<VueCtkDateTimePicker class="form-item" @input="handleDateTimeUpdate" :value="dateTime" :no-label="true" />
 						<span class="text-red-600" v-if="errors.dateTime">{{ errors.dateTime[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -71,17 +71,11 @@ export default {
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'content', value: value})
 						}
 				},
-				dateTime: {
-						get () {
-								console.log(this.$store.state.reminder.singleReminderData.dateTime);
-								return this.$store.state.reminder.singleReminderData.dateTime
-						},
-						set (value) {
-								this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
-						}
-				},
+				dateTime: function () {
+						return this.$store.getters.dateTime
+				}
 		},
-		mounted() {
+		created() {
 				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id});
 		},
 		beforeRouteEnter(to, from, next) {
@@ -96,6 +90,9 @@ export default {
 								content: this.content,
 								dateTime: this.dateTime,
 						})
+				},
+				handleDateTimeUpdate: function (value) {
+						this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
 				}
 		}
 }

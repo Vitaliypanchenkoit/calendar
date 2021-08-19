@@ -1,4 +1,5 @@
 import reminderApi from '../../api/reminder-api'
+import Vue from "vue";
 
 const apiUrl = '/reminders';
 
@@ -92,8 +93,11 @@ const mutations = {
 
 		/* Input data */
 		[mutationTypes.getInputValue](state, payload) {
-				state.singleReminderData[payload.name] = payload.value;
-				console.log(state.singleReminderData);
+				console.log(state, payload.name);
+				state.singleReminderData = {
+						...state.singleReminderData,
+						[payload.name]: payload.value
+				}
 		},
 
 
@@ -152,7 +156,10 @@ const actions = {
 		},
 
 		[actionTypes.getInputValue](context, {name, value}){
+				console.log(name);
+				console.log(value);
 				context.commit(mutationTypes.getInputValue, {name, value})
+
 		},
 
 
@@ -161,5 +168,10 @@ const actions = {
 export default {
 		state,
 		actions,
-		mutations
+		mutations,
+		getters: {
+				dateTime: function (state) {
+						return state.singleReminderData.dateTime
+				}
+		}
 }
