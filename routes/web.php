@@ -26,6 +26,7 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/reminders/edit', [ReminderController::class, 'edit'])->name('editReminder');
     Route::post('/reminders', [ReminderController::class, 'create'])->name('createReminder');
+    Route::put('/reminders', [ReminderController::class, 'update'])->name('updateReminder');
 
 
     Route::get('/news/edit', [NewsController::class, 'edit'])->name('editNews');

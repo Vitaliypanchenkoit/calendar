@@ -73,10 +73,10 @@ export default {
 				},
 				dateTime: {
 						get () {
+								console.log(this.$store.state.reminder.singleReminderData.dateTime);
 								return this.$store.state.reminder.singleReminderData.dateTime
 						},
 						set (value) {
-								console.log(value);
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
 						}
 				},

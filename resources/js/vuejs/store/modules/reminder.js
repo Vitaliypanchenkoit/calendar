@@ -92,9 +92,8 @@ const mutations = {
 
 		/* Input data */
 		[mutationTypes.getInputValue](state, payload) {
-			console.log('--------');
-			console.log(payload);
 				state.singleReminderData[payload.name] = payload.value;
+				console.log(state.singleReminderData);
 		},
 
 
@@ -139,9 +138,20 @@ const actions = {
 				})
 		},
 
+		[actionTypes.updateReminder](context, {id, title, content, dateTime}) {
+				return new Promise(resolve => {
+						context.commit(mutationTypes.saveReminderStart)
+						reminderApi.updateReminder(apiUrl, id, title, content, dateTime)
+								.then(response => {
+										context.commit(mutationTypes.saveReminderSuccess, response.data)
+								})
+								.catch((e) => {
+										context.commit(mutationTypes.saveReminderFailure, e.response.data.errors)
+								})
+				})
+		},
+
 		[actionTypes.getInputValue](context, {name, value}){
-			console.log(name	);
-			console.log(value	);
 				context.commit(mutationTypes.getInputValue, {name, value})
 		},
 

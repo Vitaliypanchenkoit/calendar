@@ -4369,10 +4369,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     dateTime: {
       get: function get() {
+        console.log(this.$store.state.reminder.singleReminderData.dateTime);
         return this.$store.state.reminder.singleReminderData.dateTime;
       },
       set: function set(value) {
-        console.log(value);
         this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
           name: 'dateTime',
           value: value
@@ -5028,9 +5028,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
-  console.log('--------');
-  console.log(payload);
   state.singleReminderData[payload.name] = payload.value;
+  console.log(state.singleReminderData);
 }), _mutations);
 var actionTypes = {
   getSingleReminder: '[reminder] Get single reminder data',
@@ -5070,8 +5069,6 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
 }), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref3) {
   var name = _ref3.name,
       value = _ref3.value;
-  console.log(name);
-  console.log(value);
   context.commit(mutationTypes.getInputValue, {
     name: name,
     value: value
