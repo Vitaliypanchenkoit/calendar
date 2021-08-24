@@ -19,14 +19,15 @@ const createReminder = (apiUrl, title, content, dateTime) => {
 }
 
 const updateReminder = (apiUrl, id, title, content, dateTime) => {
-	return axios.put(apiUrl, {
-		params: {
-			id: id,
-			title: title,
-			content: content,
-			dateTime: dateTime,
-		}
-	})
+	let formData = new FormData();
+
+	formData.append('id', id)
+	formData.append('title', title)
+	formData.append('content', content)
+	formData.append('dateTime', dateTime)
+	formData.append('_method', 'PUT')
+
+	return axios.post(apiUrl, formData)
 }
 
 export default {

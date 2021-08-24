@@ -51,12 +51,15 @@ class ReminderController extends Controller
         return Reminder::find($data['id']);
     }
 
+    /**
+     * @param UpdateReminderRequest $request
+     * @return ReminderResource|\Illuminate\Http\JsonResponse
+     */
     public function update(UpdateReminderRequest $request)
     {
         try {
             $data = $request->validated();
             $dateTime = new Carbon($data['dateTime']);
-            $data['date'] = $dateTime->format('Y-m-d');
             $data['time'] = $dateTime->format('H:i');
 
             $reminder = Reminder::find($data['id']);

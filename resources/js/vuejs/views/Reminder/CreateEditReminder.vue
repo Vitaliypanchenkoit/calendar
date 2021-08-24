@@ -9,9 +9,15 @@
 						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
-						<label>Date & Time</label>
-						<VueCtkDateTimePicker class="form-item" @input="handleDateTimeUpdate" :value="dateTime" :no-label="true" />
-						<span class="text-red-600" v-if="errors.dateTime">{{ errors.dateTime[0] }}</span>
+						<label>Date</label>
+						<datetime v-if="!id" v-model="date"></datetime>
+						<div class="disabled-input" v-else>{{ date }}</div>
+						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>
+				</div>
+				<div class="form-item mb-2">
+						<label>Time</label>
+						<datetime type="time" v-model="time"></datetime>
+						<span class="text-red-600" v-if="errors.time">{{ errors.time[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
@@ -29,8 +35,8 @@
 <script>
 import {actionTypes} from '../../store/modules/reminder'
 import {mapState} from 'vuex'
-import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
-import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
 import GoHomeButton from "../../components/GoHomeButton";
 export default {
 		name: "CreateEditReminder",
@@ -41,7 +47,8 @@ export default {
 				}
 		},
 		components: {
-				VueCtkDateTimePicker,
+				// VueCtkDateTimePicker,
+				datetime: Datetime,
 				GoHomeButton
 		},
 		data() {
@@ -71,8 +78,12 @@ export default {
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'content', value: value})
 						}
 				},
-				dateTime: function () {
-						return this.$store.getters.dateTime
+				date: function () {
+						return this.$store.getters.date
+				},
+
+				time: function () {
+						return this.$store.getters.time
 				}
 		},
 		created() {
@@ -85,15 +96,27 @@ export default {
 		},
 		methods: {
 				submit() {
-						this.$store.dispatch(actionTypes.createReminder, {
-								title: this.title,
-								content: this.content,
-								dateTime: this.dateTime,
-						})
+						if (this.$route.name === 'createReminder') {
+								this.$store.dispatch(actionTypes.createReminder, {
+										title: this.title,
+										content: this.content,
+										dateTime: this.dateTime,
+								})
+						} else if (this.$route.name === 'editReminder') {
+								this.$store.dispatch(actionTypes.updateReminder, {
+										id: this.id,
+										title: this.title,
+										content: this.content,
+										dateTime: this.dateTime,
+								})
+						}
 				},
-				handleDateTimeUpdate: function (value) {
-						this.$store.dispatch(actionTypes.getInputValue, {name: 'dateTime', value: value})
-				}
+				handleDateUpdate: function (value) {
+						this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
+				},
+				handleTimeUpdate: function (value) {
+						this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
+				},
 		}
 }
 </script>

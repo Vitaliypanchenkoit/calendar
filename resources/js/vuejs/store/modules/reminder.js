@@ -8,13 +8,15 @@ const state = {
 		singleReminderData: {
 				title: '',
 				content: '',
-				dateTime: '',
+				date: '',
+				time: '',
 		},
 		isLoading: false,
 		errors: {
 				title: '',
 				content: '',
-				dateTime: '',
+				date: '',
+				time: '',
 		},
 		successMessage: '',
 }
@@ -38,12 +40,14 @@ const mutations = {
 				state.singleReminderData = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 				state.errors = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 		},
 		[mutationTypes.getSingleReminderSuccess](state, payload) {
@@ -56,7 +60,8 @@ const mutations = {
 				state.singleReminderData = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 				state.errors = payload
 		},
@@ -68,7 +73,8 @@ const mutations = {
 				state.errors = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 		},
 		[mutationTypes.saveReminderSuccess](state, payload) {
@@ -77,7 +83,8 @@ const mutations = {
 				state.singleReminderData = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 
 		},
@@ -86,14 +93,14 @@ const mutations = {
 				state.singleReminderData = {
 						title: '',
 						content: '',
-						dateTime: '',
+						date: '',
+						time: '',
 				}
 				state.errors = payload
 		},
 
 		/* Input data */
 		[mutationTypes.getInputValue](state, payload) {
-				console.log(state, payload.name);
 				state.singleReminderData = {
 						...state.singleReminderData,
 						[payload.name]: payload.value
@@ -155,9 +162,7 @@ const actions = {
 				})
 		},
 
-		[actionTypes.getInputValue](context, {name, value}){
-				console.log(name);
-				console.log(value);
+		[actionTypes.getInputValue](context, {name, value}) {
 				context.commit(mutationTypes.getInputValue, {name, value})
 
 		},
@@ -170,8 +175,11 @@ export default {
 		actions,
 		mutations,
 		getters: {
-				dateTime: function (state) {
-						return state.singleReminderData.dateTime
+				date: function (state) {
+						return state.singleReminderData.date
+				},
+				time: function (state) {
+						return state.singleReminderData.time
 				}
 		}
 }

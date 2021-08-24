@@ -25,9 +25,9 @@
 										v-for="(date, index) in monthData.dates" :key="index"
 								>
 										<div class="calendar_body__date-number">{{ date }}</div>
-										<div class="calendar_body__events calendar_body__date-item"><span>Events: </span><span>{{ monthData.events[date].length }}</span></div>
-										<div class="calendar_body__news calendar_body__date-item"><span>News: </span><span>{{ monthData.news[date].length }}</span></div>
-										<div class="calendar_body__reminders calendar_body__date-item"><span>Reminders: </span><span>{{ monthData.reminders[date].length }}</span></div>
+										<div class="event calendar_body__date-item"><span>Events: </span><span>{{ monthData.events[date].length }}</span></div>
+										<div class="news calendar_body__date-item"><span>News: </span><span>{{ monthData.news[date].length }}</span></div>
+										<div class="reminder calendar_body__date-item"><span>Reminders: </span><span>{{ monthData.reminders[date].length }}</span></div>
 								</router-link>
             </div>
         </div>
@@ -116,15 +116,6 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		padding: 0 0.6rem;
-}
-.calendar_body__events {
-		color: #059669
-}
-.calendar_body__news {
-		color: #2563EB
-}
-.calendar_body__reminders {
-		color: #D97706
 }
 
 

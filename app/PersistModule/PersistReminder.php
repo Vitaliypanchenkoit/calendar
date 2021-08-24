@@ -25,9 +25,6 @@ class PersistReminder implements PersistInterface
     {
         return Reminder::where(['id' => $data['id']])
             ->update([
-                'title' => $data['title'],
-                'content' => $data['content'],
-                'date' => $data['date'],
                 'time' => $data['time'],
             ]);
 

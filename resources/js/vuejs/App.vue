@@ -1,12 +1,17 @@
 <template>
   <div id="calendar">
+			<create-buttons></create-buttons>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import CreateButtons from "./components/CreateButtons";
 export default {
-  name: "App"
+  name: "App",
+		components: {
+				CreateButtons
+		}
 }
 </script>
 

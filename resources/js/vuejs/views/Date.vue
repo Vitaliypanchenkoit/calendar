@@ -9,12 +9,6 @@
 						<div class="date-content">
 								<div class="date-element reminders">
 										<div class="date-element__head">
-												<router-link
-														class="date-element__head-create-new"
-														:to="{name: 'createReminder', props: {year: year, month: month, date: date}}"
-												>
-														Create new
-												</router-link>
 												<div class="date-element__head-title">Reminders</div>
 												<div class="arrow-container" @click="toggleElementBody('reminders')">
 														<div class="arrow" :class="[isVisible.reminders ? 'arrow-up' : 'arrow-down']"></div>
@@ -37,12 +31,6 @@
 								</div>
 								<div class="date-element news">
 										<div class="date-element__head">
-												<router-link
-														class="date-element__head-create-new"
-														:to="{name: 'createEvent'}"
-												>
-														Create new
-												</router-link>
 												<div class="date-element__head-title">News</div>
 												<div class="arrow-container" @click="toggleElementBody('news')">
 														<div class="arrow" :class="[isVisible.news ? 'arrow-up' : 'arrow-down']"></div>
@@ -52,12 +40,6 @@
 								</div>
 								<div class="date-element events">
 										<div class="date-element__head">
-												<router-link
-														class="date-element__head-create-new"
-														:to="{name: 'createNews'}"
-												>
-														Create new
-												</router-link>
 												<div class="date-element__head-title">Events</div>
 												<div class="arrow-container" @click="toggleElementBody('events')">
 														<div class="arrow" :class="[isVisible.events ? 'arrow-up' : 'arrow-down']"></div>
