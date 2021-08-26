@@ -24,9 +24,7 @@ class UpdateReminderRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
-            'content' => ['required'],
-            'dateTime' => ['required'],
+            'time' => ['required', 'time'],
             'id' => ['required', 'exists:reminders,id']
         ];
     }

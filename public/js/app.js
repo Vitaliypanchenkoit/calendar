@@ -4346,8 +4346,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
- // import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
-// import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 
 
@@ -4361,7 +4359,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    // VueCtkDateTimePicker,
     datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_1__.Datetime,
     GoHomeButton: _components_GoHomeButton__WEBPACK_IMPORTED_MODULE_3__.default
   },
@@ -4405,12 +4402,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    date: function date() {
-      return this.$store.getters.date;
+    date: {
+      get: function get() {
+        return this.$store.state.reminder.singleReminderData.date;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+          name: 'date',
+          value: value
+        });
+      }
     },
-    time: function time() {
-      return this.$store.getters.time;
-    }
+    time: {
+      get: function get() {
+        return this.$store.state.reminder.singleReminderData.time;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
+          name: 'time',
+          value: value
+        });
+      }
+    } // date: function () {
+    // 		return this.$store.getters.date
+    // },
+    //
+    // time: function () {
+    // 		return this.$store.getters.time
+    // }
+
   }),
   created: function created() {
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
@@ -4428,29 +4448,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.createReminder, {
           title: this.title,
           content: this.content,
-          dateTime: this.dateTime
+          date: this.date,
+          time: this.time
         });
       } else if (this.$route.name === 'editReminder') {
         this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.updateReminder, {
           id: this.id,
           title: this.title,
           content: this.content,
-          dateTime: this.dateTime
+          date: this.date,
+          time: this.time
         });
       }
-    },
-    handleDateUpdate: function handleDateUpdate(value) {
-      this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
-        name: 'date',
-        value: value
-      });
-    },
-    handleTimeUpdate: function handleTimeUpdate(value) {
-      this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getInputValue, {
-        name: 'time',
-        value: value
-      });
-    }
+    } // handleDateUpdate: function (value) {
+    // 		this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
+    // },
+    // handleTimeUpdate: function (value) {
+    // 		this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
+    // },
+
   }
 });
 
@@ -4663,20 +4679,23 @@ var getReminder = function getReminder(apiUrl, id) {
   });
 };
 
-var createReminder = function createReminder(apiUrl, title, content, dateTime) {
+var createReminder = function createReminder(apiUrl, title, content, date, time) {
   var formData = new FormData();
+  console.log(date, time);
   formData.append('title', title);
   formData.append('content', content);
-  formData.append('dateTime', dateTime);
+  formData.append('date', date);
+  formData.append('time', time);
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
-var updateReminder = function updateReminder(apiUrl, id, title, content, dateTime) {
+var updateReminder = function updateReminder(apiUrl, id, title, content, date, time) {
   var formData = new FormData();
   formData.append('id', id);
   formData.append('title', title);
   formData.append('content', content);
-  formData.append('dateTime', dateTime);
+  formData.append('date', date);
+  formData.append('time', time);
   formData.append('_method', 'PUT');
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
@@ -5074,7 +5093,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     date: '',
     time: ''
   };
-}), _defineProperty(_mutations, mutationTypes.saveReminderSuccess, function (state, payload) {
+}), _defineProperty(_mutations, mutationTypes.saveReminderSuccess, function (state) {
   state.isLoading = false;
   state.successMessage = 'The Reminder was created successfully';
   state.singleReminderData = {
@@ -5085,12 +5104,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
 }), _defineProperty(_mutations, mutationTypes.saveReminderFailure, function (state, payload) {
   state.isLoading = false;
-  state.singleReminderData = {
-    title: '',
-    content: '',
-    date: '',
-    time: ''
-  };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
   state.singleReminderData = _objectSpread(_objectSpread({}, state.singleReminderData), {}, _defineProperty({}, payload.name, payload.value));
@@ -5121,10 +5134,11 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
 }), _defineProperty(_actions, actionTypes.createReminder, function (context, _ref2) {
   var title = _ref2.title,
       content = _ref2.content,
-      dateTime = _ref2.dateTime;
+      date = _ref2.date,
+      time = _ref2.time;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveReminderStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, title, content, dateTime).then(function (response) {
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, title, content, date, time).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
     })["catch"](function (e) {
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
@@ -5134,10 +5148,11 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
   var id = _ref3.id,
       title = _ref3.title,
       content = _ref3.content,
-      dateTime = _ref3.dateTime;
+      date = _ref3.date,
+      time = _ref3.time;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveReminderStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.updateReminder(apiUrl, id, title, content, dateTime).then(function (response) {
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.updateReminder(apiUrl, id, title, content, date, time).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
     })["catch"](function (e) {
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
@@ -52220,6 +52235,10 @@ var render = function() {
           _vm._v(" "),
           !_vm.id
             ? _c("datetime", {
+                attrs: {
+                  "value-zone": "local",
+                  format: { year: "numeric", month: "long", day: "numeric" }
+                },
                 model: {
                   value: _vm.date,
                   callback: function($$v) {
@@ -52248,7 +52267,7 @@ var render = function() {
           _c("label", [_vm._v("Time")]),
           _vm._v(" "),
           _c("datetime", {
-            attrs: { type: "time" },
+            attrs: { type: "time", "value-zone": "local" },
             model: {
               value: _vm.time,
               callback: function($$v) {

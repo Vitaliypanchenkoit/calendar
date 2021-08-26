@@ -10,7 +10,7 @@
 				</div>
 				<div class="form-item mb-2">
 						<label>Date</label>
-						<datetime v-if="!id" v-model="date"></datetime>
+						<datetime v-if="!id" v-model="date" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
 						<div class="disabled-input" v-else>{{ date }}</div>
 						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>
 				</div>
@@ -47,7 +47,6 @@ export default {
 				}
 		},
 		components: {
-				// VueCtkDateTimePicker,
 				datetime: Datetime,
 				GoHomeButton
 		},
@@ -78,13 +77,29 @@ export default {
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'content', value: value})
 						}
 				},
-				date: function () {
-						return this.$store.getters.date
+				date: {
+						get () {
+								return this.$store.state.reminder.singleReminderData.date
+						},
+						set (value) {
+								this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
+						}
 				},
-
-				time: function () {
-						return this.$store.getters.time
-				}
+				time: {
+						get () {
+								return this.$store.state.reminder.singleReminderData.time
+						},
+						set (value) {
+								this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
+						}
+				},
+				// date: function () {
+				// 		return this.$store.getters.date
+				// },
+				//
+				// time: function () {
+				// 		return this.$store.getters.time
+				// }
 		},
 		created() {
 				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id});
@@ -100,23 +115,25 @@ export default {
 								this.$store.dispatch(actionTypes.createReminder, {
 										title: this.title,
 										content: this.content,
-										dateTime: this.dateTime,
+										date: this.date,
+										time: this.time,
 								})
 						} else if (this.$route.name === 'editReminder') {
 								this.$store.dispatch(actionTypes.updateReminder, {
 										id: this.id,
 										title: this.title,
 										content: this.content,
-										dateTime: this.dateTime,
+										date: this.date,
+										time: this.time,
 								})
 						}
 				},
-				handleDateUpdate: function (value) {
-						this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
-				},
-				handleTimeUpdate: function (value) {
-						this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
-				},
+				// handleDateUpdate: function (value) {
+				// 		this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
+				// },
+				// handleTimeUpdate: function (value) {
+				// 		this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
+				// },
 		}
 }
 </script>

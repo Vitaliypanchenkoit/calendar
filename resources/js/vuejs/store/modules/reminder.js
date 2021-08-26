@@ -77,7 +77,7 @@ const mutations = {
 						time: '',
 				}
 		},
-		[mutationTypes.saveReminderSuccess](state, payload) {
+		[mutationTypes.saveReminderSuccess](state) {
 				state.isLoading = false
 				state.successMessage = 'The Reminder was created successfully';
 				state.singleReminderData = {
@@ -90,12 +90,6 @@ const mutations = {
 		},
 		[mutationTypes.saveReminderFailure](state, payload) {
 				state.isLoading = false
-				state.singleReminderData = {
-						title: '',
-						content: '',
-						date: '',
-						time: '',
-				}
 				state.errors = payload
 		},
 
@@ -136,10 +130,10 @@ const actions = {
 				})
 		},
 
-		[actionTypes.createReminder](context, {title, content, dateTime}) {
+		[actionTypes.createReminder](context, {title, content, date, time}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveReminderStart)
-						reminderApi.createReminder(apiUrl, title, content, dateTime)
+						reminderApi.createReminder(apiUrl, title, content, date, time)
 								.then(response => {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
 								})
@@ -149,10 +143,10 @@ const actions = {
 				})
 		},
 
-		[actionTypes.updateReminder](context, {id, title, content, dateTime}) {
+		[actionTypes.updateReminder](context, {id, title, content, date, time}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveReminderStart)
-						reminderApi.updateReminder(apiUrl, id, title, content, dateTime)
+						reminderApi.updateReminder(apiUrl, id, title, content, date, time)
 								.then(response => {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
 								})

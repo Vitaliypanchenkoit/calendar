@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CacheHelper;
+use App\Helpers\DateTimeHelper;
 use App\Http\Requests\Reminder\CreateReminderRequest;
 use App\Http\Requests\Reminder\UpdateReminderRequest;
 use App\Http\Requests\Reminder\ValidateReminderIdRequest;
@@ -24,9 +25,12 @@ class ReminderController extends Controller
         try {
             $data = $request->validated();
 
-            $dateTime = new Carbon($data['dateTime']);
-            $data['date'] = $dateTime->format('Y-m-d');
-            $data['time'] = $dateTime->format('H:i');
+            $date = new Carbon($data['date']);
+            $time = new Carbon($data['time']);
+            $data['date'] = $date->format('Y-m-d');
+            $data['time'] = $time->format('H:i');
+
+            DateTimeHelper::checkPastDate($data['date'], $data['time']);
 
             $persistModule = new PersistReminder();
             $reminder = $persistModule->create($data);

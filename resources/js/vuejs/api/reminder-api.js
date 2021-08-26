@@ -8,23 +8,26 @@ const getReminder = (apiUrl, id) => {
 	})
 }
 
-const createReminder = (apiUrl, title, content, dateTime) => {
+const createReminder = (apiUrl, title, content, date, time) => {
 	let formData = new FormData();
+	console.log(date, time);
 
 	formData.append('title', title)
 	formData.append('content', content)
-	formData.append('dateTime', dateTime)
+  formData.append('date', date)
+  formData.append('time', time)
 
 	return axios.post(apiUrl, formData)
 }
 
-const updateReminder = (apiUrl, id, title, content, dateTime) => {
+const updateReminder = (apiUrl, id, title, content, date, time) => {
 	let formData = new FormData();
 
 	formData.append('id', id)
 	formData.append('title', title)
 	formData.append('content', content)
-	formData.append('dateTime', dateTime)
+	formData.append('date', date)
+	formData.append('time', time)
 	formData.append('_method', 'PUT')
 
 	return axios.post(apiUrl, formData)
