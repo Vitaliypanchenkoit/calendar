@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Reminder;
 
+use App\Rules\FutureOrCurrentDate;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateReminderRequest extends FormRequest
@@ -23,11 +25,16 @@ class CreateReminderRequest extends FormRequest
      */
     public function rules()
     {
+        $time = '';
+        if (isset(request()->time)) {
+            $time = new Carbon(request()->time);
+            $time = $time->format('H:i');
+        }
 
         return [
             'title' => ['required'],
             'content' => ['required'],
-            'date' => ['required', 'date'],
+            'date' => ['required', 'date', new FutureOrCurrentDate($time)],
             'time' => ['required', 'date'],
         ];
     }

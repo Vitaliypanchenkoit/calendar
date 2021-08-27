@@ -4345,6 +4345,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -5141,6 +5142,7 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
     _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.createReminder(apiUrl, title, content, date, time).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
     })["catch"](function (e) {
+      console.log(e.response.data);
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);
     });
   });
@@ -52236,7 +52238,6 @@ var render = function() {
           !_vm.id
             ? _c("datetime", {
                 attrs: {
-                  "value-zone": "local",
                   format: { year: "numeric", month: "long", day: "numeric" }
                 },
                 model: {
@@ -52267,7 +52268,7 @@ var render = function() {
           _c("label", [_vm._v("Time")]),
           _vm._v(" "),
           _c("datetime", {
-            attrs: { type: "time", "value-zone": "local" },
+            attrs: { type: "time" },
             model: {
               value: _vm.time,
               callback: function($$v) {
@@ -52323,18 +52324,31 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-item mb-2" }, [
-        _c(
-          "div",
-          {
-            staticClass: "save-button",
-            on: {
-              click: function($event) {
-                return _vm.submit()
-              }
-            }
-          },
-          [_vm._v("Save")]
-        )
+        !_vm.id
+          ? _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Create")]
+            )
+          : _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Update")]
+            )
       ])
     ],
     1

@@ -26,7 +26,8 @@
 						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
-						<div class="save-button" @click="submit()">Save</div>
+						<div v-if="!id" class="save-button" @click="submit()">Create</div>
+						<div v-else class="save-button" @click="submit()">Update</div>
 				</div>
 		</div>
 

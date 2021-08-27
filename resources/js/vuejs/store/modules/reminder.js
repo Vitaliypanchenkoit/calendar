@@ -138,6 +138,7 @@ const actions = {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
 								})
 								.catch((e) => {
+										console.log(e.response.data);
 										context.commit(mutationTypes.saveReminderFailure, e.response.data.errors)
 								})
 				})

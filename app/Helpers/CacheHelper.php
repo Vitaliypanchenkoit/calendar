@@ -12,15 +12,14 @@ class CacheHelper
 
     public static function createOrUpdateRecord($type, $date, $value)
     {
-        $cacheKey = auth()->user()->id . '_' . $date;
-        if (!Cache::has($cacheKey)) {
+        if (!Cache::has($date)) {
             $forSave = ['news' => [], 'events' => [], 'reminders' => []];
         } else {
-            $forSave = json_decode(Cache::get($cacheKey), true);
+            $forSave = json_decode(Cache::get($date), true);
         }
 
-        $forSave[$type][] = $value;
-        Cache::put(auth()->user()->id . '_' . $date, json_encode($forSave));
+        $forSave[$type][$value->id] = $value;
+        Cache::put($date, json_encode($forSave));
 
     }
 
