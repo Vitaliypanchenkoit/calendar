@@ -122,10 +122,8 @@ export default {
 						} else if (this.$route.name === 'editReminder') {
 								this.$store.dispatch(actionTypes.updateReminder, {
 										id: this.id,
-										title: this.title,
-										content: this.content,
-										date: this.date,
 										time: this.time,
+										date: this.date,
 								})
 						}
 				},

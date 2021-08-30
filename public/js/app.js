@@ -4455,10 +4455,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else if (this.$route.name === 'editReminder') {
         this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.updateReminder, {
           id: this.id,
-          title: this.title,
-          content: this.content,
-          date: this.date,
-          time: this.time
+          time: this.time,
+          date: this.date
         });
       }
     } // handleDateUpdate: function (value) {
@@ -4690,13 +4688,11 @@ var createReminder = function createReminder(apiUrl, title, content, date, time)
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
-var updateReminder = function updateReminder(apiUrl, id, title, content, date, time) {
+var updateReminder = function updateReminder(apiUrl, id, time, date) {
   var formData = new FormData();
   formData.append('id', id);
-  formData.append('title', title);
-  formData.append('content', content);
-  formData.append('date', date);
   formData.append('time', time);
+  formData.append('date', date);
   formData.append('_method', 'PUT');
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
@@ -5148,13 +5144,11 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
   });
 }), _defineProperty(_actions, actionTypes.updateReminder, function (context, _ref3) {
   var id = _ref3.id,
-      title = _ref3.title,
-      content = _ref3.content,
-      date = _ref3.date,
-      time = _ref3.time;
+      time = _ref3.time,
+      date = _ref3.date;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveReminderStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.updateReminder(apiUrl, id, title, content, date, time).then(function (response) {
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__.default.updateReminder(apiUrl, id, time, date).then(function (response) {
       context.commit(mutationTypes.saveReminderSuccess, response.data);
     })["catch"](function (e) {
       context.commit(mutationTypes.saveReminderFailure, e.response.data.errors);

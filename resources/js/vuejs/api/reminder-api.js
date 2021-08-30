@@ -20,14 +20,12 @@ const createReminder = (apiUrl, title, content, date, time) => {
 	return axios.post(apiUrl, formData)
 }
 
-const updateReminder = (apiUrl, id, title, content, date, time) => {
+const updateReminder = (apiUrl, id, time, date) => {
 	let formData = new FormData();
 
 	formData.append('id', id)
-	formData.append('title', title)
-	formData.append('content', content)
-	formData.append('date', date)
 	formData.append('time', time)
+	formData.append('date', date)
 	formData.append('_method', 'PUT')
 
 	return axios.post(apiUrl, formData)

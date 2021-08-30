@@ -144,10 +144,10 @@ const actions = {
 				})
 		},
 
-		[actionTypes.updateReminder](context, {id, title, content, date, time}) {
+		[actionTypes.updateReminder](context, {id, time, date}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveReminderStart)
-						reminderApi.updateReminder(apiUrl, id, title, content, date, time)
+						reminderApi.updateReminder(apiUrl, id, time, date)
 								.then(response => {
 										context.commit(mutationTypes.saveReminderSuccess, response.data)
 								})

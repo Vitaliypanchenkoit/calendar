@@ -60,8 +60,11 @@ class ReminderController extends Controller
     {
         try {
             $data = $request->validated();
-            $dateTime = new Carbon($data['dateTime']);
+            $dateTime = new Carbon($data['time']);
             $data['time'] = $dateTime->format('H:i');
+
+            $dateTime = new Carbon($data['date']);
+            $data['date'] = $dateTime->format('Y-m-d');
 
             $reminder = Reminder::find($data['id']);
             if ($reminder->author_id !== auth()->user()->id) {
