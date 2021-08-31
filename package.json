@@ -33,6 +33,7 @@
         "luxon": "^1.28.0",
         "vue-datetime": "*",
         "vue-router": "^3.5.1",
+        "vue-select": "^3.13.0",
         "vuex": "^3.6.2",
         "weekstart": "^1.1.0"
     }
