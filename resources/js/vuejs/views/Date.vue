@@ -2,9 +2,7 @@
 		<div>
 				<div class="calendar_nav max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 						<div class="calendar_nav__current">
-								<nav-date :date=date />
-								<nav-month :month=month />
-								<nav-year :year=year />
+								<navigation :year="this.$route.params.year" :month="this.$route.params.month - 1" :date=this.$route.params.date></navigation>
 						</div>
 						<div class="date-content">
 								<div class="date-element reminders">
@@ -55,18 +53,14 @@
 
 <script>
 import {mapState} from 'vuex'
-import NavYear from '../components/NavYear'
-import NavMonth from '../components/NavMonth'
-import NavDate from '../components/NavDate'
+import Navigation from "../components/Navigation";
+import {actionTypes} from "../store/modules/date";
+import {getMonthNumber} from "../helpers/monthHelper";
 
 let now = new Date();
 export default {
     name: "Date",
-		components: {
-    		NavYear,
-				NavMonth,
-				NavDate,
-		},
+		components: {Navigation},
 		data() {
 				return {
 						isVisible: {
@@ -76,18 +70,17 @@ export default {
 						},
 						nowDate: now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate(),
 						nowTime: now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(),
+						selectedYear: this.$route.params.year,
+						selectedMonth: this.$route.params.month - 1,
+						selectedDate: this.$route.params.date,
 				}
 		},
 		computed: {
-    		year: function () {
-    				return this.$route.params.year
-				},
-				month: function () {
-						return this.$route.params.month - 1
-				},
-				date: function () {
-						return this.$route.params.date
-				},
+				...mapState({
+						dateData: state => state.date.data,
+						isLoading: state => state.date.isLoading,
+						errors: state => state.date.errors,
+				}),
 				events: function () {
 						return this.$route.params.events.length ? this.$route.params.events.sort(function (a, b) {
 								if (a['time'] < b['time']) {
@@ -123,11 +116,19 @@ export default {
 						}) : [];
 				},
 		},
-		mounted() {
+		created() {
+				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
 		},
 		methods: {
     		toggleElementBody: function(element) {
     				this.isVisible[element] = !this.isVisible[element]
+				},
+				refreshCalendar: function (year, month, date) {
+						this.selectedYear = year ? year : this.selectedYear;
+						this.selectedMonth = month ? getMonthNumber(month) : this.selectedMonth;
+						this.selectedDay = date ? date : this.selectedDate;
+
+						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
 				}
 		}
 }

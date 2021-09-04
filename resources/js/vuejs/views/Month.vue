@@ -1,9 +1,8 @@
 <template>
     <div>
-        <div class="calendar_nav max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="calendar_nav mx-auto px-4 sm:px-6 lg:px-8">
             <div class="calendar_nav__current">
-								<nav-month :month="month" />
-								<nav-year :year="year" />
+								<navigation :year="year" :month="month" :hide="['date']"></navigation>
             </div>
         </div>
         <div class="calendar_body">
@@ -37,13 +36,13 @@
 <script>
 import {actionTypes} from '../store/modules/month'
 import {mapState} from 'vuex'
-import NavYear from '../components/NavYear'
-import NavMonth from '../components/NavMonth'
+import Navigation from "../components/Navigation";
+import {getMonthNumber} from "../helpers/monthHelper";
 
 let now = new Date();
 export default {
     name: "Month",
-		components: {NavYear, NavMonth},
+		components: {Navigation},
 		props: {
     		year: {
     				type: Number,
@@ -56,11 +55,12 @@ export default {
     },
     data() {
         return {
-            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',' December'],
             days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
             currentYear: now.getFullYear(),
             currentMonth: now.getMonth(),
             currentDate: now.getDate(),
+						selectedMonth: this.month,
+						selectedYear: this.year,
         }
     },
 		computed: {
@@ -70,10 +70,16 @@ export default {
 						errors: state => state.month.errors,
 				}),
 		},
-    mounted() {
-				this.$store.dispatch(actionTypes.getData, {year: this.year, month: this.month})
+    created() {
+				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
     },
     methods: {
+				refreshCalendar: function (year, month, date) {
+						this.selectedYear = year ? year : this.selectedYear;
+						this.selectedMonth = month ? getMonthNumber(month) : this.selectedMonth;
+
+						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
+				}
     }
 
 }
