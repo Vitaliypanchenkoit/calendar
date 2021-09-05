@@ -82,7 +82,7 @@ export default {
 						errors: state => state.date.errors,
 				}),
 				events: function () {
-						return this.$route.params.events.length ? this.$route.params.events.sort(function (a, b) {
+						return (undefined !== this.dateData.events && this.dateData.events.length) ? this.dateData.events.sort(function (a, b) {
 								if (a['time'] < b['time']) {
 										return -1;
 								}
@@ -91,10 +91,9 @@ export default {
 								}
 								return 0;
 						}) : [];
-						return this.$route.params.events
 				},
 				news: function () {
-						return this.$route.params.news.length ? this.$route.params.news.sort(function (a, b) {
+						return (undefined !== this.dateData.news && this.dateData.news.length) ? this.dateData.news.sort(function (a, b) {
 								if (a['time'] < b['time']) {
 										return -1;
 								}
@@ -105,7 +104,7 @@ export default {
 						}) : [];
 				},
 				reminders: function () {
-						return this.$route.params.reminders.length ? this.$route.params.reminders.sort(function (a, b) {
+						return (undefined !== this.dateData.reminders && this.dateData.reminders.length) ? this.dateData.reminders.sort(function (a, b) {
 								if (a['time'] < b['time']) {
 										return -1;
 								}
@@ -117,7 +116,7 @@ export default {
 				},
 		},
 		created() {
-				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
+				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth, date: this.selectedDate})
 		},
 		methods: {
     		toggleElementBody: function(element) {
@@ -126,9 +125,9 @@ export default {
 				refreshCalendar: function (year, month, date) {
 						this.selectedYear = year ? year : this.selectedYear;
 						this.selectedMonth = month ? getMonthNumber(month) : this.selectedMonth;
-						this.selectedDay = date ? date : this.selectedDate;
+						this.selectedDate = date ? date : this.selectedDate;
 
-						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
+						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth, date: this.selectedDate})
 				}
 		}
 }

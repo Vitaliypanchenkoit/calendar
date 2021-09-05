@@ -20,7 +20,7 @@
 								<router-link
 										class="calendar_body__date"
 										:to="{
-										name: 'day', params: {year: year, month: month + 1, date: date, events: monthData.events[date], news: monthData.news[date], reminders: monthData.reminders[date]}}"
+										name: 'day', params: {year: selectedYear, month: selectedMonth + 1, date: date}}"
 										v-for="(date, index) in monthData.dates" :key="index"
 								>
 										<div class="calendar_body__date-number">{{ date }}</div>

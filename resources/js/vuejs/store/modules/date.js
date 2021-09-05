@@ -1,6 +1,6 @@
 import dateApi from '../../api/date-api'
 
-const apiUrl = '/month';
+const apiUrl = '/date';
 
 const state = {
 		data: {},

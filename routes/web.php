@@ -23,6 +23,7 @@ Route::middleware('auth:web')->group(function () {
 //    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
 
     Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
+    Route::get('/date', [CalendarDateController::class, 'getDateData'])->name('getDateData');
 
     Route::get('/reminders/edit', [ReminderController::class, 'edit'])->name('editReminder');
     Route::post('/reminders', [ReminderController::class, 'create'])->name('createReminder');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetDateDataRequest;
 use App\Http\Requests\GetMonthDataRequest;
 use App\Repositories\CalendarRepository;
 use App\Sevices\CalendarProxyService\CachingData;
@@ -22,7 +23,7 @@ class CalendarDateController extends Controller
      * @param GetMonthDataRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMonthData(GetMonthDataRequest $request)
+    public function getMonthData(GetMonthDataRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
 
@@ -46,6 +47,33 @@ class CalendarDateController extends Controller
                 $result['reminders'][$i] = $records['reminders'];
 
             }
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
+        }
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param GetDateDataRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getDateData(GetDateDataRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->validated();
+
+        $result = [
+            'news' => [],
+            'events' => [],
+            'reminders' => [],
+        ];
+
+        try {
+            $date = Carbon::create($data['year'] . '-' . $data['month'] . '-' . $data['date']);
+            $records = $this->calendarDataService->getDayData($date->format('Y-m-d'));
+            $result['events'] = $records['events'];
+            $result['news'] = $records['news'];
+            $result['reminders'] = $records['reminders'];
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }

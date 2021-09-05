@@ -4085,7 +4085,7 @@ var now = new Date();
     }
   })), {}, {
     events: function events() {
-      return this.$route.params.events.length ? this.$route.params.events.sort(function (a, b) {
+      return undefined !== this.dateData.events && this.dateData.events.length ? this.dateData.events.sort(function (a, b) {
         if (a['time'] < b['time']) {
           return -1;
         }
@@ -4096,10 +4096,9 @@ var now = new Date();
 
         return 0;
       }) : [];
-      return this.$route.params.events;
     },
     news: function news() {
-      return this.$route.params.news.length ? this.$route.params.news.sort(function (a, b) {
+      return undefined !== this.dateData.news && this.dateData.news.length ? this.dateData.news.sort(function (a, b) {
         if (a['time'] < b['time']) {
           return -1;
         }
@@ -4112,7 +4111,7 @@ var now = new Date();
       }) : [];
     },
     reminders: function reminders() {
-      return this.$route.params.reminders.length ? this.$route.params.reminders.sort(function (a, b) {
+      return undefined !== this.dateData.reminders && this.dateData.reminders.length ? this.dateData.reminders.sort(function (a, b) {
         if (a['time'] < b['time']) {
           return -1;
         }
@@ -4128,7 +4127,8 @@ var now = new Date();
   created: function created() {
     this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getData, {
       year: this.selectedYear,
-      month: this.selectedMonth
+      month: this.selectedMonth,
+      date: this.selectedDate
     });
   },
   methods: {
@@ -4138,10 +4138,11 @@ var now = new Date();
     refreshCalendar: function refreshCalendar(year, month, date) {
       this.selectedYear = year ? year : this.selectedYear;
       this.selectedMonth = month ? (0,_helpers_monthHelper__WEBPACK_IMPORTED_MODULE_2__.getMonthNumber)(month) : this.selectedMonth;
-      this.selectedDay = date ? date : this.selectedDate;
+      this.selectedDate = date ? date : this.selectedDate;
       this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getData, {
         year: this.selectedYear,
-        month: this.selectedMonth
+        month: this.selectedMonth,
+        date: this.selectedDate
       });
     }
   }
@@ -4872,7 +4873,7 @@ var _mutations;
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-var apiUrl = '/month';
+var apiUrl = '/date';
 var state = {
   data: {},
   isLoading: false,
@@ -52183,12 +52184,9 @@ var render = function() {
                   to: {
                     name: "day",
                     params: {
-                      year: _vm.year,
-                      month: _vm.month + 1,
-                      date: date,
-                      events: _vm.monthData.events[date],
-                      news: _vm.monthData.news[date],
-                      reminders: _vm.monthData.reminders[date]
+                      year: _vm.selectedYear,
+                      month: _vm.selectedMonth + 1,
+                      date: date
                     }
                   }
                 }
