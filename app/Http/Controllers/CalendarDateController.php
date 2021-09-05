@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteObjectRequest;
 use App\Http\Requests\GetDateDataRequest;
 use App\Http\Requests\GetMonthDataRequest;
-use App\Repositories\CalendarRepository;
 use App\Sevices\CalendarProxyService\CachingData;
+use App\Sevices\CalendarService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -20,10 +22,11 @@ class CalendarDateController extends Controller
     }
 
     /**
+     * Get data of the certain month
      * @param GetMonthDataRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getMonthData(GetMonthDataRequest $request): \Illuminate\Http\JsonResponse
+    public function getMonthData(GetMonthDataRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -55,10 +58,11 @@ class CalendarDateController extends Controller
     }
 
     /**
+     * Get data of the certain date
      * @param GetDateDataRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getDateData(GetDateDataRequest $request): \Illuminate\Http\JsonResponse
+    public function getDateData(GetDateDataRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -79,5 +83,26 @@ class CalendarDateController extends Controller
         }
 
         return response()->json($result, 200);
+    }
+
+    /**
+     * Delete an Object
+     * @param DeleteObjectRequest $request
+     * @return JsonResponse
+     */
+    public function deleteObject(DeleteObjectRequest $request)
+    {
+        $data = $request->validated();
+
+        try {
+            $service = new CalendarService();
+            $service->deleteObject($data['objectName'], $data['id']);
+
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
+        }
+
+        return response()->json(true, 200);
+
     }
 }

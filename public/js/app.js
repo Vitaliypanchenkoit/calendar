@@ -3962,7 +3962,6 @@ __webpack_require__.r(__webpack_exports__);
     dates: function dates() {
       var dates = [];
       var datesNumber = new Date(this.selectedYear, (0,_helpers_monthHelper__WEBPACK_IMPORTED_MODULE_2__.getMonthNumber)(this.selectedMonth) + 1, 0).getDate();
-      console.log(datesNumber);
 
       for (var j = 1; j <= datesNumber; j++) {
         dates.push(j);
@@ -3996,6 +3995,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -4143,6 +4143,12 @@ var now = new Date();
         year: this.selectedYear,
         month: this.selectedMonth,
         date: this.selectedDate
+      });
+    },
+    removeObject: function removeObject(objectName, id) {
+      this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.removeObject, {
+        objectName: objectName,
+        id: id
       });
     }
   }
@@ -4616,8 +4622,17 @@ var getData = function getData(apiUrl, year, month, date) {
   });
 };
 
+var removeObject = function removeObject(apiUrl, objectName, id) {
+  var formData = new FormData();
+  formData.append('objectName', objectName);
+  formData.append('id', id);
+  console.log(objectName);
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getData: getData
+  getData: getData,
+  removeObject: removeObject
 });
 
 /***/ }),
@@ -4868,7 +4883,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_date_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/date-api */ "./resources/js/vuejs/api/date-api.js");
-var _mutations;
+var _mutations, _actions;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -4882,7 +4897,10 @@ var state = {
 var mutationTypes = {
   getDataStart: '[date] Get data start',
   getDataSuccess: '[date] Get data success',
-  getDataFailure: '[date] Get data failure'
+  getDataFailure: '[date] Get data failure',
+  removeObjectStart: '[date] Remove object start',
+  removeObjectSuccess: '[date] Remove object success',
+  removeObjectFailure: '[date] Remove object failure'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
   state.isLoading = true;
@@ -4895,12 +4913,20 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
   state.isLoading = false;
   state.data = {};
   state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.removeObjectStart, function (state) {
+  state.isLoading = true;
+  state.errors = null;
+}), _defineProperty(_mutations, mutationTypes.removeObjectSuccess, function (state, payload) {
+  state.isLoading = false;
+}), _defineProperty(_mutations, mutationTypes.removeObjectFailure, function (state, payload) {
+  state.isLoading = false;
+  state.errors = payload;
 }), _mutations);
 var actionTypes = {
-  getData: '[date] Get data of a certain date'
+  getData: '[date] Get data of a certain date',
+  removeObject: '[date] Remove an object'
 };
-
-var actions = _defineProperty({}, actionTypes.getData, function (context, _ref) {
+var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, function (context, _ref) {
   var year = _ref.year,
       month = _ref.month,
       date = _ref.date;
@@ -4913,8 +4939,19 @@ var actions = _defineProperty({}, actionTypes.getData, function (context, _ref) 
       context.commit(mutationTypes.getDataFailure, e.response.data);
     });
   });
-});
-
+}), _defineProperty(_actions, actionTypes.removeObject, function (context, _ref2) {
+  var objectName = _ref2.objectName,
+      id = _ref2.id;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.removeObjectStart);
+    _api_date_api__WEBPACK_IMPORTED_MODULE_0__.default.removeObject('/removeObject', objectName, id).then(function (response) {
+      context.commit(mutationTypes.removeObjectSuccess, response.data);
+      resolve(response.data);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.removeObjectFailure, e.response.data);
+    });
+  });
+}), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
   actions: actions,
@@ -9961,7 +9998,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.date-element__head-create-new[data-v-fe7d9ee6] {\n\t\tcursor: pointer;\n}\n.date-element__head-create-new[data-v-fe7d9ee6]:hover {\n\t\ttext-decoration: underline;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 0;\n}\n.arrow-down[data-v-fe7d9ee6],\n.arrow-up[data-v-fe7d9ee6] {\n\t\twidth: 10px;\n\t\theight: 10px;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.date-element__head-create-new[data-v-fe7d9ee6] {\n\t\tcursor: pointer;\n}\n.date-element__head-create-new[data-v-fe7d9ee6]:hover {\n\t\ttext-decoration: underline;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 0;\n}\n.arrow-down[data-v-fe7d9ee6],\n.arrow-up[data-v-fe7d9ee6] {\n\t\twidth: 10px;\n\t\theight: 10px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -51995,7 +52032,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "body-item__content" }, [
-                      _vm._v(_vm._s(reminder.title))
+                      _vm._v(_vm._s(reminder.content))
                     ]),
                     _vm._v(" "),
                     new Date(reminder.date + " " + reminder.time).getTime() >=
@@ -52018,7 +52055,21 @@ var render = function() {
                             )
                           ]
                         )
-                      : _vm._e()
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "remove",
+                        attrs: { title: "Remove" },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeObject("Reminder", reminder.id)
+                          }
+                        }
+                      },
+                      [_vm._v("❌")]
+                    )
                   ],
                   1
                 )

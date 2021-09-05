@@ -8,8 +8,18 @@ const getData = (apiUrl, year, month, date) => {
 						date: date,
 				}
 		})
+};
+
+const removeObject = (apiUrl, objectName, id) => {
+		let formData = new FormData();
+
+		formData.append('objectName', objectName)
+		formData.append('id', id)
+		console.log(objectName);
+		return axios.post(apiUrl, formData)
 }
 
 export default {
-		getData
+		getData,
+		removeObject
 }

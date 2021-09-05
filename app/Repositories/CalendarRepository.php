@@ -18,4 +18,14 @@ class CalendarRepository implements CalendarRepositoryInterface
         return $objectName::where('date', $date)->get();
     }
 
+    /**
+     * @param string $objectName
+     * @param int $id
+     * @return mixed
+     */
+    public function getObject(string $objectName, int $id)
+    {
+        return $objectName::find($id);
+    }
+
 }

@@ -25,6 +25,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
     Route::get('/date', [CalendarDateController::class, 'getDateData'])->name('getDateData');
 
+    Route::post('/removeObject', [CalendarDateController::class, 'deleteObject'])->name('removeObject');
+
     Route::get('/reminders/edit', [ReminderController::class, 'edit'])->name('editReminder');
     Route::post('/reminders', [ReminderController::class, 'create'])->name('createReminder');
     Route::put('/reminders', [ReminderController::class, 'update'])->name('updateReminder');

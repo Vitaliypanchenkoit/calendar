@@ -34,11 +34,14 @@ class CalendarData implements CalendarDataInterface
         $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);
 
-        Cache::put($date, json_encode(['news' => $result['news'], 'events' => $result['events'], 'reminders' => $result['reminders']]));
+        if ($result['news']->count() ||
+            $result['events']->count() ||
+            $result['reminders']->count()
+        ) {
+            Cache::put($date, json_encode(['news' => $result['news']->keyBy('id'), 'events' => $result['events']->keyBy('id'), 'reminders' => $result['reminders']->keyBy('id')]));
+        }
 
         return $result;
 
     }
-
-
 }

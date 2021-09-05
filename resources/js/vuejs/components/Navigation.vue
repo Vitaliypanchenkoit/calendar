@@ -55,7 +55,6 @@ export default {
 				dates() {
 						let dates = [];
 						let datesNumber = new Date(this.selectedYear, getMonthNumber(this.selectedMonth) + 1, 0).getDate();
-						console.log(datesNumber);
 						for (let j = 1; j <= datesNumber; j++) {
 								dates.push(j);
 						}

@@ -16,7 +16,7 @@
 												<div v-for="reminder in reminders" class="date-element__body-item body-item relative">
 														<div class="body-item__time">{{ reminder.time }}</div>
 														<div class="body-item__title">{{ reminder.title }}</div>
-														<div class="body-item__content">{{ reminder.title }}</div>
+														<div class="body-item__content">{{ reminder.content }}</div>
 														<router-link
 																v-if="new Date(reminder.date + ' ' + reminder.time).getTime() >= (Date.now() + 1000 * 120 * 60)"
 																class="body-item__edit absolute"
@@ -24,6 +24,7 @@
 														>
 																<<<< Edit time
 														</router-link>
+														<div class="remove" title="Remove" @click="removeObject('Reminder', reminder.id)">&#10060;</div>
 												</div>
 										</div>
 								</div>
@@ -128,8 +129,12 @@ export default {
 						this.selectedDate = date ? date : this.selectedDate;
 
 						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth, date: this.selectedDate})
+				},
+				removeObject(objectName, id) {
+						this.$store.dispatch(actionTypes.removeObject, {objectName, id})
+
 				}
-		}
+		},
 }
 </script>
 
@@ -199,6 +204,13 @@ export default {
 .arrow-up {
 		width: 10px;
 		height: 10px;
+}
+
+.remove {
+		position: absolute;
+		top: 10px;
+		right: 5px;
+		cursor: pointer;
 }
 
 

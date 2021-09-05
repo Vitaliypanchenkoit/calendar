@@ -13,4 +13,11 @@ interface CalendarRepositoryInterface
      */
     public function getDateObjects(string $objectName, string $date);
 
+    /**
+     * @param string $objectName
+     * @param int $id
+     * @return mixed
+     */
+    public function getObject(string $objectName, int $id);
+
 }
