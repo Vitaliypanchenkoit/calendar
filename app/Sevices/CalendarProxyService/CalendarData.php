@@ -38,7 +38,11 @@ class CalendarData implements CalendarDataInterface
             $result['events']->count() ||
             $result['reminders']->count()
         ) {
-            Cache::put($date, json_encode(['news' => $result['news']->keyBy('id'), 'events' => $result['events']->keyBy('id'), 'reminders' => $result['reminders']->keyBy('id')]));
+            Cache::put($date, json_encode([
+                'news' => $result['news']->keyBy('id'),
+                'events' => $result['events']->keyBy('id'),
+                'reminders' => $result['reminders']->keyBy('id')
+            ]));
         }
 
         return $result;

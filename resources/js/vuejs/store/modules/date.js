@@ -41,8 +41,12 @@ const mutations = {
 				state.isLoading = true
 				state.errors = null
 		},
-		[mutationTypes.removeObjectSuccess](state, payload) {
+		[mutationTypes.removeObjectSuccess](state, index) {
 				state.isLoading = false
+				delete state.data.reminders[index];
+				state.data = {
+						...state.data
+				}
 
 		},
 		[mutationTypes.removeObjectFailure](state, payload) {
@@ -71,15 +75,15 @@ const actions = {
 								})
 				})
 		},
-		[actionTypes.removeObject](context, {objectName, id}) {
+		[actionTypes.removeObject](context, {objectName, id, index}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.removeObjectStart)
 						dateApi.removeObject('/removeObject', objectName, id)
 								.then(response => {
-										context.commit(mutationTypes.removeObjectSuccess, response.data)
-										resolve(response.data)
+										context.commit(mutationTypes.removeObjectSuccess, index)
 								})
 								.catch((e) => {
+										console.log(e);
 										context.commit(mutationTypes.removeObjectFailure, e.response.data)
 								})
 				})

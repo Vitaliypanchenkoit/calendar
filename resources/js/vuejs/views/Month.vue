@@ -24,9 +24,9 @@
 										v-for="(date, index) in monthData.dates" :key="index"
 								>
 										<div class="calendar_body__date-number">{{ date }}</div>
-										<div class="event calendar_body__date-item"><span>Events: </span><span>{{ monthData.events[date].length }}</span></div>
-										<div class="news calendar_body__date-item"><span>News: </span><span>{{ monthData.news[date].length }}</span></div>
-										<div class="reminder calendar_body__date-item"><span>Reminders: </span><span>{{ monthData.reminders[date].length }}</span></div>
+										<div class="event calendar_body__date-item"><span>Events: </span><span>{{ 'object' === typeof(monthData.events[date]) ? Object.keys(monthData.events[date]).length : 0 }}</span></div>
+										<div class="news calendar_body__date-item"><span>News: </span><span>{{ 'object' === typeof(monthData.news[date]) ? Object.keys( monthData.news[date]).length : 0}}</span></div>
+										<div class="reminder calendar_body__date-item"><span>Reminders: </span><span>{{ 'object' === typeof(monthData.reminders[date]) ? Object.keys( monthData.reminders[date]).length : 0 }}</span></div>
 								</router-link>
             </div>
         </div>

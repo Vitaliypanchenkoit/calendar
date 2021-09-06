@@ -15,7 +15,7 @@ class CalendarRepository implements CalendarRepositoryInterface
      */
     public function getDateObjects(string $objectName, string $date)
     {
-        return $objectName::where('date', $date)->get();
+        return $objectName::where('date', $date)->orderBy('time')->get();
     }
 
     /**

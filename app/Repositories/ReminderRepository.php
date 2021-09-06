@@ -9,5 +9,15 @@ use App\Repositories\Interfaces\ReminderRepositoryInterface;
 
 class ReminderRepository implements ReminderRepositoryInterface
 {
+    /**
+     * @return mixed
+     */
+    public function getRemindersForNow()
+    {
+        $now = now();
+        return Reminder::where('date', $now->format('Y-m-d'))
+            ->where('time', '<=', $now->startOfMinute()->format('H:m:s'))
+            ->get();
+    }
 
 }

@@ -13,7 +13,7 @@
 												</div>
 										</div>
 										<div class="date-element__body" :class="{visible: isVisible.reminders}">
-												<div v-for="reminder in reminders" class="date-element__body-item body-item relative">
+												<div v-for="(reminder, index) in dateData['reminders']" class="date-element__body-item body-item relative">
 														<div class="body-item__time">{{ reminder.time }}</div>
 														<div class="body-item__title">{{ reminder.title }}</div>
 														<div class="body-item__content">{{ reminder.content }}</div>
@@ -24,7 +24,7 @@
 														>
 																<<<< Edit time
 														</router-link>
-														<div class="remove" title="Remove" @click="removeObject('Reminder', reminder.id)">&#10060;</div>
+														<div class="remove" title="Remove" @click="removeObject('Reminder', reminder.id, index)">&#10060;</div>
 												</div>
 										</div>
 								</div>
@@ -82,39 +82,6 @@ export default {
 						isLoading: state => state.date.isLoading,
 						errors: state => state.date.errors,
 				}),
-				events: function () {
-						return (undefined !== this.dateData.events && this.dateData.events.length) ? this.dateData.events.sort(function (a, b) {
-								if (a['time'] < b['time']) {
-										return -1;
-								}
-								if (a['time'] > b['time']) {
-										return 1;
-								}
-								return 0;
-						}) : [];
-				},
-				news: function () {
-						return (undefined !== this.dateData.news && this.dateData.news.length) ? this.dateData.news.sort(function (a, b) {
-								if (a['time'] < b['time']) {
-										return -1;
-								}
-								if (a['time'] > b['time']) {
-										return 1;
-								}
-								return 0;
-						}) : [];
-				},
-				reminders: function () {
-						return (undefined !== this.dateData.reminders && this.dateData.reminders.length) ? this.dateData.reminders.sort(function (a, b) {
-								if (a['time'] < b['time']) {
-										return -1;
-								}
-								if (a['time'] > b['time']) {
-										return 1;
-								}
-								return 0;
-						}) : [];
-				},
 		},
 		created() {
 				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth, date: this.selectedDate})
@@ -130,8 +97,8 @@ export default {
 
 						this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth, date: this.selectedDate})
 				},
-				removeObject(objectName, id) {
-						this.$store.dispatch(actionTypes.removeObject, {objectName, id})
+				removeObject(objectName, id, index) {
+						this.$store.dispatch(actionTypes.removeObject, {objectName, id, index})
 
 				}
 		},
