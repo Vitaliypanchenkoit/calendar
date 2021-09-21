@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\TimeToRemindEvent;
 use App\Repositories\ReminderRepository;
 use Illuminate\Console\Command;
 
@@ -41,6 +42,9 @@ class Remind extends Command
         $repository = new ReminderRepository();
         $reminders = $repository->getRemindersForNow();
         if ($reminders->count()) {
+            foreach ($reminders as $reminder) {
+                TimeToRemindEvent::dispatch($reminder);
+            }
 
         }
         return 0;

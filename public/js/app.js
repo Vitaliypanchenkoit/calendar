@@ -4539,7 +4539,10 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   broadcaster: 'pusher',
   key: "3909a984319ecf407645",
   cluster: "eu",
-  forceTLS: true
+  forceTLS: false
+});
+laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default.private("reminder.".concat(reminderId)).listen('TimeToRemind', function (e) {
+  console.log(e.reminder);
 });
 
 /***/ }),

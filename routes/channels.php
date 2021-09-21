@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Reminder;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('reminder.{id}', function ($user, $reminderId) {
+    return (int) $user->id === Reminder::find($reminderId)->author_id;
 });
