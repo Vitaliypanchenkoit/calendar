@@ -39,8 +39,3 @@ window.Echo = new Echo({
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: false
 });
-
-Echo.private(`reminder.${reminderId}`)
-		.listen('TimeToRemindEvent', (e) => {
-				console.log(e.reminder);
-		});

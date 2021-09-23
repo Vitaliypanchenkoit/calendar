@@ -20,4 +20,15 @@ class ReminderRepository implements ReminderRepositoryInterface
             ->get();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRemindersForToday()
+    {
+        $now = now();
+        return Reminder::where('date', $now->format('Y-m-d'))
+            ->where('time', '>=', $now->startOfMinute()->format('H:m:s'))
+            ->get();
+    }
+
 }

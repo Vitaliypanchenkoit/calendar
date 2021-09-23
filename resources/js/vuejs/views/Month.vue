@@ -38,6 +38,7 @@ import {actionTypes} from '../store/modules/month'
 import {mapState} from 'vuex'
 import Navigation from "../components/Navigation";
 import {getMonthNumber} from "../helpers/monthHelper";
+import Echo from "laravel-echo";
 
 let now = new Date();
 export default {
@@ -70,8 +71,16 @@ export default {
 						errors: state => state.month.errors,
 				}),
 		},
-    created() {
-				this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
+    async created() {
+				await this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
+				console.log(this.monthData.remindersForToday);
+				for ( let i = 0; i < this.monthData.remindersForToday.length; i++) {
+						window.Echo.private(`reminder.${this.monthData.remindersForToday[i].id}`)
+								.listen('TimeToRemindEvent', (e) => {
+										console.log(e.reminder);
+								});
+
+				}
     },
     methods: {
 				refreshCalendar: function (year, month, date) {

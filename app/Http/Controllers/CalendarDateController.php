@@ -32,20 +32,12 @@ class CalendarDateController extends Controller
     {
         $data = $request->validated();
 
-        $repository = new ReminderRepository();
-        $reminders = $repository->getRemindersForNow();
-        if ($reminders->count()) {
-            foreach ($reminders as $reminder) {
-                TimeToRemindEvent::dispatch($reminder);
-            }
-
-        }
-
         $result = [
             'dates' => [],
             'news' => [],
             'events' => [],
             'reminders' => [],
+            'remindersForToday' => []
         ];
 
         try {
@@ -59,8 +51,11 @@ class CalendarDateController extends Controller
                 $result['events'][$i] = $records['events'];
                 $result['news'][$i] = $records['news'];
                 $result['reminders'][$i] = $records['reminders'];
-
             }
+
+            $repository = new ReminderRepository();
+            $remindersForToday = $repository->getRemindersForToday();
+            $result['remindersForToday'] = $remindersForToday;
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
