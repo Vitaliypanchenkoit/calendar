@@ -4313,12 +4313,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _components_GoHomeButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/GoHomeButton */ "./resources/js/vuejs/components/GoHomeButton.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store_modules_news__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/modules/news */ "./resources/js/vuejs/store/modules/news.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CreateEditNews"
+  name: "CreateEditNews",
+  props: {
+    id: {
+      type: Number,
+      "default": 0
+    }
+  },
+  components: {
+    GoHomeButton: _components_GoHomeButton__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      prevRoute: {
+        path: ''
+      }
+    };
+  },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
+    isLoading: function isLoading(state) {
+      return state.news.isLoading;
+    },
+    errors: function errors(state) {
+      return state.news.errors;
+    },
+    successMessage: function successMessage(state) {
+      return state.news.successMessage;
+    }
+  })), {}, {
+    title: {
+      get: function get() {
+        return this.$store.state.news.singleNewsData.title;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getInputValue, {
+          name: 'title',
+          value: value
+        });
+      }
+    },
+    content: {
+      get: function get() {
+        return this.$store.state.news.singleNewsData.content;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getInputValue, {
+          name: 'content',
+          value: value
+        });
+      }
+    },
+    date: {
+      get: function get() {
+        return this.$store.state.news.singleNewsData.date;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getInputValue, {
+          name: 'date',
+          value: value
+        });
+      }
+    },
+    time: {
+      get: function get() {
+        return this.$store.state.news.singleNewsData.time;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getInputValue, {
+          name: 'time',
+          value: value
+        });
+      }
+    }
+  }),
+  created: function created() {
+    this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getSingleNews, {
+      id: this.id
+    });
+  },
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    next(function (vm) {
+      vm.prevRoute = from;
+    });
+  },
+  methods: {
+    submit: function submit() {
+      if (this.$route.name === 'createNews') {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.createNews, {
+          title: this.title,
+          content: this.content,
+          date: this.date,
+          time: this.time
+        });
+      } else if (this.$route.name === 'editNews') {
+        this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.updateNews, {
+          id: this.id,
+          time: this.time,
+          date: this.date
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -4459,14 +4591,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           value: value
         });
       }
-    } // date: function () {
-    // 		return this.$store.getters.date
-    // },
-    //
-    // time: function () {
-    // 		return this.$store.getters.time
-    // }
-
+    }
   }),
   created: function created() {
     this.$store.dispatch(_store_modules_reminder__WEBPACK_IMPORTED_MODULE_0__.actionTypes.getSingleReminder, {
@@ -4494,13 +4619,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           date: this.date
         });
       }
-    } // handleDateUpdate: function (value) {
-    // 		this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
-    // },
-    // handleTimeUpdate: function (value) {
-    // 		this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
-    // },
-
+    }
   }
 });
 
@@ -5138,41 +5257,109 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_news_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/news-api */ "./resources/js/vuejs/api/news-api.js");
-var _mutations;
+/* harmony import */ var _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/reminder-api */ "./resources/js/vuejs/api/reminder-api.js");
+var _mutations, _actions;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var apiUrl = '/news';
 var state = {
   news: {},
-  singleNewsData: {},
+  singleNewsData: {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  },
   isLoading: false,
-  errors: null
+  errors: {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  },
+  successMessage: ''
 };
 var mutationTypes = {
   getSingleNewsStart: '[news] Get single news start',
   getSingleNewsSuccess: '[news] Get single news success',
-  getSingleNewsFailure: '[news] Get single news failure'
+  getSingleNewsFailure: '[news] Get single news failure',
+  saveNewsStart: '[news] Save news start',
+  saveNewsSuccess: '[news] Save news success',
+  saveNewsFailure: '[news] Save news failure',
+  getInputValue: '[news] Get value from input'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getSingleNewsStart, function (state) {
   state.isLoading = true;
-  state.singleNewsData = {};
-  state.errors = null;
+  state.singleNewsData = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
+  state.errors = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
 }), _defineProperty(_mutations, mutationTypes.getSingleNewsSuccess, function (state, payload) {
   state.isLoading = false;
   state.singleNewsData = payload;
+  state.singleNewsData.dateTime = payload.date + ' ' + payload.time;
+}), _defineProperty(_mutations, mutationTypes.saveNewsStart, function (state) {
+  state.isLoading = true;
+  state.successMessage = '';
+  state.errors = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.saveNewsSuccess, function (state) {
+  state.isLoading = false;
+  state.successMessage = 'The News was created successfully';
+  state.singleNewsData = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.saveNewsFailure, function (state, payload) {
+  state.isLoading = false;
+  state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getSingleNewsFailure, function (state, payload) {
   state.isLoading = false;
-  state.singleNewsData = {};
+  state.singleNewsData = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
   state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
+  state.singleNewsData = _objectSpread(_objectSpread({}, state.singleNewsData), {}, _defineProperty({}, payload.name, payload.value));
 }), _mutations);
 var actionTypes = {
-  getSingleNews: '[news] Get single news data'
+  getSingleNews: '[news] Get single news data',
+  createNews: '[news] Create news',
+  updateNews: '[news] Update news',
+  deleteNews: '[news] Delete news',
+  getInputValue: '[news] Get input value'
 };
-
-var actions = _defineProperty({}, actionTypes.getSingleNews, function (context, _ref) {
+var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNews, function (context, _ref) {
   var id = _ref.id;
+
+  if (!id) {
+    return;
+  }
+
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getSingleNewsStart);
     _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.getSingleNews(apiUrl, id).then(function (response) {
@@ -5182,12 +5369,52 @@ var actions = _defineProperty({}, actionTypes.getSingleNews, function (context, 
       context.commit(mutationTypes.getSingleNewsFailure, e.response.data);
     });
   });
-});
-
+}), _defineProperty(_actions, actionTypes.createNews, function (context, _ref2) {
+  var title = _ref2.title,
+      content = _ref2.content,
+      date = _ref2.date,
+      time = _ref2.time;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.saveNewsStart);
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__.default.createNews(apiUrl, title, content, date, time).then(function (response) {
+      context.commit(mutationTypes.saveNewsSuccess, response.data);
+    })["catch"](function (e) {
+      console.log(e.response.data);
+      context.commit(mutationTypes.saveNewsFailure, e.response.data.errors);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.updateNews, function (context, _ref3) {
+  var id = _ref3.id,
+      time = _ref3.time,
+      date = _ref3.date;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.saveNewsStart);
+    _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__.default.updateNews(apiUrl, id, time, date).then(function (response) {
+      context.commit(mutationTypes.saveNewsSuccess, response.data);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.saveNewsFailure, e.response.data.errors);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref4) {
+  var name = _ref4.name,
+      value = _ref4.value;
+  context.commit(mutationTypes.getInputValue, {
+    name: name,
+    value: value
+  });
+}), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
   actions: actions,
-  mutations: mutations
+  mutations: mutations // getters: {
+  // 		date: function (state) {
+  // 				return state.singleNewsData.date
+  // 		},
+  // 		time: function (state) {
+  // 				return state.singleNewsData.time
+  // 		}
+  // }
+
 });
 
 /***/ }),
@@ -59277,7 +59504,118 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    { staticClass: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+    [
+      _c("go-home-button"),
+      _vm._v(" "),
+      _c("div", { staticClass: "success mb-4" }, [
+        _vm._v(_vm._s(_vm.successMessage))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
+        _vm._v(" "),
+        !_vm.id
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "title" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          : _c("div", { staticClass: "disabled-input" }, [
+              _vm._v(_vm._s(_vm.title))
+            ]),
+        _vm._v(" "),
+        _vm.errors.title
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.title[0]))
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        _c("label", { attrs: { for: "content" } }, [_vm._v("Content")]),
+        _vm._v(" "),
+        !_vm.id
+          ? _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.content,
+                  expression: "content"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "content", rows: "8" },
+              domProps: { value: _vm.content },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.content = $event.target.value
+                }
+              }
+            })
+          : _c("div", { staticClass: "disabled-textarea" }, [
+              _vm._v(_vm._s(_vm.content))
+            ]),
+        _vm._v(" "),
+        _vm.errors.content
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.content[0]))
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        !_vm.id
+          ? _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Create")]
+            )
+          : _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Update")]
+            )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

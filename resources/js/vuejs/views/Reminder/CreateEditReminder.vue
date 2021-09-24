@@ -94,13 +94,6 @@ export default {
 								this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
 						}
 				},
-				// date: function () {
-				// 		return this.$store.getters.date
-				// },
-				//
-				// time: function () {
-				// 		return this.$store.getters.time
-				// }
 		},
 		created() {
 				this.$store.dispatch(actionTypes.getSingleReminder, {id: this.id});
@@ -127,12 +120,6 @@ export default {
 								})
 						}
 				},
-				// handleDateUpdate: function (value) {
-				// 		this.$store.dispatch(actionTypes.getInputValue, {name: 'date', value: value})
-				// },
-				// handleTimeUpdate: function (value) {
-				// 		this.$store.dispatch(actionTypes.getInputValue, {name: 'time', value: value})
-				// },
 		}
 }
 </script>

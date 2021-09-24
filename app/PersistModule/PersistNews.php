@@ -2,9 +2,9 @@
 
 namespace App\PersistModule;
 
-use App\Models\Reminder;
+use App\Models\News;
 
-class PersistReminder implements PersistInterface
+class PersistNews
 {
     /**
      * @param array $data
@@ -12,7 +12,7 @@ class PersistReminder implements PersistInterface
      */
     public function create(array $data)
     {
-        return Reminder::create([
+        return News::create([
             'title' => $data['title'],
             'content' => $data['content'],
             'date' => $data['date'],
@@ -21,13 +21,9 @@ class PersistReminder implements PersistInterface
         ]);
     }
 
-    /**
-     * @param array $data
-     * @return mixed
-     */
     public function update(array $data)
     {
-        return Reminder::where(['id' => $data['id']])
+        return News::where(['id' => $data['id']])
             ->update([
                 'time' => $data['time'],
             ]);
