@@ -12,9 +12,9 @@ trim_trailing_whitespace = true
 trim_trailing_whitespace = false
 
 [*.{yml,yaml}]
-indent_size = 2
+indent_size = 1
 
 [*.{js, vue}]
 indent_style = tab
 end_of_line = lf
-tab_width = 2
+tab_width = 1

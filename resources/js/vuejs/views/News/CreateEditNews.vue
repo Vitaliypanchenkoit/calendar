@@ -93,17 +93,17 @@ export default {
 		methods: {
 				submit() {
 						if (this.$route.name === 'createNews') {
+										console.log('createNews');
 								this.$store.dispatch(actionTypes.createNews, {
 										title: this.title,
 										content: this.content,
-										date: this.date,
-										time: this.time,
 								})
 						} else if (this.$route.name === 'editNews') {
+										console.log('editNews');
 								this.$store.dispatch(actionTypes.updateNews, {
 										id: this.id,
-										time: this.time,
-										date: this.date,
+										title: this.title,
+										content: this.content,
 								})
 						}
 				},

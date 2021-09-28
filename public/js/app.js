@@ -4060,6 +4060,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4436,17 +4449,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     submit: function submit() {
       if (this.$route.name === 'createNews') {
+        console.log('createNews');
         this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.createNews, {
           title: this.title,
-          content: this.content,
-          date: this.date,
-          time: this.time
+          content: this.content
         });
       } else if (this.$route.name === 'editNews') {
+        console.log('editNews');
         this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.updateNews, {
           id: this.id,
-          time: this.time,
-          date: this.date
+          title: this.title,
+          content: this.content
         });
       }
     }
@@ -4847,8 +4860,26 @@ var getSingleNews = function getSingleNews(apiUrl, id) {
   });
 };
 
+var createNews = function createNews(apiUrl, title, content) {
+  var formData = new FormData();
+  formData.append('title', title);
+  formData.append('content', content);
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
+var updateNews = function updateNews(apiUrl, id, title, content) {
+  var formData = new FormData();
+  formData.append('id', id);
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('_method', 'PUT');
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getSingleNews: getSingleNews
+  getSingleNews: getSingleNews,
+  createNews: createNews,
+  updateNews: updateNews
 });
 
 /***/ }),
@@ -4877,7 +4908,6 @@ var getReminder = function getReminder(apiUrl, id) {
 
 var createReminder = function createReminder(apiUrl, title, content, date, time) {
   var formData = new FormData();
-  console.log(date, time);
   formData.append('title', title);
   formData.append('content', content);
   formData.append('date', date);
@@ -5257,7 +5287,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_news_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/news-api */ "./resources/js/vuejs/api/news-api.js");
-/* harmony import */ var _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/reminder-api */ "./resources/js/vuejs/api/reminder-api.js");
 var _mutations, _actions;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -5265,7 +5294,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 var apiUrl = '/news';
@@ -5280,9 +5308,7 @@ var state = {
   isLoading: false,
   errors: {
     title: '',
-    content: '',
-    date: '',
-    time: ''
+    content: ''
   },
   successMessage: ''
 };
@@ -5290,9 +5316,12 @@ var mutationTypes = {
   getSingleNewsStart: '[news] Get single news start',
   getSingleNewsSuccess: '[news] Get single news success',
   getSingleNewsFailure: '[news] Get single news failure',
-  saveNewsStart: '[news] Save news start',
-  saveNewsSuccess: '[news] Save news success',
-  saveNewsFailure: '[news] Save news failure',
+  createNewsStart: '[news] Create news start',
+  createNewsSuccess: '[news] Create news success',
+  createNewsFailure: '[news] Create news failure',
+  updateNewsStart: '[news] Update news start',
+  updateNewsSuccess: '[news] Update news success',
+  updateNewsFailure: '[news] Update news failure',
   getInputValue: '[news] Get value from input'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getSingleNewsStart, function (state) {
@@ -5305,35 +5334,12 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
   state.errors = {
     title: '',
-    content: '',
-    date: '',
-    time: ''
+    content: ''
   };
 }), _defineProperty(_mutations, mutationTypes.getSingleNewsSuccess, function (state, payload) {
   state.isLoading = false;
   state.singleNewsData = payload;
   state.singleNewsData.dateTime = payload.date + ' ' + payload.time;
-}), _defineProperty(_mutations, mutationTypes.saveNewsStart, function (state) {
-  state.isLoading = true;
-  state.successMessage = '';
-  state.errors = {
-    title: '',
-    content: '',
-    date: '',
-    time: ''
-  };
-}), _defineProperty(_mutations, mutationTypes.saveNewsSuccess, function (state) {
-  state.isLoading = false;
-  state.successMessage = 'The News was created successfully';
-  state.singleNewsData = {
-    title: '',
-    content: '',
-    date: '',
-    time: ''
-  };
-}), _defineProperty(_mutations, mutationTypes.saveNewsFailure, function (state, payload) {
-  state.isLoading = false;
-  state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getSingleNewsFailure, function (state, payload) {
   state.isLoading = false;
   state.singleNewsData = {
@@ -5342,6 +5348,42 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     date: '',
     time: ''
   };
+  state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.createNewsStart, function (state) {
+  console.log(1);
+  state.isLoading = true;
+  state.successMessage = '';
+  state.errors = {
+    title: '',
+    content: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.createNewsSuccess, function (state) {
+  console.log(11);
+  state.isLoading = false;
+  state.successMessage = 'The News was created successfully';
+  state.singleNewsData = {
+    title: '',
+    content: '',
+    date: '',
+    time: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.createNewsFailure, function (state, payload) {
+  state.isLoading = false;
+  state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.updateNewsStart, function (state) {
+  console.log(2);
+  state.isLoading = true;
+  state.successMessage = '';
+  state.errors = {
+    title: '',
+    content: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.updateNewsSuccess, function (state) {
+  console.log(22);
+  state.isLoading = false;
+  state.successMessage = 'The News was updated successfully';
+}), _defineProperty(_mutations, mutationTypes.updateNewsFailure, function (state, payload) {
+  state.isLoading = false;
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
   state.singleNewsData = _objectSpread(_objectSpread({}, state.singleNewsData), {}, _defineProperty({}, payload.name, payload.value));
@@ -5371,28 +5413,28 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNew
   });
 }), _defineProperty(_actions, actionTypes.createNews, function (context, _ref2) {
   var title = _ref2.title,
-      content = _ref2.content,
-      date = _ref2.date,
-      time = _ref2.time;
+      content = _ref2.content;
+  console.log(111);
   return new Promise(function (resolve) {
-    context.commit(mutationTypes.saveNewsStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__.default.createNews(apiUrl, title, content, date, time).then(function (response) {
-      context.commit(mutationTypes.saveNewsSuccess, response.data);
+    context.commit(mutationTypes.createNewsStart);
+    _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.createNews(apiUrl, title, content).then(function (response) {
+      context.commit(mutationTypes.createNewsSuccess, response.data);
     })["catch"](function (e) {
       console.log(e.response.data);
-      context.commit(mutationTypes.saveNewsFailure, e.response.data.errors);
+      context.commit(mutationTypes.createNewsFailure, e.response.data.errors);
     });
   });
 }), _defineProperty(_actions, actionTypes.updateNews, function (context, _ref3) {
   var id = _ref3.id,
-      time = _ref3.time,
-      date = _ref3.date;
+      title = _ref3.title,
+      content = _ref3.content;
+  console.log(222);
   return new Promise(function (resolve) {
-    context.commit(mutationTypes.saveNewsStart);
-    _api_reminder_api__WEBPACK_IMPORTED_MODULE_1__.default.updateNews(apiUrl, id, time, date).then(function (response) {
-      context.commit(mutationTypes.saveNewsSuccess, response.data);
+    context.commit(mutationTypes.updateNewsStart);
+    _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.updateNews(apiUrl, id, title, content).then(function (response) {
+      context.commit(mutationTypes.updateNewsSuccess, response.data);
     })["catch"](function (e) {
-      context.commit(mutationTypes.saveNewsFailure, e.response.data.errors);
+      context.commit(mutationTypes.updateNewsFailure, e.response.data.errors);
     });
   });
 }), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref4) {
@@ -10244,7 +10286,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.date-element__head-create-new[data-v-fe7d9ee6] {\n\t\tcursor: pointer;\n}\n.date-element__head-create-new[data-v-fe7d9ee6]:hover {\n\t\ttext-decoration: underline;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 0;\n}\n.arrow-down[data-v-fe7d9ee6],\n.arrow-up[data-v-fe7d9ee6] {\n\t\twidth: 10px;\n\t\theight: 10px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 55px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59271,7 +59313,60 @@ var render = function() {
                 staticClass: "date-element__body",
                 class: { visible: _vm.isVisible.news }
               },
-              [_vm._v("sdfsdf")]
+              _vm._l(_vm.dateData["news"], function(item, index) {
+                return _c(
+                  "div",
+                  { staticClass: "date-element__body-item body-item relative" },
+                  [
+                    _c("div", { staticClass: "body-item__time" }, [
+                      _vm._v(_vm._s(item.time))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__title" }, [
+                      _vm._v(_vm._s(item.title))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__content" }, [
+                      _vm._v(_vm._s(item.content))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "body-item__edit absolute",
+                        attrs: {
+                          to: {
+                            name: "editNews",
+                            params: { id: item.id },
+                            props: { id: item.id }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "remove",
+                        attrs: { title: "Remove" },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeObject("News", item.id, index)
+                          }
+                        }
+                      },
+                      [_vm._v("❌")]
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
             )
           ]),
           _vm._v(" "),

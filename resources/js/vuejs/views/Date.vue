@@ -35,7 +35,20 @@
 														<div class="arrow" :class="[isVisible.news ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.news}">sdfsdf</div>
+										<div class="date-element__body" :class="{visible: isVisible.news}">
+														<div v-for="(item, index) in dateData['news']" class="date-element__body-item body-item relative">
+																		<div class="body-item__time">{{ item.time }}</div>
+																		<div class="body-item__title">{{ item.title }}</div>
+																		<div class="body-item__content">{{ item.content }}</div>
+																		<router-link
+																						class="body-item__edit absolute"
+																						:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
+																		>
+																						<<<< Edit News
+																		</router-link>
+																		<div class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
+														</div>
+										</div>
 								</div>
 								<div class="date-element events">
 										<div class="date-element__head">
@@ -150,12 +163,6 @@ export default {
 		font-size: 24px;
 		font-weight: bold;
 }
-.date-element__head-create-new {
-		cursor: pointer;
-}
-.date-element__head-create-new:hover {
-		text-decoration: underline;
-}
 
 .arrow-container {
 		height: 100%;
@@ -164,13 +171,7 @@ export default {
 }
 .body-item__edit {
 		top: 0.5rem;
-		right: 0;
-}
-
-.arrow-down,
-.arrow-up {
-		width: 10px;
-		height: 10px;
+		right: 55px;
 }
 
 .remove {

@@ -10,7 +10,6 @@ const getReminder = (apiUrl, id) => {
 
 const createReminder = (apiUrl, title, content, date, time) => {
 	let formData = new FormData();
-	console.log(date, time);
 
 	formData.append('title', title)
 	formData.append('content', content)
