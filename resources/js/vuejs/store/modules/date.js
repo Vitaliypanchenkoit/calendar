@@ -41,9 +41,10 @@ const mutations = {
 				state.isLoading = true
 				state.errors = null
 		},
-		[mutationTypes.removeObjectSuccess](state, index) {
+		[mutationTypes.removeObjectSuccess](state, payload) {
 				state.isLoading = false
-				delete state.data.reminders[index];
+						let objectName = payload.objectName.toLowerCase();
+				delete state.data[objectName][payload.index];
 				state.data = {
 						...state.data
 				}
@@ -80,7 +81,7 @@ const actions = {
 						context.commit(mutationTypes.removeObjectStart)
 						dateApi.removeObject('/removeObject', objectName, id)
 								.then(response => {
-										context.commit(mutationTypes.removeObjectSuccess, index)
+										context.commit(mutationTypes.removeObjectSuccess, {objectName: objectName, index: index})
 								})
 								.catch((e) => {
 										console.log(e);

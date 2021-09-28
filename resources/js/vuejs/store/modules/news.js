@@ -67,7 +67,6 @@ const mutations = {
 
 	/* Create news */
 	[mutationTypes.createNewsStart](state) {
-		console.log(1);
 		state.isLoading = true
 		state.successMessage = '';
 		state.errors = {
@@ -76,7 +75,6 @@ const mutations = {
 		}
 	},
 	[mutationTypes.createNewsSuccess](state) {
-		console.log(11);
 		state.isLoading = false
 		state.successMessage = 'The News was created successfully';
 		state.singleNewsData = {
@@ -94,7 +92,6 @@ const mutations = {
 
 	/* Update news */
 	[mutationTypes.updateNewsStart](state) {
-		console.log(2);
 		state.isLoading = true
 		state.successMessage = '';
 		state.errors = {
@@ -103,7 +100,6 @@ const mutations = {
 		}
 	},
 	[mutationTypes.updateNewsSuccess](state) {
-		console.log(22);
 		state.isLoading = false
 		state.successMessage = 'The News was updated successfully';
 	},
@@ -137,7 +133,7 @@ const actions = {
 		}
 		return new Promise(resolve => {
 			context.commit(mutationTypes.getSingleNewsStart)
-			newsApi.getSingleNews(apiUrl, id)
+			newsApi.getSingleNews(apiUrl + '/edit', id)
 				.then(response => {
 					context.commit(mutationTypes.getSingleNewsSuccess, response.data)
 					resolve(response.data)
@@ -149,7 +145,6 @@ const actions = {
 	},
 
 	[actionTypes.createNews](context, {title, content}) {
-		console.log(111);
 		return new Promise(resolve => {
 			context.commit(mutationTypes.createNewsStart)
 			newsApi.createNews(apiUrl, title, content)
@@ -164,7 +159,6 @@ const actions = {
 	},
 
 	[actionTypes.updateNews](context, {id, title, content}) {
-		console.log(222);
 		return new Promise(resolve => {
 			context.commit(mutationTypes.updateNewsStart)
 			newsApi.updateNews(apiUrl, id, title, content)

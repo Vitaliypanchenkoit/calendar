@@ -4,14 +4,12 @@
 				<div class="success mb-4">{{ successMessage }}</div>
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
-						<input id="title" class="flex-grow" v-model="title" v-if="!id"/>
-						<div class="disabled-input" v-else>{{ title }}</div>
+						<input id="title" class="flex-grow" v-model="title" />
 						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
-						<textarea id="content" class="flex-grow" rows="8" v-model="content" v-if="!id"></textarea>
-						<div class="disabled-textarea" v-else>{{ content }}</div>
+						<textarea id="content" class="flex-grow" rows="8" v-model="content" ></textarea>
 						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -93,13 +91,11 @@ export default {
 		methods: {
 				submit() {
 						if (this.$route.name === 'createNews') {
-										console.log('createNews');
 								this.$store.dispatch(actionTypes.createNews, {
 										title: this.title,
 										content: this.content,
 								})
 						} else if (this.$route.name === 'editNews') {
-										console.log('editNews');
 								this.$store.dispatch(actionTypes.updateNews, {
 										id: this.id,
 										title: this.title,

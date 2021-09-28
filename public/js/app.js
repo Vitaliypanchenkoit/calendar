@@ -4073,6 +4073,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -4094,7 +4095,8 @@ var now = new Date();
       nowTime: now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(),
       selectedYear: this.$route.params.year,
       selectedMonth: this.$route.params.month - 1,
-      selectedDate: this.$route.params.date
+      selectedDate: this.$route.params.date,
+      window: window
     };
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
@@ -4285,15 +4287,13 @@ var now = new Date();
               });
 
             case 2:
-              console.log(_this.monthData.remindersForToday);
-
               for (i = 0; i < _this.monthData.remindersForToday.length; i++) {
                 window.Echo["private"]("reminder.".concat(_this.monthData.remindersForToday[i].id)).listen('TimeToRemindEvent', function (e) {
                   console.log(e.reminder);
                 });
               }
 
-            case 4:
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -4335,8 +4335,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -4449,13 +4447,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     submit: function submit() {
       if (this.$route.name === 'createNews') {
-        console.log('createNews');
         this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.createNews, {
           title: this.title,
           content: this.content
         });
       } else if (this.$route.name === 'editNews') {
-        console.log('editNews');
         this.$store.dispatch(_store_modules_news__WEBPACK_IMPORTED_MODULE_1__.actionTypes.updateNews, {
           id: this.id,
           title: this.title,
@@ -4770,7 +4766,6 @@ var removeObject = function removeObject(apiUrl, objectName, id) {
   var formData = new FormData();
   formData.append('objectName', objectName);
   formData.append('id', id);
-  console.log(objectName);
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
@@ -5081,9 +5076,10 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
 }), _defineProperty(_mutations, mutationTypes.removeObjectStart, function (state) {
   state.isLoading = true;
   state.errors = null;
-}), _defineProperty(_mutations, mutationTypes.removeObjectSuccess, function (state, index) {
+}), _defineProperty(_mutations, mutationTypes.removeObjectSuccess, function (state, payload) {
   state.isLoading = false;
-  delete state.data.reminders[index];
+  var objectName = payload.objectName.toLowerCase();
+  delete state.data[objectName][payload.index];
   state.data = _objectSpread({}, state.data);
 }), _defineProperty(_mutations, mutationTypes.removeObjectFailure, function (state, payload) {
   state.isLoading = false;
@@ -5113,7 +5109,10 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, fun
   return new Promise(function (resolve) {
     context.commit(mutationTypes.removeObjectStart);
     _api_date_api__WEBPACK_IMPORTED_MODULE_0__.default.removeObject('/removeObject', objectName, id).then(function (response) {
-      context.commit(mutationTypes.removeObjectSuccess, index);
+      context.commit(mutationTypes.removeObjectSuccess, {
+        objectName: objectName,
+        index: index
+      });
     })["catch"](function (e) {
       console.log(e);
       context.commit(mutationTypes.removeObjectFailure, e.response.data);
@@ -5350,7 +5349,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   };
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.createNewsStart, function (state) {
-  console.log(1);
   state.isLoading = true;
   state.successMessage = '';
   state.errors = {
@@ -5358,7 +5356,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     content: ''
   };
 }), _defineProperty(_mutations, mutationTypes.createNewsSuccess, function (state) {
-  console.log(11);
   state.isLoading = false;
   state.successMessage = 'The News was created successfully';
   state.singleNewsData = {
@@ -5371,7 +5368,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   state.isLoading = false;
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.updateNewsStart, function (state) {
-  console.log(2);
   state.isLoading = true;
   state.successMessage = '';
   state.errors = {
@@ -5379,7 +5375,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     content: ''
   };
 }), _defineProperty(_mutations, mutationTypes.updateNewsSuccess, function (state) {
-  console.log(22);
   state.isLoading = false;
   state.successMessage = 'The News was updated successfully';
 }), _defineProperty(_mutations, mutationTypes.updateNewsFailure, function (state, payload) {
@@ -5404,7 +5399,7 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNew
 
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getSingleNewsStart);
-    _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.getSingleNews(apiUrl, id).then(function (response) {
+    _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.getSingleNews(apiUrl + '/edit', id).then(function (response) {
       context.commit(mutationTypes.getSingleNewsSuccess, response.data);
       resolve(response.data);
     })["catch"](function (e) {
@@ -5414,7 +5409,6 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNew
 }), _defineProperty(_actions, actionTypes.createNews, function (context, _ref2) {
   var title = _ref2.title,
       content = _ref2.content;
-  console.log(111);
   return new Promise(function (resolve) {
     context.commit(mutationTypes.createNewsStart);
     _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.createNews(apiUrl, title, content).then(function (response) {
@@ -5428,7 +5422,6 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNew
   var id = _ref3.id,
       title = _ref3.title,
       content = _ref3.content;
-  console.log(222);
   return new Promise(function (resolve) {
     context.commit(mutationTypes.updateNewsStart);
     _api_news_api__WEBPACK_IMPORTED_MODULE_0__.default.updateNews(apiUrl, id, title, content).then(function (response) {
@@ -10286,7 +10279,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 55px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\t\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 55px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59318,36 +59311,38 @@ var render = function() {
                   "div",
                   { staticClass: "date-element__body-item body-item relative" },
                   [
-                    _c("div", { staticClass: "body-item__time" }, [
-                      _vm._v(_vm._s(item.time))
-                    ]),
-                    _vm._v(" "),
                     _c("div", { staticClass: "body-item__title" }, [
                       _vm._v(_vm._s(item.title))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__time" }, [
+                      _vm._v(_vm._s(item.time))
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "body-item__content" }, [
                       _vm._v(_vm._s(item.content))
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "body-item__edit absolute",
-                        attrs: {
-                          to: {
-                            name: "editNews",
-                            params: { id: item.id },
-                            props: { id: item.id }
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    _vm.window.currentUser
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "body-item__edit absolute",
+                            attrs: {
+                              to: {
+                                name: "editNews",
+                                params: { id: item.id },
+                                props: { id: item.id }
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                            )
+                          ]
                         )
-                      ]
-                    ),
+                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -59612,31 +59607,27 @@ var render = function() {
       _c("div", { staticClass: "form-item mb-2" }, [
         _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
         _vm._v(" "),
-        !_vm.id
-          ? _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.title,
-                  expression: "title"
-                }
-              ],
-              staticClass: "flex-grow",
-              attrs: { id: "title" },
-              domProps: { value: _vm.title },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.title = $event.target.value
-                }
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.title,
+              expression: "title"
+            }
+          ],
+          staticClass: "flex-grow",
+          attrs: { id: "title" },
+          domProps: { value: _vm.title },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
               }
-            })
-          : _c("div", { staticClass: "disabled-input" }, [
-              _vm._v(_vm._s(_vm.title))
-            ]),
+              _vm.title = $event.target.value
+            }
+          }
+        }),
         _vm._v(" "),
         _vm.errors.title
           ? _c("span", { staticClass: "text-red-600" }, [
@@ -59648,31 +59639,27 @@ var render = function() {
       _c("div", { staticClass: "form-item mb-2" }, [
         _c("label", { attrs: { for: "content" } }, [_vm._v("Content")]),
         _vm._v(" "),
-        !_vm.id
-          ? _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.content,
-                  expression: "content"
-                }
-              ],
-              staticClass: "flex-grow",
-              attrs: { id: "content", rows: "8" },
-              domProps: { value: _vm.content },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.content = $event.target.value
-                }
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.content,
+              expression: "content"
+            }
+          ],
+          staticClass: "flex-grow",
+          attrs: { id: "content", rows: "8" },
+          domProps: { value: _vm.content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
               }
-            })
-          : _c("div", { staticClass: "disabled-textarea" }, [
-              _vm._v(_vm._s(_vm.content))
-            ]),
+              _vm.content = $event.target.value
+            }
+          }
+        }),
         _vm._v(" "),
         _vm.errors.content
           ? _c("span", { staticClass: "text-red-600" }, [

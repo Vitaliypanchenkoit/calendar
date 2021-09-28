@@ -8,7 +8,7 @@ class ObjectHelper
 {
     public static function getDbTableName(string $objectName): string
     {
-        return $objectName === News::class ? mb_strtolower($objectName) : mb_strtolower($objectName) . 's';
+        return $objectName === 'News' ? mb_strtolower($objectName) : mb_strtolower($objectName) . 's';
     }
 
 }

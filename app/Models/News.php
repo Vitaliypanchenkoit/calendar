@@ -21,6 +21,14 @@ class News extends Model
      */
     public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the author of the news.
+     */
+    public function newsMarks()
+    {
+        return $this->hasMany(NewsMark::class);
     }
 }

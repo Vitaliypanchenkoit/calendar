@@ -37,10 +37,11 @@
 										</div>
 										<div class="date-element__body" :class="{visible: isVisible.news}">
 														<div v-for="(item, index) in dateData['news']" class="date-element__body-item body-item relative">
-																		<div class="body-item__time">{{ item.time }}</div>
 																		<div class="body-item__title">{{ item.title }}</div>
+																		<div class="body-item__time">{{ item.time }}</div>
 																		<div class="body-item__content">{{ item.content }}</div>
 																		<router-link
+																						v-if="window.currentUser"
 																						class="body-item__edit absolute"
 																						:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
 																		>
@@ -87,6 +88,7 @@ export default {
 						selectedYear: this.$route.params.year,
 						selectedMonth: this.$route.params.month - 1,
 						selectedDate: this.$route.params.date,
+				    window: window
 				}
 		},
 		computed: {
@@ -147,10 +149,10 @@ export default {
 		border-bottom: 1px dotted grey;
 }
 .body-item__time {
-		font-size: 20px;
 		font-weight: bold;
 }
 .body-item__title {
+				font-size: 20px;
 		font-weight: bold;
 		margin-bottom: 1rem;
 }

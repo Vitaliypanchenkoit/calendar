@@ -15,7 +15,6 @@ const removeObject = (apiUrl, objectName, id) => {
 
 		formData.append('objectName', objectName)
 		formData.append('id', id)
-		console.log(objectName);
 		return axios.post(apiUrl, formData)
 }
 

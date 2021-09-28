@@ -4,7 +4,7 @@ namespace App\Http\Requests\News;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidateNewsIdRequest extends FormRequest
+class UpdateNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class ValidateNewsIdRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'exists:news,id']
+            'id' => ['required', 'exists:news,id'],
+            'title' => ['required'],
+            'content' => ['required'],
         ];
     }
 }

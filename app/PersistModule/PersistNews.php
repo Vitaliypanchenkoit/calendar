@@ -25,7 +25,8 @@ class PersistNews
     {
         return News::where(['id' => $data['id']])
             ->update([
-                'time' => $data['time'],
+                'title' => $data['title'],
+                'content' => $data['content'],
             ]);
 
     }

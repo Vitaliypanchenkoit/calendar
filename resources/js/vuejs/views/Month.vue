@@ -73,7 +73,6 @@ export default {
 		},
     async created() {
 				await this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
-				console.log(this.monthData.remindersForToday);
 				for ( let i = 0; i < this.monthData.remindersForToday.length; i++) {
 						window.Echo.private(`reminder.${this.monthData.remindersForToday[i].id}`)
 								.listen('TimeToRemindEvent', (e) => {

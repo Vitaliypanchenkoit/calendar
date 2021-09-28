@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\News;
 use App\Models\Reminder;
 use App\Repositories\CalendarRepository;
+use App\Repositories\NewsRepository;
 use Illuminate\Support\Facades\Cache;
 
 class CalendarData implements CalendarDataInterface
@@ -18,7 +19,7 @@ class CalendarData implements CalendarDataInterface
     /**
      *
      */
-    public function __construct()
+    public function __construct(private NewsRepository $newsRepository)
     {
         $this->calendarRepository = new CalendarRepository();
     }
@@ -30,7 +31,7 @@ class CalendarData implements CalendarDataInterface
     public function getDayData(string $date): array
     {
         $result = [];
-        $result['news'] = $this->calendarRepository->getDateObjects(News::class, $date);
+        $result['news'] = $this->newsRepository->getDateNews($date);
         $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);
 
