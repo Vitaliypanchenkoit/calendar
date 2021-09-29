@@ -4160,6 +4160,13 @@ var now = new Date();
         id: id,
         index: index
       });
+    },
+    markNews: function markNews(id, key, value) {
+      this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.markNews, {
+        id: id,
+        key: key,
+        value: value
+      });
     }
   }
 });
@@ -4894,10 +4901,22 @@ var updateNews = function updateNews(apiUrl, id, title, content) {
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
+var markNews = function markNews(apiUrl, id, key, value) {
+  console.log(3, apiUrl, id, key, value);
+  value = value ? 1 : 0;
+  var formData = new FormData();
+  formData.append('id', id);
+  formData.append('key', key);
+  formData.append('value', value);
+  formData.append('_method', 'PUT');
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   getSingleNews: getSingleNews,
   createNews: createNews,
-  updateNews: updateNews
+  updateNews: updateNews,
+  markNews: markNews
 });
 
 /***/ }),
@@ -5062,6 +5081,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_date_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/date-api */ "./resources/js/vuejs/api/date-api.js");
+/* harmony import */ var _api_news_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/news-api */ "./resources/js/vuejs/api/news-api.js");
 var _mutations, _actions;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -5069,6 +5089,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var apiUrl = '/date';
@@ -5083,7 +5104,10 @@ var mutationTypes = {
   getDataFailure: '[date] Get data failure',
   removeObjectStart: '[date] Remove object start',
   removeObjectSuccess: '[date] Remove object success',
-  removeObjectFailure: '[date] Remove object failure'
+  removeObjectFailure: '[date] Remove object failure',
+  markNewsStart: '[date] Mark/unmark news start',
+  markNewsSuccess: '[date] Mark/unmark news success',
+  markNewsFailed: '[date] Mark/unmark news as read or important'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
   state.isLoading = true;
@@ -5107,10 +5131,17 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
 }), _defineProperty(_mutations, mutationTypes.removeObjectFailure, function (state, payload) {
   state.isLoading = false;
   state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.markNewsStart, function (state) {
+  state.isLoading = true;
+}), _defineProperty(_mutations, mutationTypes.markNewsSuccess, function (state, payload) {
+  state.isLoading = false;
+}), _defineProperty(_mutations, mutationTypes.markNewsFailed, function (state, payload) {
+  state.isLoading = false;
 }), _mutations);
 var actionTypes = {
   getData: '[date] Get data of a certain date',
-  removeObject: '[date] Remove an object'
+  removeObject: '[date] Remove an object',
+  markNews: '[date] Mark/unmark news as read or important'
 };
 var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, function (context, _ref) {
   var year = _ref.year,
@@ -5139,6 +5170,20 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, fun
     })["catch"](function (e) {
       console.log(e);
       context.commit(mutationTypes.removeObjectFailure, e.response.data);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.markNews, function (context, _ref3) {
+  var id = _ref3.id,
+      key = _ref3.key,
+      value = _ref3.value;
+  // key may be "read" or "important"; value may be true or false
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.markNewsStart);
+    _api_news_api__WEBPACK_IMPORTED_MODULE_1__.default.markNews('/news/mark', id, key, value).then(function (response) {
+      context.commit(mutationTypes.markNewsSuccess, {});
+    })["catch"](function (e) {
+      console.log(e);
+      context.commit(mutationTypes.markNewsFailed, e.response.data);
     });
   });
 }), _actions);
@@ -10152,7 +10197,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "html, body {\n  font-size: 16px;\n}\n\nh1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 24px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input,\n.form-item .disabled-input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea,\n.form-item .disabled-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item .disabled-textarea {\n  height: 160px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}\n\n.event {\n  color: #059669;\n}\n\n.news {\n  color: #2563EB;\n}\n\n.reminder {\n  color: #D97706;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "html, body {\n  font-size: 16px;\n}\n\nh1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 24px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input,\n.form-item .disabled-input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea,\n.form-item .disabled-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item .disabled-textarea {\n  height: 160px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}\n\n.event {\n  color: #059669;\n}\n\n.news {\n  color: #2563EB;\n}\n\n.reminder {\n  color: #D97706;\n}\n\ninput:focus {\n  box-shadow: none !important;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59350,7 +59395,18 @@ var render = function() {
                             _vm._v("Created by " + _vm._s(item.author_name))
                           ]),
                       _vm._v(" "),
-                      _vm._m(0, true)
+                      _c("div", [
+                        _c("span", [
+                          _vm._v("Was read by: " + _vm._s(item.read.length))
+                        ]),
+                        _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                        _c("span", [
+                          _vm._v(
+                            "Marked as important: " +
+                              _vm._s(item.important.length)
+                          )
+                        ])
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "body-item__time" }, [
@@ -59398,7 +59454,57 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm._m(1, true)
+                    _vm.$parent.currentUser.id !== item.author_id
+                      ? _c("div", { staticClass: "body-item__control" }, [
+                          _c("label", [
+                            _c("input", {
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: item.read.includes(
+                                  _vm.$parent.currentUser.id
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.markNews(
+                                    item.id,
+                                    "read",
+                                    !item.read.includes(
+                                      _vm.$parent.currentUser.id
+                                    )
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Mark as read")])
+                          ]),
+                          _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                          _c("label", [
+                            _c("input", {
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: item.important.includes(
+                                  _vm.$parent.currentUser.id
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.markNews(
+                                    item.id,
+                                    "important",
+                                    !item.read.includes(
+                                      _vm.$parent.currentUser.id
+                                    )
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Mark as important")])
+                          ])
+                        ])
+                      : _vm._e()
                   ],
                   1
                 )
@@ -59446,36 +59552,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("span", [_vm._v("Was read by:")]),
-      _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
-      _c("span", [_vm._v("Marked as important:")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "body-item__control" }, [
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Mark as read")])
-      ]),
-      _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Mark as important")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

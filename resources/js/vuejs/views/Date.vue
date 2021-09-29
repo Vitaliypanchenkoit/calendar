@@ -42,8 +42,8 @@
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
 																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
 																<div>
-																		<span>Was read by:</span>&#160;&#160;
-																		<span>Marked as important:</span>
+																		<span>Was read by: {{ item.read.length }}</span>&#160;&#160;
+																		<span>Marked as important: {{ item.important.length }}</span>
 																</div>
 														</div>
 
@@ -57,13 +57,13 @@
 																				<<<< Edit News
 																</router-link>
 																<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
-																<div class="body-item__control">
+																<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
 																		<label>
-																				<input type="checkbox">
+																				<input type="checkbox" :checked="item.read.includes($parent.currentUser.id)" @change="markNews(item.id, 'read', !item.read.includes($parent.currentUser.id))">
 																				<span>Mark as read</span>
 																		</label>&#160;&#160;
 																		<label>
-																				<input type="checkbox">
+																				<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.read.includes($parent.currentUser.id))">
 																				<span>Mark as important</span>
 																		</label>
 																</div>
@@ -132,8 +132,12 @@ export default {
 				},
 				removeObject(objectName, id, index) {
 						this.$store.dispatch(actionTypes.removeObject, {objectName, id, index})
+				},
+				markNews(id, key, value) {
+						this.$store.dispatch(actionTypes.markNews, {id, key, value})
 
 				}
+
 		},
 }
 </script>

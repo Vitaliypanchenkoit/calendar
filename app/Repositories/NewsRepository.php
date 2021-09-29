@@ -28,11 +28,10 @@ class NewsRepository implements NewsRepositoryInterface
     public function getDateNews(string $date)
     {
         return News::select(
-            'news.*', 'users.name as author_name',
-            DB::raw('COUNT(news_marks.important) as important,
-             COUNT(news_marks.read) as read'))
+            'news.*',
+            'users.name as author_name')
             ->join('users', 'users.id', '=', 'news.author_id')
-            ->leftJoin('news_marks', 'news.id', '=', 'news_marks.news_id')
+            ->with('newsMarks')
             ->where('news.date', $date)
             ->orderBy('news.time')
             ->get();

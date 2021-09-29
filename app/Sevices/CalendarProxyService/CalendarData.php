@@ -38,6 +38,14 @@ class CalendarData implements CalendarDataInterface
     {
         $result = [];
         $result['news'] = $this->newsRepository->getDateNews($date);
+        if ($result['news']->count()) {
+            /* Here we created two additional attributes "read" and "important" in each news object and store an array of user's id into them */
+            foreach ($result['news'] as $k => $v) {
+                $result['news'][$k]->read = $v->newsMarks->where('read', 1)->keyBy('user_id')->keys();
+                $result['news'][$k]->important = $v->newsMarks->where('important', 1)->keyBy('user_id')->keys();
+                $result['news'][$k]->unsetRelation('newsMarks');
+            }
+        }
         $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);
 

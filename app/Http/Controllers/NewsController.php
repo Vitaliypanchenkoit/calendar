@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CacheHelper;
 use App\Http\Requests\News\CreateNewsRequest;
+use App\Http\Requests\News\MarkNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
 use App\Http\Requests\News\ValidateNewsIdRequest;
 use App\Http\Resources\NewsResource;
 use App\Models\News;
 use App\PersistModule\PersistNews;
+use App\Repositories\NewsMarkRepository;
 use App\Repositories\NewsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -76,5 +78,19 @@ class NewsController extends Controller
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
+    }
+
+    public function mark(MarkNewsRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $user = auth()->user();
+            $repository = new NewsMarkRepository();
+            $newsMark = $repository->getNewsMarkByUserAndNewsIds();
+
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
+        }
+
     }
 }

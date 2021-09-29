@@ -1,4 +1,5 @@
 import dateApi from '../../api/date-api'
+import newsApi from '../../api/news-api'
 
 const apiUrl = '/date';
 
@@ -16,6 +17,10 @@ export const mutationTypes = {
 		removeObjectStart: '[date] Remove object start',
 		removeObjectSuccess: '[date] Remove object success',
 		removeObjectFailure: '[date] Remove object failure',
+
+		markNewsStart: '[date] Mark/unmark news start',
+		markNewsSuccess: '[date] Mark/unmark news success',
+		markNewsFailed: '[date] Mark/unmark news as read or important',
 }
 
 const mutations = {
@@ -43,7 +48,7 @@ const mutations = {
 		},
 		[mutationTypes.removeObjectSuccess](state, payload) {
 				state.isLoading = false
-						let objectName = payload.objectName.toLowerCase();
+				let objectName = payload.objectName.toLowerCase();
 				delete state.data[objectName][payload.index];
 				state.data = {
 						...state.data
@@ -53,13 +58,26 @@ const mutations = {
 		[mutationTypes.removeObjectFailure](state, payload) {
 				state.isLoading = false
 				state.errors = payload
+		},
+
+		/* Mark/unmark news as read or important */
+		[mutationTypes.markNewsStart](state) {
+				state.isLoading = true
+		},
+		[mutationTypes.markNewsSuccess](state, payload) {
+				state.isLoading = false
+		},
+		[mutationTypes.markNewsFailed](state, payload) {
+				state.isLoading = false
 		}
+
 
 }
 
 export const actionTypes = {
 		getData: '[date] Get data of a certain date',
 		removeObject: '[date] Remove an object',
+		markNews: '[date] Mark/unmark news as read or important',
 }
 
 const actions = {
@@ -86,6 +104,19 @@ const actions = {
 								.catch((e) => {
 										console.log(e);
 										context.commit(mutationTypes.removeObjectFailure, e.response.data)
+								})
+				})
+		},
+		[actionTypes.markNews](context, {id, key, value}) { // key may be "read" or "important"; value may be true or false
+				return new Promise(resolve => {
+						context.commit(mutationTypes.markNewsStart)
+						newsApi.markNews('/news/mark', id, key, value)
+								.then(response => {
+										context.commit(mutationTypes.markNewsSuccess, {})
+								})
+								.catch((e) => {
+										console.log(e);
+										context.commit(mutationTypes.markNewsFailed, e.response.data)
 								})
 				})
 		}

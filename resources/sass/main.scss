@@ -117,3 +117,7 @@ h1 {
 .reminder {
     color: #D97706
 }
+
+input:focus {
+    box-shadow: none !important;
+}
