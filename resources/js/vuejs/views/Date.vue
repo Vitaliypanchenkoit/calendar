@@ -18,13 +18,13 @@
 														<div class="body-item__title">{{ reminder.title }}</div>
 														<div class="body-item__content">{{ reminder.content }}</div>
 														<router-link
-																v-if="new Date(reminder.date + ' ' + reminder.time).getTime() >= (Date.now() + 1000 * 120 * 60)"
+																v-if="new Date(reminder.date + ' ' + reminder.time).getTime() >= (Date.now() + 1000 * 120 * 60) && $parent.currentUser.id === reminder.author_id"
 																class="body-item__edit absolute"
 																:to="{name: 'editReminder', params: {id:  reminder.id}, props: {id:  reminder.id}}"
 														>
 																<<<< Edit time
 														</router-link>
-														<div class="remove" title="Remove" @click="removeObject('Reminder', reminder.id, index)">&#10060;</div>
+														<div v-if="$parent.currentUser.id === reminder.author_id" class="remove" title="Remove" @click="removeObject('Reminder', reminder.id, index)">&#10060;</div>
 												</div>
 										</div>
 								</div>
@@ -36,19 +36,38 @@
 												</div>
 										</div>
 										<div class="date-element__body" :class="{visible: isVisible.news}">
-														<div v-for="(item, index) in dateData['news']" class="date-element__body-item body-item relative">
-																		<div class="body-item__title">{{ item.title }}</div>
-																		<div class="body-item__time">{{ item.time }}</div>
-																		<div class="body-item__content">{{ item.content }}</div>
-																		<router-link
-																						v-if="window.currentUser"
-																						class="body-item__edit absolute"
-																						:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
-																		>
-																						<<<< Edit News
-																		</router-link>
-																		<div class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
+												<div v-for="(item, index) in dateData['news']" class="date-element__body-item body-item relative">
+																<div class="body-item__title">{{ item.title }}</div>
+														<div class="body-item__meta">
+																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
+																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
+																<div>
+																		<span>Was read by:</span>&#160;&#160;
+																		<span>Marked as important:</span>
+																</div>
 														</div>
+
+																<div class="body-item__time">{{ item.time }}</div>
+																<div class="body-item__content">{{ item.content }}</div>
+																<router-link
+																				v-if="$parent.currentUser.id === item.author_id"
+																				class="body-item__edit absolute"
+																				:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
+																>
+																				<<<< Edit News
+																</router-link>
+																<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
+																<div class="body-item__control">
+																		<label>
+																				<input type="checkbox">
+																				<span>Mark as read</span>
+																		</label>&#160;&#160;
+																		<label>
+																				<input type="checkbox">
+																				<span>Mark as important</span>
+																		</label>
+																</div>
+												</div>
 										</div>
 								</div>
 								<div class="date-element events">
@@ -88,7 +107,6 @@ export default {
 						selectedYear: this.$route.params.year,
 						selectedMonth: this.$route.params.month - 1,
 						selectedDate: this.$route.params.date,
-				    window: window
 				}
 		},
 		computed: {
@@ -142,6 +160,7 @@ export default {
 		padding: 0.5em 1em;
 		border: 1px solid #000000;
 		border-top: none;
+		color: #000000;
 }
 
 .date-element__body-item {
@@ -152,9 +171,14 @@ export default {
 		font-weight: bold;
 }
 .body-item__title {
-				font-size: 20px;
+		font-size: 20px;
 		font-weight: bold;
+}
+.body-item__meta {
 		margin-bottom: 1rem;
+		color: grey;
+		font-style: italic;
+		font-size: 14px;
 }
 
 .date-element__body.visible {
@@ -182,6 +206,5 @@ export default {
 		right: 5px;
 		cursor: pointer;
 }
-
 
 </style>

@@ -17,11 +17,17 @@ class CalendarData implements CalendarDataInterface
     private CalendarRepository $calendarRepository;
 
     /**
+     * @var NewsRepository
+     */
+    private NewsRepository $newsRepository;
+
+    /**
      *
      */
-    public function __construct(private NewsRepository $newsRepository)
+    public function __construct()
     {
         $this->calendarRepository = new CalendarRepository();
+        $this->newsRepository = new NewsRepository();
     }
 
     /**

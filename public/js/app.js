@@ -3827,6 +3827,11 @@ __webpack_require__.r(__webpack_exports__);
   name: "App",
   components: {
     CreateButtons: _components_CreateButtons__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      currentUser: window.currentUser
+    };
   }
 });
 
@@ -4074,6 +4079,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4095,8 +4119,7 @@ var now = new Date();
       nowTime: now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(),
       selectedYear: this.$route.params.year,
       selectedMonth: this.$route.params.month - 1,
-      selectedDate: this.$route.params.date,
-      window: window
+      selectedDate: this.$route.params.date
     };
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
@@ -10279,7 +10302,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\t\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n\t\tmargin-bottom: 1rem;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 55px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.date-content[data-v-fe7d9ee6] {\n\t\tmargin-top: 1em;\n}\n.date-element[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1em;\n\t\tbackground: #ffffff;\n}\n.date-element__head[data-v-fe7d9ee6] {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\talign-items: center;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n}\n.date-element__body[data-v-fe7d9ee6] {\n\t\tdisplay: none;\n\t\tpadding: 0.5em 1em;\n\t\tborder: 1px solid #000000;\n\t\tborder-top: none;\n\t\tcolor: #000000;\n}\n.date-element__body-item[data-v-fe7d9ee6] {\n\t\tpadding: 0.5rem 0 2rem 0;\n\t\tborder-bottom: 1px dotted grey;\n}\n.body-item__time[data-v-fe7d9ee6] {\n\t\tfont-weight: bold;\n}\n.body-item__title[data-v-fe7d9ee6] {\n\t\tfont-size: 20px;\n\t\tfont-weight: bold;\n}\n.body-item__meta[data-v-fe7d9ee6] {\n\t\tmargin-bottom: 1rem;\n\t\tcolor: grey;\n\t\tfont-style: italic;\n\t\tfont-size: 14px;\n}\n.date-element__body.visible[data-v-fe7d9ee6] {\n\t\tdisplay: block;\n}\n.date-element__head-title[data-v-fe7d9ee6] {\n\t\tfont-size: 24px;\n\t\tfont-weight: bold;\n}\n.arrow-container[data-v-fe7d9ee6] {\n\t\theight: 100%;\n\t\twidth: 30px;\n\t\tcursor: pointer;\n}\n.body-item__edit[data-v-fe7d9ee6] {\n\t\ttop: 0.5rem;\n\t\tright: 55px;\n}\n.remove[data-v-fe7d9ee6] {\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59229,7 +59252,8 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     new Date(reminder.date + " " + reminder.time).getTime() >=
-                    Date.now() + 1000 * 120 * 60
+                      Date.now() + 1000 * 120 * 60 &&
+                    _vm.$parent.currentUser.id === reminder.author_id
                       ? _c(
                           "router-link",
                           {
@@ -59250,23 +59274,25 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "remove",
-                        attrs: { title: "Remove" },
-                        on: {
-                          click: function($event) {
-                            return _vm.removeObject(
-                              "Reminder",
-                              reminder.id,
-                              index
-                            )
-                          }
-                        }
-                      },
-                      [_vm._v("❌")]
-                    )
+                    _vm.$parent.currentUser.id === reminder.author_id
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "remove",
+                            attrs: { title: "Remove" },
+                            on: {
+                              click: function($event) {
+                                return _vm.removeObject(
+                                  "Reminder",
+                                  reminder.id,
+                                  index
+                                )
+                              }
+                            }
+                          },
+                          [_vm._v("❌")]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -59315,6 +59341,18 @@ var render = function() {
                       _vm._v(_vm._s(item.title))
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "body-item__meta" }, [
+                      _vm.$parent.currentUser.id === item.author_id
+                        ? _c("div", { staticClass: "body-item__created_by" }, [
+                            _vm._v("Created by you")
+                          ])
+                        : _c("div", { staticClass: "body-item__created_by" }, [
+                            _vm._v("Created by " + _vm._s(item.author_name))
+                          ]),
+                      _vm._v(" "),
+                      _vm._m(0, true)
+                    ]),
+                    _vm._v(" "),
                     _c("div", { staticClass: "body-item__time" }, [
                       _vm._v(_vm._s(item.time))
                     ]),
@@ -59323,7 +59361,7 @@ var render = function() {
                       _vm._v(_vm._s(item.content))
                     ]),
                     _vm._v(" "),
-                    _vm.window.currentUser
+                    _vm.$parent.currentUser.id === item.author_id
                       ? _c(
                           "router-link",
                           {
@@ -59338,25 +59376,29 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
                             )
                           ]
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "remove",
-                        attrs: { title: "Remove" },
-                        on: {
-                          click: function($event) {
-                            return _vm.removeObject("News", item.id, index)
-                          }
-                        }
-                      },
-                      [_vm._v("❌")]
-                    )
+                    _vm.$parent.currentUser.id === item.author_id
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "remove",
+                            attrs: { title: "Remove" },
+                            on: {
+                              click: function($event) {
+                                return _vm.removeObject("News", item.id, index)
+                              }
+                            }
+                          },
+                          [_vm._v("❌")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._m(1, true)
                   ],
                   1
                 )
@@ -59404,7 +59446,36 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("span", [_vm._v("Was read by:")]),
+      _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+      _c("span", [_vm._v("Marked as important:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "body-item__control" }, [
+      _c("label", [
+        _c("input", { attrs: { type: "checkbox" } }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Mark as read")])
+      ]),
+      _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+      _c("label", [
+        _c("input", { attrs: { type: "checkbox" } }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Mark as important")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

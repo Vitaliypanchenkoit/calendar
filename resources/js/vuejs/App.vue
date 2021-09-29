@@ -12,6 +12,11 @@ export default {
 		components: {
 				CreateButtons
 		},
+		data() {
+			return {
+					currentUser: window.currentUser
+			}
+		}
 }
 </script>
 
