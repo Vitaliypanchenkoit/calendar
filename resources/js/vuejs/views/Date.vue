@@ -63,7 +63,7 @@
 																				<span>Mark as read</span>
 																		</label>&#160;&#160;
 																		<label>
-																				<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.read.includes($parent.currentUser.id))">
+																				<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.important.includes($parent.currentUser.id))">
 																				<span>Mark as important</span>
 																		</label>
 																</div>

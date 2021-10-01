@@ -26,8 +26,8 @@ class CreateNewsMarksTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->boolean('important');
-            $table->boolean('read');
+            $table->boolean('important')->default(0);
+            $table->boolean('read')->default(0);
             $table->timestamps();
         });
 

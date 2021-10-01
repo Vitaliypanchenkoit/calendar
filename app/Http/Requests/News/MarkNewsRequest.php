@@ -24,7 +24,7 @@ class MarkNewsRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'exists:news,id'],
+            'newsId' => ['required', 'exists:news,id'],
             'key' => ['required', 'string', 'in:read,important'],
             'value' => ['required', 'boolean'],
         ];

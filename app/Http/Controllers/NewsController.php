@@ -9,6 +9,7 @@ use App\Http\Requests\News\UpdateNewsRequest;
 use App\Http\Requests\News\ValidateNewsIdRequest;
 use App\Http\Resources\NewsResource;
 use App\Models\News;
+use App\Models\NewsMark;
 use App\PersistModule\PersistNews;
 use App\Repositories\NewsMarkRepository;
 use App\Repositories\NewsRepository;
@@ -86,7 +87,18 @@ class NewsController extends Controller
             $data = $request->validated();
             $user = auth()->user();
             $repository = new NewsMarkRepository();
-            $newsMark = $repository->getNewsMarkByUserAndNewsIds();
+            $newsMark = $repository->getNewsMarkByUserAndNewsIds($data['newsId'], $user->id);
+            if (!$newsMark) {
+                $newsMark = NewsMark::create([
+                    'news_id' => $data['newsId'],
+                    'user_id' => $user->id,
+                    $data['key'] => $data['value']
+                ]);
+            } else {
+                $newsMark->{$data['key']} = $data['value'];
+                $newsMark->save();
+            }
+            CacheHelper::createOrUpdateRecord(CacheHelper::NEWS, $newsMark->date, $newsMark);
 
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);

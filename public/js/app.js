@@ -4905,7 +4905,7 @@ var markNews = function markNews(apiUrl, id, key, value) {
   console.log(3, apiUrl, id, key, value);
   value = value ? 1 : 0;
   var formData = new FormData();
-  formData.append('id', id);
+  formData.append('newsId', id);
   formData.append('key', key);
   formData.append('value', value);
   formData.append('_method', 'PUT');
@@ -59493,7 +59493,7 @@ var render = function() {
                                   _vm.markNews(
                                     item.id,
                                     "important",
-                                    !item.read.includes(
+                                    !item.important.includes(
                                       _vm.$parent.currentUser.id
                                     )
                                   )
