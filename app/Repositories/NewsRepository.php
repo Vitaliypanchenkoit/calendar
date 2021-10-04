@@ -17,6 +17,7 @@ class NewsRepository implements NewsRepositoryInterface
     public function getSingleNews(int $id)
     {
         return News::select(['*'])
+            ->where('id', $id)
             ->with('newsMarks')
             ->first();
     }

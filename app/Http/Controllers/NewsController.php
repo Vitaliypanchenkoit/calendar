@@ -60,8 +60,9 @@ class NewsController extends Controller
     {
         try {
             $data = $request->validated();
+            $repository = new NewsRepository();
 
-            $news = News::find($data['id']);
+            $news = $repository->getSingleNews($data['id']);
             if ($news->author_id !== auth()->user()->id) {
                 throw new \Exception(__('You haven\'t an access to update this news'));
             }
@@ -81,11 +82,17 @@ class NewsController extends Controller
         }
     }
 
+    /**
+     * @param MarkNewsRequest $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function mark(MarkNewsRequest $request)
     {
         try {
             $data = $request->validated();
             $user = auth()->user();
+
+            /* Create or update news mark */
             $repository = new NewsMarkRepository();
             $newsMark = $repository->getNewsMarkByUserAndNewsIds($data['newsId'], $user->id);
             if (!$newsMark) {
@@ -98,7 +105,13 @@ class NewsController extends Controller
                 $newsMark->{$data['key']} = $data['value'];
                 $newsMark->save();
             }
-            CacheHelper::createOrUpdateRecord(CacheHelper::NEWS, $newsMark->date, $newsMark);
+
+            /* Get the news from repository with marks info */
+            $newsRepository = new NewsRepository();
+            $news = $newsRepository->getSingleNews($newsMark->news_id);
+
+            CacheHelper::createOrUpdateRecord(CacheHelper::NEWS, $news->date, $news);
+
 
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
