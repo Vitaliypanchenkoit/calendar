@@ -10,9 +10,11 @@ use App\Http\Requests\News\ValidateNewsIdRequest;
 use App\Http\Resources\NewsResource;
 use App\Models\News;
 use App\Models\NewsMark;
+use App\Notifications\NewsWasMarkAsImportant;
 use App\PersistModule\PersistNews;
 use App\Repositories\NewsMarkRepository;
 use App\Repositories\NewsRepository;
+use App\Sevices\NewsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -90,29 +92,8 @@ class NewsController extends Controller
     {
         try {
             $data = $request->validated();
-            $user = auth()->user();
-
-            /* Create or update news mark */
-            $repository = new NewsMarkRepository();
-            $newsMark = $repository->getNewsMarkByUserAndNewsIds($data['newsId'], $user->id);
-            if (!$newsMark) {
-                $newsMark = NewsMark::create([
-                    'news_id' => $data['newsId'],
-                    'user_id' => $user->id,
-                    $data['key'] => $data['value']
-                ]);
-            } else {
-                $newsMark->{$data['key']} = $data['value'];
-                $newsMark->save();
-            }
-
-            /* Get the news from repository with marks info */
-            $newsRepository = new NewsRepository();
-            $news = $newsRepository->getSingleNews($newsMark->news_id);
-
-            CacheHelper::createOrUpdateRecord(CacheHelper::NEWS, $news->date, $news);
-
-
+            $service = new NewsService();
+            $service->markNews($data['newsId'], $data['key'], $data['value']);
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }

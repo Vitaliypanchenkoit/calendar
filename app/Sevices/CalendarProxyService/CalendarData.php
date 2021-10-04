@@ -2,8 +2,8 @@
 
 namespace App\Sevices\CalendarProxyService;
 
+use App\Helpers\NewsHelper;
 use App\Models\Event;
-use App\Models\News;
 use App\Models\Reminder;
 use App\Repositories\CalendarRepository;
 use App\Repositories\NewsRepository;
@@ -41,9 +41,7 @@ class CalendarData implements CalendarDataInterface
         if ($result['news']->count()) {
             /* Here we created two additional attributes "read" and "important" in each news object and store an array of user's id into them */
             foreach ($result['news'] as $k => $v) {
-                $result['news'][$k]->read = $v->newsMarks->where('read', 1)->keyBy('user_id')->keys();
-                $result['news'][$k]->important = $v->newsMarks->where('important', 1)->keyBy('user_id')->keys();
-                $result['news'][$k]->unsetRelation('newsMarks');
+                $result['news'][$k] = NewsHelper::reformatNews($v);
             }
         }
         $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
