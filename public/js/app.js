@@ -5126,7 +5126,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
 }), _defineProperty(_mutations, mutationTypes.removeObjectSuccess, function (state, payload) {
   state.isLoading = false;
   var objectName = payload.objectName.toLowerCase();
-  delete state.data[objectName][payload.index];
+  delete state.data[objectName].splice([payload.index, 1]);
   state.data = _objectSpread({}, state.data);
 }), _defineProperty(_mutations, mutationTypes.removeObjectFailure, function (state, payload) {
   state.isLoading = false;

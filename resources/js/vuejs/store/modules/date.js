@@ -49,7 +49,7 @@ const mutations = {
 		[mutationTypes.removeObjectSuccess](state, payload) {
 				state.isLoading = false
 				let objectName = payload.objectName.toLowerCase();
-				delete state.data[objectName][payload.index];
+				delete state.data[objectName].splice([payload.index, 1]);
 				state.data = {
 						...state.data
 				}
