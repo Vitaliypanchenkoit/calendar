@@ -46,7 +46,7 @@ class User extends Authenticatable
      */
     public function reminders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Reminder', 'author_id');
+        return $this->hasMany(Reminder::class, 'author_id');
     }
 
     /**
@@ -54,7 +54,7 @@ class User extends Authenticatable
      */
     public function news(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\News', 'author_id');
+        return $this->hasMany(News::class, 'author_id');
     }
 
     /**
@@ -62,7 +62,15 @@ class User extends Authenticatable
      */
     public function events(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Events', 'author_id');
+        return $this->hasMany(Event::class, 'author_id');
+    }
+
+    /**
+     * Get the Events for the user.
+     */
+    public function eventsPartisipant(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Event::class);
     }
 
 

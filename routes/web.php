@@ -37,6 +37,8 @@ Route::middleware('auth:web')->group(function () {
     Route::put('/news', [NewsController::class, 'update'])->name('updateNews');
     Route::put('/news/mark', [NewsController::class, 'mark'])->name('markNews');
 
+    Route::post('/events', [EventController::class, 'create'])->name('createEvent');
+    Route::put('/events', [EventController::class, 'update'])->name('updateEvent');
     Route::get('/events/edit', [EventController::class, 'edit'])->name('editEvent');
 });
 

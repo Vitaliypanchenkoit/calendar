@@ -43,6 +43,6 @@ class FutureOrCurrentDate implements Rule
      */
     public function message()
     {
-        return __('You are trying to set future date or time');
+        return __('You are trying to set past date or time');
     }
 }

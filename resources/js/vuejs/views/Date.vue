@@ -47,26 +47,26 @@
 																</div>
 														</div>
 
-																<div class="body-item__time">{{ item.time }}</div>
-																<div class="body-item__content">{{ item.content }}</div>
-																<router-link
-																				v-if="$parent.currentUser.id === item.author_id"
-																				class="body-item__edit absolute"
-																				:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
-																>
-																				<<<< Edit News
-																</router-link>
-																<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
-																<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
-																		<label>
-																				<input type="checkbox" :checked="item.read.includes($parent.currentUser.id)" @change="markNews(item.id, 'read', !item.read.includes($parent.currentUser.id))">
-																				<span>Mark as read</span>
-																		</label>&#160;&#160;
-																		<label>
-																				<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.important.includes($parent.currentUser.id))">
-																				<span>Mark as important</span>
-																		</label>
-																</div>
+														<div class="body-item__time">{{ item.time }}</div>
+														<div class="body-item__content">{{ item.content }}</div>
+														<router-link
+																		v-if="$parent.currentUser.id === item.author_id"
+																		class="body-item__edit absolute"
+																		:to="{name: 'editNews', params: {id:  item.id}, props: {id:  item.id}}"
+														>
+																		<<<< Edit News
+														</router-link>
+														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
+														<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
+																<label>
+																		<input type="checkbox" :checked="item.read.includes($parent.currentUser.id)" @change="markNews(item.id, 'read', !item.read.includes($parent.currentUser.id))">
+																		<span>Mark as read</span>
+																</label>&#160;&#160;
+																<label>
+																		<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.important.includes($parent.currentUser.id))">
+																		<span>Mark as important</span>
+																</label>
+														</div>
 												</div>
 										</div>
 								</div>
@@ -77,7 +77,40 @@
 														<div class="arrow" :class="[isVisible.events ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.events}">dfgdfg</div>
+										<div class="date-element__body" :class="{visible: isVisible.events}">
+												<div v-for="(item, index) in dateData['events']" class="date-element__body-item body-item relative">
+														<div class="body-item__title">{{ item.title }}</div>
+														<div class="body-item__meta">
+																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
+																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
+																<div>
+																		<span>Partisipants: {{ item.take_part.length }}</span>&#160;&#160;
+																		<span>Marked as not interesting: {{ item.not_interesting.length }}</span>
+																</div>
+														</div>
+
+														<div class="body-item__time">{{ item.time }}</div>
+														<div class="body-item__content">{{ item.content }}</div>
+														<router-link
+																v-if="$parent.currentUser.id === item.author_id"
+																class="body-item__edit absolute"
+																:to="{name: 'editEvent', params: {id:  item.id}, props: {id:  item.id}}"
+														>
+																<<<< Edit Event
+														</router-link>
+														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('Event', item.id, index)">&#10060;</div>
+														<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
+																<label>
+																		<input type="checkbox" :checked="item.take_part.includes($parent.currentUser.id)" @change="markEvent(item.id, 'take_part', !item.partisipants.includes($parent.currentUser.id))">
+																		<span>I'll take part</span>
+																</label>&#160;&#160;
+																<label>
+																		<input type="checkbox" :checked="item.not_interesting.includes($parent.currentUser.id)" @change="markEvent(item.id,'not_interesting', !item.not_interesting.includes($parent.currentUser.id))">
+																		<span>Not interesting</span>
+																</label>
+														</div>
+												</div>
+										</div>
 								</div>
 						</div>
 				</div>
@@ -133,8 +166,8 @@ export default {
 				removeObject(objectName, id, index) {
 						this.$store.dispatch(actionTypes.removeObject, {objectName, id, index})
 				},
-				markNews(id, key, value) {
-						this.$store.dispatch(actionTypes.markNews, {id, key, value})
+				markEvent(id, key, value) {
+						this.$store.dispatch(actionTypes.markEvent, {id, key, value})
 
 				}
 

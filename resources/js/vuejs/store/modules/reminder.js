@@ -100,8 +100,6 @@ const mutations = {
 						[payload.name]: payload.value
 				}
 		},
-
-
 }
 
 export const actionTypes = {

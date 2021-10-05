@@ -3822,6 +3822,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
@@ -4098,6 +4100,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4161,8 +4196,8 @@ var now = new Date();
         index: index
       });
     },
-    markNews: function markNews(id, key, value) {
-      this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.markNews, {
+    markEvent: function markEvent(id, key, value) {
+      this.$store.dispatch(_store_modules_date__WEBPACK_IMPORTED_MODULE_1__.actionTypes.markEvent, {
         id: id,
         key: key,
         value: value
@@ -4184,12 +4219,174 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_datetime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_GoHomeButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/GoHomeButton */ "./resources/js/vuejs/components/GoHomeButton.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store_modules_event__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../store/modules/event */ "./resources/js/vuejs/store/modules/event.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CreateEditEvent"
+  name: "CreateEditEvent",
+  props: {
+    id: {
+      type: Number,
+      "default": 0
+    }
+  },
+  components: {
+    datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_2__.Datetime,
+    GoHomeButton: _components_GoHomeButton__WEBPACK_IMPORTED_MODULE_3__.default
+  },
+  data: function data() {
+    return {
+      prevRoute: {
+        path: ''
+      }
+    };
+  },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapState)({
+    isLoading: function isLoading(state) {
+      return state.event.isLoading;
+    },
+    errors: function errors(state) {
+      return state.event.errors;
+    },
+    successMessage: function successMessage(state) {
+      return state.event.successMessage;
+    }
+  })), {}, {
+    title: {
+      get: function get() {
+        return this.$store.state.event.singleEventData.title;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.getInputValue, {
+          name: 'title',
+          value: value
+        });
+      }
+    },
+    content: {
+      get: function get() {
+        return this.$store.state.event.singleEventData.content;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.getInputValue, {
+          name: 'content',
+          value: value
+        });
+      }
+    },
+    date: {
+      get: function get() {
+        return this.$store.state.event.singleEventData.date;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.getInputValue, {
+          name: 'date',
+          value: value
+        });
+      }
+    },
+    time: {
+      get: function get() {
+        return this.$store.state.event.singleEventData.time;
+      },
+      set: function set(value) {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.getInputValue, {
+          name: 'time',
+          value: value
+        });
+      }
+    },
+    participants: {
+      get: function get() {
+        return this.$store.state.event.singleEventData.participants;
+      }
+    }
+  }),
+  created: function created() {
+    this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.getSingleEvent, {
+      id: this.id
+    });
+  },
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    next(function (vm) {
+      vm.prevRoute = from;
+    });
+  },
+  methods: {
+    submit: function submit() {
+      if (this.$route.name === 'createEvent') {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.createEvent, {
+          title: this.title,
+          content: this.content,
+          date: this.date,
+          time: this.time
+        });
+      } else if (this.$route.name === 'editEvent') {
+        this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_4__.actionTypes.updateEvent, {
+          id: this.id,
+          time: this.time,
+          date: this.date
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -4828,8 +5025,28 @@ var getEvent = function getEvent(apiUrl, id) {
   });
 };
 
+var createEvent = function createEvent(apiUrl, title, content, date, time) {
+  var formData = new FormData();
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('date', date);
+  formData.append('time', time);
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
+var updateEvent = function updateEvent(apiUrl, id, time, date) {
+  var formData = new FormData();
+  formData.append('id', id);
+  formData.append('time', time);
+  formData.append('date', date);
+  formData.append('_method', 'PUT');
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getEvent: getEvent
+  getEvent: getEvent,
+  createEvent: createEvent,
+  updateEvent: updateEvent
 });
 
 /***/ }),
@@ -5107,7 +5324,10 @@ var mutationTypes = {
   removeObjectFailure: '[date] Remove object failure',
   markNewsStart: '[date] Mark/unmark news start',
   markNewsSuccess: '[date] Mark/unmark news success',
-  markNewsFailed: '[date] Mark/unmark news as read or important'
+  markNewsFailed: '[date] Mark/unmark news as read or important',
+  markEventStart: '[date] Mark/unmark event start',
+  markEventSuccess: '[date] Mark/unmark event success',
+  markEventFailed: '[date] Mark/unmark event'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
   state.isLoading = true;
@@ -5137,11 +5357,18 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
   state.isLoading = false;
 }), _defineProperty(_mutations, mutationTypes.markNewsFailed, function (state, payload) {
   state.isLoading = false;
+}), _defineProperty(_mutations, mutationTypes.markEventStart, function (state) {
+  state.isLoading = true;
+}), _defineProperty(_mutations, mutationTypes.markEventSuccess, function (state, payload) {
+  state.isLoading = false;
+}), _defineProperty(_mutations, mutationTypes.markEventFailed, function (state, payload) {
+  state.isLoading = false;
 }), _mutations);
 var actionTypes = {
   getData: '[date] Get data of a certain date',
   removeObject: '[date] Remove an object',
-  markNews: '[date] Mark/unmark news as read or important'
+  markNews: '[date] Mark/unmark news as read or important',
+  markEvent: '[date] Mark/unmark event'
 };
 var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, function (context, _ref) {
   var year = _ref.year,
@@ -5186,6 +5413,20 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getData, fun
       context.commit(mutationTypes.markNewsFailed, e.response.data);
     });
   });
+}), _defineProperty(_actions, actionTypes.markEvent, function (context, _ref4) {
+  var id = _ref4.id,
+      key = _ref4.key,
+      value = _ref4.value;
+  // key may be "take_part" or "not_interesting"; value may be true or false
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.markEventStart);
+    _api_news_api__WEBPACK_IMPORTED_MODULE_1__.default.markNews('/news/mark', id, key, value).then(function (response) {
+      context.commit(mutationTypes.markEventSuccess, {});
+    })["catch"](function (e) {
+      console.log(e);
+      context.commit(mutationTypes.markEventFailed, e.response.data);
+    });
+  });
 }), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
@@ -5209,41 +5450,110 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_event_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/event-api */ "./resources/js/vuejs/api/event-api.js");
-var _mutations;
+/* harmony import */ var _router_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router/router */ "./resources/js/vuejs/router/router.js");
+var _mutations, _actions;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var apiUrl = '/events';
 var state = {
   events: {},
-  singleEventData: {},
+  singleEventData: {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: {}
+  },
   isLoading: false,
-  errors: null
+  errors: {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: ''
+  },
+  successMessage: ''
 };
 var mutationTypes = {
   getSingleEventStart: '[event] Get single event start',
   getSingleEventSuccess: '[event] Get single event success',
-  getSingleEventFailure: '[event] Get single event failure'
+  getSingleEventFailure: '[event] Get single event failure',
+  saveEventStart: '[event] Save event start',
+  saveEventSuccess: '[event] Save event success',
+  saveEventFailure: '[event] Save event failure',
+  getInputValue: '[event] Get value from input'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getSingleEventStart, function (state) {
   state.isLoading = true;
-  state.singleEventData = {};
-  state.errors = null;
+  state.singleEventData = {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: {}
+  };
+  state.errors = {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: ''
+  };
 }), _defineProperty(_mutations, mutationTypes.getSingleEventSuccess, function (state, payload) {
   state.isLoading = false;
   state.singleEventData = payload;
 }), _defineProperty(_mutations, mutationTypes.getSingleEventFailure, function (state, payload) {
   state.isLoading = false;
-  state.singleEventData = {};
+  state.singleEventData = {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: {}
+  };
   state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.saveEventStart, function (state) {
+  state.isLoading = true;
+  state.successMessage = '';
+  state.errors = {
+    title: '',
+    content: '',
+    date: '',
+    time: '',
+    participants: ''
+  };
+}), _defineProperty(_mutations, mutationTypes.saveEventSuccess, function (state, payload) {
+  state.isLoading = false;
+  state.successMessage = 'The Event was created successfully';
+  _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
+    path: "/events/edit/".concat(payload.id)
+  });
+}), _defineProperty(_mutations, mutationTypes.saveEventFailure, function (state, payload) {
+  state.isLoading = false;
+  state.errors = payload;
+}), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
+  state.singleEventData = _objectSpread(_objectSpread({}, state.singleEventData), {}, _defineProperty({}, payload.name, payload.value));
 }), _mutations);
 var actionTypes = {
-  getSingleEvent: '[event] Get single event data'
+  getSingleEvent: '[event] Get single event data',
+  createEvent: '[event] Create event',
+  updateEvent: '[event] Update event',
+  getInputValue: '[event] Get input value'
 };
-
-var actions = _defineProperty({}, actionTypes.getSingleEvent, function (context, _ref) {
+var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEvent, function (context, _ref) {
   var id = _ref.id;
+
+  if (!id) {
+    return;
+  }
+
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getSingleEventStart);
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.getEvent(apiUrl, id).then(function (response) {
@@ -5253,8 +5563,41 @@ var actions = _defineProperty({}, actionTypes.getSingleEvent, function (context,
       context.commit(mutationTypes.getSingleEventFailure, e.response.data);
     });
   });
-});
-
+}), _defineProperty(_actions, actionTypes.createEvent, function (context, _ref2) {
+  var title = _ref2.title,
+      content = _ref2.content,
+      date = _ref2.date,
+      time = _ref2.time;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.saveEventStart);
+    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time).then(function (response) {
+      context.commit(mutationTypes.saveEventSuccess, response.data.data);
+    })["catch"](function (e) {
+      console.log(e);
+      context.commit(mutationTypes.saveEventFailure, e.response.data.errors);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.updateEvent, function (context, _ref3) {
+  var id = _ref3.id,
+      time = _ref3.time,
+      date = _ref3.date;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.saveEventStart);
+    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.updateEvent(apiUrl, id, time, date).then(function (response) {
+      console.log(response.data);
+      context.commit(mutationTypes.saveEventSuccess, response.data);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.saveEventFailure, e.response.data.errors);
+    });
+  });
+}), _defineProperty(_actions, actionTypes.getInputValue, function (context, _ref4) {
+  var name = _ref4.name,
+      value = _ref4.value;
+  context.commit(mutationTypes.getInputValue, {
+    name: name,
+    value: value
+  });
+}), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
   actions: actions,
@@ -5509,15 +5852,7 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleNew
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
   actions: actions,
-  mutations: mutations // getters: {
-  // 		date: function (state) {
-  // 				return state.singleNewsData.date
-  // 		},
-  // 		time: function (state) {
-  // 				return state.singleNewsData.time
-  // 		}
-  // }
-
+  mutations: mutations
 });
 
 /***/ }),
@@ -59005,7 +59340,11 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "calendar" } },
-    [_c("create-buttons"), _vm._v(" "), _c("router-view")],
+    [
+      _c("create-buttons"),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [_c("router-view")], 1)
+    ],
     1
   )
 }
@@ -59432,7 +59771,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit News\n\t\t\t\t\t\t\t\t\t\t\t\t"
                             )
                           ]
                         )
@@ -59479,7 +59818,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("span", [_vm._v("Mark as read")])
                           ]),
-                          _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                          _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
                           _c("label", [
                             _c("input", {
                               attrs: { type: "checkbox" },
@@ -59544,7 +59883,141 @@ var render = function() {
                 staticClass: "date-element__body",
                 class: { visible: _vm.isVisible.events }
               },
-              [_vm._v("dfgdfg")]
+              _vm._l(_vm.dateData["events"], function(item, index) {
+                return _c(
+                  "div",
+                  { staticClass: "date-element__body-item body-item relative" },
+                  [
+                    _c("div", { staticClass: "body-item__title" }, [
+                      _vm._v(_vm._s(item.title))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__meta" }, [
+                      _vm.$parent.currentUser.id === item.author_id
+                        ? _c("div", { staticClass: "body-item__created_by" }, [
+                            _vm._v("Created by you")
+                          ])
+                        : _c("div", { staticClass: "body-item__created_by" }, [
+                            _vm._v("Created by " + _vm._s(item.author_name))
+                          ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("span", [
+                          _vm._v(
+                            "Partisipants: " + _vm._s(item.take_part.length)
+                          )
+                        ]),
+                        _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                        _c("span", [
+                          _vm._v(
+                            "Marked as not interesting: " +
+                              _vm._s(item.not_interesting.length)
+                          )
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__time" }, [
+                      _vm._v(_vm._s(item.time))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "body-item__content" }, [
+                      _vm._v(_vm._s(item.content))
+                    ]),
+                    _vm._v(" "),
+                    _vm.$parent.currentUser.id === item.author_id
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "body-item__edit absolute",
+                            attrs: {
+                              to: {
+                                name: "editEvent",
+                                params: { id: item.id },
+                                props: { id: item.id }
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<<<< Edit Event\n\t\t\t\t\t\t\t\t\t\t\t\t"
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.$parent.currentUser.id === item.author_id
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "remove",
+                            attrs: { title: "Remove" },
+                            on: {
+                              click: function($event) {
+                                return _vm.removeObject("Event", item.id, index)
+                              }
+                            }
+                          },
+                          [_vm._v("❌")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.$parent.currentUser.id !== item.author_id
+                      ? _c("div", { staticClass: "body-item__control" }, [
+                          _c("label", [
+                            _c("input", {
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: item.take_part.includes(
+                                  _vm.$parent.currentUser.id
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.markEvent(
+                                    item.id,
+                                    "take_part",
+                                    !item.partisipants.includes(
+                                      _vm.$parent.currentUser.id
+                                    )
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("I'll take part")])
+                          ]),
+                          _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                          _c("label", [
+                            _c("input", {
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: item.not_interesting.includes(
+                                  _vm.$parent.currentUser.id
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.markEvent(
+                                    item.id,
+                                    "not_interesting",
+                                    !item.not_interesting.includes(
+                                      _vm.$parent.currentUser.id
+                                    )
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Not interesting")])
+                          ])
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                )
+              }),
+              0
             )
           ])
         ])
@@ -59575,7 +60048,180 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    { staticClass: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+    [
+      _c("go-home-button"),
+      _vm._v(" "),
+      _c("div", { staticClass: "success mb-4" }, [
+        _vm._v(_vm._s(_vm.successMessage))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
+        _vm._v(" "),
+        !_vm.id
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "title" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          : _c("div", { staticClass: "disabled-input" }, [
+              _vm._v(_vm._s(_vm.title))
+            ]),
+        _vm._v(" "),
+        _vm.errors.title
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.title[0]))
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-item mb-2" },
+        [
+          _c("label", [_vm._v("Date")]),
+          _vm._v(" "),
+          !_vm.id
+            ? _c("datetime", {
+                attrs: {
+                  format: { year: "numeric", month: "long", day: "numeric" }
+                },
+                model: {
+                  value: _vm.date,
+                  callback: function($$v) {
+                    _vm.date = $$v
+                  },
+                  expression: "date"
+                }
+              })
+            : _c("div", { staticClass: "disabled-input" }, [
+                _vm._v(_vm._s(_vm.date))
+              ]),
+          _vm._v(" "),
+          _vm.errors.date
+            ? _c("span", { staticClass: "text-red-600" }, [
+                _vm._v(_vm._s(_vm.errors.date[0]))
+              ])
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-item mb-2" },
+        [
+          _c("label", [_vm._v("Time")]),
+          _vm._v(" "),
+          _c("datetime", {
+            attrs: { type: "time" },
+            model: {
+              value: _vm.time,
+              callback: function($$v) {
+                _vm.time = $$v
+              },
+              expression: "time"
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.time
+            ? _c("span", { staticClass: "text-red-600" }, [
+                _vm._v(_vm._s(_vm.errors.time[0]))
+              ])
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        _c("label", { attrs: { for: "content" } }, [_vm._v("Content")]),
+        _vm._v(" "),
+        !_vm.id
+          ? _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.content,
+                  expression: "content"
+                }
+              ],
+              staticClass: "flex-grow",
+              attrs: { id: "content", rows: "8" },
+              domProps: { value: _vm.content },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.content = $event.target.value
+                }
+              }
+            })
+          : _c("div", { staticClass: "disabled-textarea" }, [
+              _vm._v(_vm._s(_vm.content))
+            ]),
+        _vm._v(" "),
+        _vm.errors.content
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.content[0]))
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-item mb-2" }, [
+        !_vm.id
+          ? _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Create")]
+            )
+          : _c(
+              "div",
+              {
+                staticClass: "save-button",
+                on: {
+                  click: function($event) {
+                    return _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("Update")]
+            )
+      ]),
+      _vm._v(" "),
+      _vm.$route.name === "editEvent"
+        ? _c("div", { staticClass: "form-item mb-2" }, [_c("v-select")], 1)
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

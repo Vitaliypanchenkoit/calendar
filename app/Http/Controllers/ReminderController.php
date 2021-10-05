@@ -81,8 +81,5 @@ class ReminderController extends Controller
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
-
-
-
     }
 }

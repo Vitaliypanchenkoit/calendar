@@ -2,10 +2,12 @@
 
 namespace App\Sevices\CalendarProxyService;
 
+use App\Helpers\EventHelper;
 use App\Helpers\NewsHelper;
 use App\Models\Event;
 use App\Models\Reminder;
 use App\Repositories\CalendarRepository;
+use App\Repositories\EventRepository;
 use App\Repositories\NewsRepository;
 use Illuminate\Support\Facades\Cache;
 
@@ -22,12 +24,18 @@ class CalendarData implements CalendarDataInterface
     private NewsRepository $newsRepository;
 
     /**
+     * @var EventRepository
+     */
+    private EventRepository $eventRepository;
+
+    /**
      *
      */
     public function __construct()
     {
         $this->calendarRepository = new CalendarRepository();
         $this->newsRepository = new NewsRepository();
+        $this->eventRepository = new EventRepository();
     }
 
     /**
@@ -37,6 +45,7 @@ class CalendarData implements CalendarDataInterface
     public function getDayData(string $date): array
     {
         $result = [];
+
         $result['news'] = $this->newsRepository->getDateNews($date);
         if ($result['news']->count()) {
             /* Here we created two additional attributes "read" and "important" in each news object and store an array of user's id into them */
@@ -44,7 +53,14 @@ class CalendarData implements CalendarDataInterface
                 $result['news'][$k] = NewsHelper::reformatNews($v);
             }
         }
-        $result['events'] = $this->calendarRepository->getDateObjects(Event::class, $date);
+
+        $result['events'] = $this->eventRepository->getDateEvents($date);
+        if ($result['events']->count()) {
+            /* Here we created two additional attributes "take_part" and "not_interesting" in each event object and store an array of user's id into them */
+            foreach ($result['events'] as $k => $v) {
+                $result['events'][$k] = EventHelper::reformat($v);
+            }
+        }
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);
 
         if ($result['news']->count() ||

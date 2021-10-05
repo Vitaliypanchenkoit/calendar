@@ -84,11 +84,6 @@ class NewsController extends Controller
         }
     }
 
-    public function delete()
-    {
-        
-    }
-
     /**
      * @param MarkNewsRequest $request
      * @return \Illuminate\Http\JsonResponse|void

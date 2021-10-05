@@ -182,12 +182,4 @@ export default {
 		state,
 		actions,
 		mutations,
-		// getters: {
-		// 		date: function (state) {
-		// 				return state.singleNewsData.date
-		// 		},
-		// 		time: function (state) {
-		// 				return state.singleNewsData.time
-		// 		}
-		// }
 }
