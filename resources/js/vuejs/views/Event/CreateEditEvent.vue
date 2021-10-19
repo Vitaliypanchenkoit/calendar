@@ -4,14 +4,12 @@
 				<div class="success mb-4">{{ successMessage }}</div>
 				<div class="form-item mb-2">
 						<label for="title">Title</label>
-						<input id="title" class="flex-grow" v-model="title" v-if="!id"/>
-						<div class="disabled-input" v-else>{{ title }}</div>
+						<input id="title" class="flex-grow" v-model="title" />
 						<span class="text-red-600" v-if="errors.title">{{ errors.title[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
 						<label>Date</label>
-						<datetime v-if="!id" v-model="date" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
-						<div class="disabled-input" v-else>{{ date }}</div>
+						<datetime v-model="date" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
 						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>
 				</div>
 				<div class="form-item mb-2">
@@ -21,30 +19,39 @@
 				</div>
 				<div class="form-item mb-2">
 						<label for="content">Content</label>
-						<textarea id="content" class="flex-grow" rows="8" v-model="content" v-if="!id"></textarea>
-						<div class="disabled-textarea" v-else>{{ content }}</div>
+						<textarea id="content" class="flex-grow" rows="8" v-model="content" ></textarea>
 						<span class="text-red-600" v-if="errors.content">{{ errors.content[0] }}</span>
+				</div>
+				<div class="form-item mb-2">
+						<button class="h-10 px-5 my-2 text-green-100 transition-colors duration-150 bg-green-600 rounded-lg hover:bg-green-700" @click="addParticipant()">Add a participant</button>
+						<input id="participant" class="flex-grow" v-model="newParticipantEmail" />
+						<span class="text-red-600" v-if="newParticipantEmailError">{{ newParticipantEmailError }}</span>
+				</div>
+
+				<div class="form-item mb-2">
+						<label>Participants</label>
+						<div class="participants-list">
+								<div v-for="(participant, index) in participants" class="participants-item">
+										<div class="participants-item__title"></div>
+										<div class="participants-item__remove" @click="removeParticipant(index)"></div>
+								</div>
+						</div>
 				</div>
 				<div class="form-item mb-2">
 						<div v-if="!id" class="save-button" @click="submit()">Create</div>
 						<div v-else class="save-button" @click="submit()">Update</div>
 				</div>
 
-				<div class="form-item mb-2" v-if="$route.name === 'editEvent'">
-						<v-select></v-select>
-
-				</div>
 		</div>
 
 </template>
 
 <script>
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css';
 import {Datetime} from "vue-datetime";
 import GoHomeButton from "../../components/GoHomeButton";
 import {mapState} from "vuex";
 import {actionTypes} from "../../store/modules/event";
+import {validateEmail} from "../../helpers/validationHelper"
 
 export default {
 		name: "CreateEditEvent",
@@ -56,11 +63,13 @@ export default {
 		},
 		components: {
 				datetime: Datetime,
-				GoHomeButton
+				GoHomeButton,
 		},
 		data() {
 				return {
 						prevRoute: {path: ''},
+						newParticipantEmail: '',
+						newParticipantEmailError: '',
 				}
 		},
 		computed: {
@@ -105,7 +114,7 @@ export default {
 						get () {
 								return this.$store.state.event.singleEventData.participants
 						},
-				}
+				},
 		},
 		created() {
 				this.$store.dispatch(actionTypes.getSingleEvent, {id: this.id});
@@ -132,11 +141,54 @@ export default {
 								})
 						}
 				},
+				getUsers() {
+
+				},
+				async addParticipant() {
+						this.newParticipantEmailError = '';
+						if (!this.newParticipantEmail) {
+								return;
+						}
+
+						if (!validateEmail(this.newParticipantEmail)) {
+								this.newParticipantEmailError = 'Invalid email';
+						} else if (this.singleEventData.participants.includes(newParticipantEmail)) {
+								this.newParticipantEmailError = 'This email has been already included';
+						} else {
+								await this.$store.dispatch(actionTypes.addParticipant, this.newParticipantEmail)
+								this.newParticipantEmail = '';
+						}
+
+
+				},
+				removeParticipant(index) {
+						if (!this.singleEventData.participants[index]) {
+								return;
+						}
+						this.$store.dispatch(actionTypes.removeParticipant, index);
+
+				},
 		}
 
 }
 </script>
 
 <style scoped>
+.participants-list {
+		padding: 1rem;
+		background: #ffffff;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		border-radius: 5px;
+}
+.participants-item {
+		position: relative;
+		padding: 0.5rem 1rem;
+		background: rgba(0, 0, 0, 0.2);
+}
+.participants-item__close {
+		position: absolute;
+		top: -10px;
+		right: -10px;
+}
 
 </style>

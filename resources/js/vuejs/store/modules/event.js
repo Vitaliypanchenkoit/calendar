@@ -9,7 +9,7 @@ const state = {
 				content: '',
 				date: '',
 				time: '',
-				participants: {}
+				participants: []
 		},
 		isLoading: false,
 		errors: {
@@ -32,6 +32,9 @@ export const mutationTypes = {
 		saveEventFailure: '[event] Save event failure',
 
 		getInputValue: '[event] Get value from input',
+
+		addParticipant: '[event] Add a participant',
+		removeParticipant: '[event] Remove a participant',
 }
 
 const mutations = {
@@ -42,8 +45,9 @@ const mutations = {
 						content: '',
 						date: '',
 						time: '',
-						participants: {}
+						participants: []
 				}
+
 				state.errors = {
 						title: '',
 						content: '',
@@ -64,7 +68,7 @@ const mutations = {
 						content: '',
 						date: '',
 						time: '',
-						participants: {}
+						participants: [],
 				}
 				state.errors = payload
 		},
@@ -100,6 +104,22 @@ const mutations = {
 				}
 		},
 
+		[mutationTypes.addParticipant](state, email) {
+				let participants = state.singleEventData.participants.push(email);
+				state.singleEventData = {
+						...state.singleEventData,
+						participants: participants
+				}
+		},
+
+		[mutationTypes.removeParticipant](state, index) {
+				let participants = state.singleEventData.participants.splice(index, 1);
+				state.singleEventData = {
+						...state.singleEventData,
+						participants: participants
+				}
+		},
+
 }
 
 export const actionTypes = {
@@ -107,6 +127,8 @@ export const actionTypes = {
 		createEvent: '[event] Create event',
 		updateEvent: '[event] Update event',
 		getInputValue: '[event] Get input value',
+		addParticipant: '[event] Add participant',
+		removeParticipant: '[event] Remove participant',
 }
 
 const actions = {
@@ -159,6 +181,15 @@ const actions = {
 				context.commit(mutationTypes.getInputValue, {name, value})
 
 		},
+
+		[actionTypes.addParticipant](context, email) {
+				context.commit(mutationTypes.addParticipant, email)
+		},
+
+		[actionTypes.removeParticipant](context, email) {
+				context.commit(mutationTypes.removeParticipant, email)
+		},
+
 
 
 
