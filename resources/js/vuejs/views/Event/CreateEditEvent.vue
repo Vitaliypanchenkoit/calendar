@@ -24,18 +24,21 @@
 				</div>
 				<div class="form-item mb-2">
 						<button class="h-10 px-5 my-2 text-green-100 transition-colors duration-150 bg-green-600 rounded-lg hover:bg-green-700" @click="addParticipant()">Add a participant</button>
-						<input id="participant" class="flex-grow" v-model="newParticipantEmail" />
+						<input id="participant" class="flex-grow" v-model="newParticipantEmail" @keypress.enter="addParticipant()" />
 						<span class="text-red-600" v-if="newParticipantEmailError">{{ newParticipantEmailError }}</span>
 				</div>
 
 				<div class="form-item mb-2">
 						<label>Participants</label>
-						<div class="participants-list">
-								<div v-for="(participant, index) in participants" class="participants-item">
-										<div class="participants-item__title"></div>
-										<div class="participants-item__remove" @click="removeParticipant(index)"></div>
+						<transition-group class="participants-list" name="participants-list" tag="div">
+								<div v-for="(participant, index) in participants" class="participants-item" :key="participant">
+										<div class="participants-item__title">{{ participant }}</div>
+										<div class="participants-item__remove" @click="removeParticipant(index)">
+												<div class="leftright"></div>
+												<div class="rightleft"></div>
+										</div>
 								</div>
-						</div>
+						</transition-group>
 				</div>
 				<div class="form-item mb-2">
 						<div v-if="!id" class="save-button" @click="submit()">Create</div>
@@ -132,17 +135,18 @@ export default {
 										content: this.content,
 										date: this.date,
 										time: this.time,
+										participants: this.participants,
 								})
 						} else if (this.$route.name === 'editEvent') {
 								this.$store.dispatch(actionTypes.updateEvent, {
 										id: this.id,
-										time: this.time,
+										title: this.title,
+										content: this.content,
 										date: this.date,
+										time: this.time,
+										participants: this.participants,
 								})
 						}
-				},
-				getUsers() {
-
 				},
 				async addParticipant() {
 						this.newParticipantEmailError = '';
@@ -152,7 +156,7 @@ export default {
 
 						if (!validateEmail(this.newParticipantEmail)) {
 								this.newParticipantEmailError = 'Invalid email';
-						} else if (this.singleEventData.participants.includes(newParticipantEmail)) {
+						} else if (this.participants.includes(this.newParticipantEmail)) {
 								this.newParticipantEmailError = 'This email has been already included';
 						} else {
 								await this.$store.dispatch(actionTypes.addParticipant, this.newParticipantEmail)
@@ -162,7 +166,7 @@ export default {
 
 				},
 				removeParticipant(index) {
-						if (!this.singleEventData.participants[index]) {
+						if (!this.participants[index]) {
 								return;
 						}
 						this.$store.dispatch(actionTypes.removeParticipant, index);
@@ -175,20 +179,63 @@ export default {
 
 <style scoped>
 .participants-list {
-		padding: 1rem;
+		padding: 1rem 1rem 1.7rem 1rem;
 		background: #ffffff;
 		border: 1px solid rgba(0, 0, 0, 0.2);
 		border-radius: 5px;
 }
 .participants-item {
 		position: relative;
-		padding: 0.5rem 1rem;
-		background: rgba(0, 0, 0, 0.2);
+		display: inline-block;
+		margin-right: 2rem;
+		margin-top: 0.5rem;
+		padding: 0.7rem 1rem;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 20px;
 }
-.participants-item__close {
+.participants-item__remove {
 		position: absolute;
-		top: -10px;
-		right: -10px;
+		top: 0;
+		right: -8px;
+		width: 10px;
+		height: 10px;
+		cursor: pointer;
+}
+
+.leftright{
+		height: 2px;
+		width: 20px;
+		position: absolute;
+		background-color: #F4A259;
+		border-radius: 2px;
+		transform: rotate(45deg);
+		transition: all .3s ease-in;
+}
+
+.rightleft{
+		height: 2px;
+		width: 20px;
+		position: absolute;
+		background-color: #F4A259;
+		border-radius: 2px;
+		transform: rotate(-45deg);
+		transition: all .3s ease-in;
+}
+
+.participants-item__remove:hover .leftright{
+		transform: rotate(-45deg);
+		background-color: #F25C66;
+}
+.participants-item__remove:hover .rightleft{
+		transform: rotate(45deg);
+		background-color: #F25C66;
+}
+.participants-list-enter-active, .participants-list-leave-active {
+		transition: all 0.6s;
+}
+.participants-list-enter, .participants-list-leave-to {
+		opacity: 0;
+		transform: translateY(30px);
 }
 
 </style>

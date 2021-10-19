@@ -36,6 +36,7 @@ class CreateEventRequest extends FormRequest
             'content' => ['required'],
             'date' => ['required', 'date', new FutureOrCurrentDate($time)],
             'time' => ['required', 'date'],
+            'participants' => ['nullable', 'string'],
         ];
     }
 }

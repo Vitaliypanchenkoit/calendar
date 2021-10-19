@@ -4287,6 +4287,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4430,7 +4433,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 break;
 
               case 7:
-                if (!_this.singleEventData.participants.includes(newParticipantEmail)) {
+                if (!_this.participants.includes(_this.newParticipantEmail)) {
                   _context.next = 11;
                   break;
                 }
@@ -4455,7 +4458,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     removeParticipant: function removeParticipant(index) {
-      if (!this.singleEventData.participants[index]) {
+      console.log(index);
+
+      if (!this.participants[index]) {
         return;
       }
 
@@ -5564,7 +5569,7 @@ var state = {
     content: '',
     date: '',
     time: '',
-    participants: []
+    participants: ['1234@sdsd.sdf', 'sdfsdre@df.sdf']
   },
   isLoading: false,
   errors: {
@@ -5638,15 +5643,11 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
   state.singleEventData = _objectSpread(_objectSpread({}, state.singleEventData), {}, _defineProperty({}, payload.name, payload.value));
 }), _defineProperty(_mutations, mutationTypes.addParticipant, function (state, email) {
-  var participants = state.singleEventData.participants.push(email);
-  state.singleEventData = _objectSpread(_objectSpread({}, state.singleEventData), {}, {
-    participants: participants
-  });
+  state.singleEventData.participants.push(email);
+  state.singleEventData = _objectSpread({}, state.singleEventData);
 }), _defineProperty(_mutations, mutationTypes.removeParticipant, function (state, index) {
-  var participants = state.singleEventData.participants.splice(index, 1);
-  state.singleEventData = _objectSpread(_objectSpread({}, state.singleEventData), {}, {
-    participants: participants
-  });
+  state.singleEventData.participants.splice(index, 1);
+  state.singleEventData = _objectSpread({}, state.singleEventData);
 }), _mutations);
 var actionTypes = {
   getSingleEvent: '[event] Get single event data',
@@ -5708,8 +5709,8 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   });
 }), _defineProperty(_actions, actionTypes.addParticipant, function (context, email) {
   context.commit(mutationTypes.addParticipant, email);
-}), _defineProperty(_actions, actionTypes.removeParticipant, function (context, email) {
-  context.commit(mutationTypes.removeParticipant, email);
+}), _defineProperty(_actions, actionTypes.removeParticipant, function (context, index) {
+  context.commit(mutationTypes.removeParticipant, index);
 }), _actions);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: state,
@@ -10819,7 +10820,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.participants-list[data-v-56e497a0] {\n\t\tpadding: 1rem;\n\t\tbackground: #ffffff;\n\t\tborder: 1px solid rgba(0, 0, 0, 0.2);\n\t\tborder-radius: 5px;\n}\n.participants-item[data-v-56e497a0] {\n\t\tposition: relative;\n\t\tpadding: 0.5rem 1rem;\n\t\tbackground: rgba(0, 0, 0, 0.2);\n}\n.participants-item__close[data-v-56e497a0] {\n\t\tposition: absolute;\n\t\ttop: -10px;\n\t\tright: -10px;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.participants-list[data-v-56e497a0] {\n\t\tpadding: 1rem 1rem 1.7rem 1rem;\n\t\tbackground: #ffffff;\n\t\tborder: 1px solid rgba(0, 0, 0, 0.2);\n\t\tborder-radius: 5px;\n}\n.participants-item[data-v-56e497a0] {\n\t\tposition: relative;\n\t\tdisplay: inline-block;\n\t\tmargin-right: 2rem;\n\t\tmargin-top: 0.5rem;\n\t\tpadding: 0.7rem 1rem;\n\t\tbackground: rgba(0, 0, 0, 0.1);\n\t\tborder-radius: 20px;\n}\n.participants-item__remove[data-v-56e497a0] {\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tright: -8px;\n\t\twidth: 10px;\n\t\theight: 10px;\n\t\tcursor: pointer;\n}\n.leftright[data-v-56e497a0]{\n\t\theight: 2px;\n\t\twidth: 20px;\n\t\tposition: absolute;\n\t\tbackground-color: #F4A259;\n\t\tborder-radius: 2px;\n\t\ttransform: rotate(45deg);\n\t\ttransition: all .3s ease-in;\n}\n.rightleft[data-v-56e497a0]{\n\t\theight: 2px;\n\t\twidth: 20px;\n\t\tposition: absolute;\n\t\tbackground-color: #F4A259;\n\t\tborder-radius: 2px;\n\t\ttransform: rotate(-45deg);\n\t\ttransition: all .3s ease-in;\n}\n.participants-item__remove:hover .leftright[data-v-56e497a0]{\n\t\ttransform: rotate(-45deg);\n\t\tbackground-color: #F25C66;\n}\n.participants-item__remove:hover .rightleft[data-v-56e497a0]{\n\t\ttransform: rotate(45deg);\n\t\tbackground-color: #F25C66;\n}\n.participants-list-enter-active[data-v-56e497a0], .participants-list-leave-active[data-v-56e497a0] {\n\t\ttransition: all 0.6s;\n}\n.participants-list-enter[data-v-56e497a0], .participants-list-leave-to[data-v-56e497a0] {\n\t\topacity: 0;\n\t\ttransform: translateY(30px);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -60386,6 +60387,15 @@ var render = function() {
           attrs: { id: "participant" },
           domProps: { value: _vm.newParticipantEmail },
           on: {
+            keypress: function($event) {
+              if (
+                !$event.type.indexOf("key") &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              return _vm.addParticipant()
+            },
             input: function($event) {
               if ($event.target.composing) {
                 return
@@ -60402,29 +60412,51 @@ var render = function() {
           : _vm._e()
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-item mb-2" }, [
-        _c("label", [_vm._v("Participants")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "participants-list" },
-          _vm._l(_vm.participants, function(participant, index) {
-            return _c("div", { staticClass: "participants-item" }, [
-              _c("div", { staticClass: "participants-item__title" }),
-              _vm._v(" "),
-              _c("div", {
-                staticClass: "participants-item__remove",
-                on: {
-                  click: function($event) {
-                    return _vm.removeParticipant(index)
-                  }
-                }
-              })
-            ])
-          }),
-          0
-        )
-      ]),
+      _c(
+        "div",
+        { staticClass: "form-item mb-2" },
+        [
+          _c("label", [_vm._v("Participants")]),
+          _vm._v(" "),
+          _c(
+            "transition-group",
+            {
+              staticClass: "participants-list",
+              attrs: { name: "participants-list", tag: "div" }
+            },
+            _vm._l(_vm.participants, function(participant, index) {
+              return _c(
+                "div",
+                { key: participant, staticClass: "participants-item" },
+                [
+                  _c("div", { staticClass: "participants-item__title" }, [
+                    _vm._v(_vm._s(participant))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "participants-item__remove",
+                      on: {
+                        click: function($event) {
+                          return _vm.removeParticipant(index)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "leftright" }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "rightleft" })
+                    ]
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "form-item mb-2" }, [
         !_vm.id

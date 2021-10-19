@@ -8,23 +8,27 @@ const getEvent = (apiUrl, id) => {
 		})
 }
 
-const createEvent = (apiUrl, title, content, date, time) => {
+const createEvent = (apiUrl, title, content, date, time, participants) => {
 		let formData = new FormData();
 
 		formData.append('title', title)
 		formData.append('content', content)
 		formData.append('date', date)
 		formData.append('time', time)
+		formData.append('participants', JSON.stringify(participants))
 
 		return axios.post(apiUrl, formData)
 }
 
-const updateEvent = (apiUrl, id, time, date) => {
+const updateEvent = (apiUrl, id, title, content, date, time, participants) => {
 		let formData = new FormData();
 
 		formData.append('id', id)
-		formData.append('time', time)
+		formData.append('title', title)
+		formData.append('content', content)
 		formData.append('date', date)
+		formData.append('time', time)
+		formData.append('participants', JSON.stringify(participants))
 		formData.append('_method', 'PUT')
 
 		return axios.post(apiUrl, formData)

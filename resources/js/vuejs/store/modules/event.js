@@ -9,7 +9,7 @@ const state = {
 				content: '',
 				date: '',
 				time: '',
-				participants: []
+				participants: ['1234@sdsd.sdf', 'sdfsdre@df.sdf']
 		},
 		isLoading: false,
 		errors: {
@@ -105,18 +105,16 @@ const mutations = {
 		},
 
 		[mutationTypes.addParticipant](state, email) {
-				let participants = state.singleEventData.participants.push(email);
+				state.singleEventData.participants.push(email);
 				state.singleEventData = {
-						...state.singleEventData,
-						participants: participants
+						...state.singleEventData
 				}
 		},
 
 		[mutationTypes.removeParticipant](state, index) {
-				let participants = state.singleEventData.participants.splice(index, 1);
+				state.singleEventData.participants.splice(index, 1);
 				state.singleEventData = {
 						...state.singleEventData,
-						participants: participants
 				}
 		},
 
@@ -149,10 +147,10 @@ const actions = {
 				})
 		},
 
-		[actionTypes.createEvent](context, {title, content, date, time}) {
+		[actionTypes.createEvent](context, {title, content, date, time, participants}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveEventStart)
-						eventApi.createEvent(apiUrl, title, content, date, time)
+						eventApi.createEvent(apiUrl, title, content, date, time, participants)
 								.then(response => {
 										context.commit(mutationTypes.saveEventSuccess, response.data.data)
 								})
@@ -163,10 +161,10 @@ const actions = {
 				})
 		},
 
-		[actionTypes.updateEvent](context, {id, time, date}) {
+		[actionTypes.updateEvent](context, {id, title, content, date, time, participants}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.saveEventStart)
-						eventApi.updateEvent(apiUrl, id, time, date)
+						eventApi.updateEvent(apiUrl, id, title, content, date, time, participants)
 								.then(response => {
 										console.log(response.data);
 										context.commit(mutationTypes.saveEventSuccess, response.data)
@@ -186,8 +184,8 @@ const actions = {
 				context.commit(mutationTypes.addParticipant, email)
 		},
 
-		[actionTypes.removeParticipant](context, email) {
-				context.commit(mutationTypes.removeParticipant, email)
+		[actionTypes.removeParticipant](context, index) {
+				context.commit(mutationTypes.removeParticipant, index)
 		},
 
 

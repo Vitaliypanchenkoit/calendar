@@ -23,6 +23,7 @@ class EventController extends Controller
             $time = new Carbon($data['time']);
             $data['date'] = $date->format('Y-m-d');
             $data['time'] = $time->format('H:i');
+            $data['participants'] = $data['participants'] ? json_decode($data['participants']) : [];
 
             $persistModule = new PersistEvent();
             $event = $persistModule->create($data);
