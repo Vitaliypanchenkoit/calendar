@@ -40,6 +40,8 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/events', [EventController::class, 'create'])->name('createEvent');
     Route::put('/events', [EventController::class, 'update'])->name('updateEvent');
     Route::get('/events/edit', [EventController::class, 'edit'])->name('editEvent');
+    Route::get('events/mark/{encodedData}', [EventController::class, 'acceptInvitation'])->name('acceptInvitation');
+    Route::post('events/mark', [EventController::class, 'mark'])->name('markEvent');
 });
 
 require __DIR__.'/auth.php';

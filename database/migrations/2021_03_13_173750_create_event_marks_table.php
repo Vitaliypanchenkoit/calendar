@@ -26,8 +26,8 @@ class CreateEventMarksTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->boolean('take_part');
-            $table->boolean('not_interesting');
+            $table->boolean('take_part')->nullable();
+            $table->boolean('not_interesting')->nullable();
             $table->timestamps();
         });
     }

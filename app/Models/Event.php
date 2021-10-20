@@ -27,7 +27,7 @@ class Event extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function partisipants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function participants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

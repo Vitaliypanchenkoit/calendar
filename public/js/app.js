@@ -4394,17 +4394,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           title: this.title,
           content: this.content,
           date: this.date,
-          time: this.time
+          time: this.time,
+          participants: this.participants
         });
       } else if (this.$route.name === 'editEvent') {
         this.$store.dispatch(_store_modules_event__WEBPACK_IMPORTED_MODULE_3__.actionTypes.updateEvent, {
           id: this.id,
+          title: this.title,
+          content: this.content,
+          date: this.date,
           time: this.time,
-          date: this.date
+          participants: this.participants
         });
       }
     },
-    getUsers: function getUsers() {},
     addParticipant: function addParticipant() {
       var _this = this;
 
@@ -4458,8 +4461,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     removeParticipant: function removeParticipant(index) {
-      console.log(index);
-
       if (!this.participants[index]) {
         return;
       }
@@ -5105,20 +5106,26 @@ var getEvent = function getEvent(apiUrl, id) {
   });
 };
 
-var createEvent = function createEvent(apiUrl, title, content, date, time) {
+var createEvent = function createEvent(apiUrl, title, content, date, time, participants) {
   var formData = new FormData();
   formData.append('title', title);
   formData.append('content', content);
   formData.append('date', date);
   formData.append('time', time);
+  formData.append('participants', JSON.stringify(participants));
+  console.log(participants);
+  console.log(JSON.stringify(participants));
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
-var updateEvent = function updateEvent(apiUrl, id, time, date) {
+var updateEvent = function updateEvent(apiUrl, id, title, content, date, time, participants) {
   var formData = new FormData();
   formData.append('id', id);
-  formData.append('time', time);
+  formData.append('title', title);
+  formData.append('content', content);
   formData.append('date', date);
+  formData.append('time', time);
+  formData.append('participants', JSON.stringify(participants));
   formData.append('_method', 'PUT');
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
@@ -5677,10 +5684,11 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   var title = _ref2.title,
       content = _ref2.content,
       date = _ref2.date,
-      time = _ref2.time;
+      time = _ref2.time,
+      participants = _ref2.participants;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveEventStart);
-    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time).then(function (response) {
+    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time, participants).then(function (response) {
       context.commit(mutationTypes.saveEventSuccess, response.data.data);
     })["catch"](function (e) {
       console.log(e);
@@ -5689,11 +5697,14 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   });
 }), _defineProperty(_actions, actionTypes.updateEvent, function (context, _ref3) {
   var id = _ref3.id,
+      title = _ref3.title,
+      content = _ref3.content,
+      date = _ref3.date,
       time = _ref3.time,
-      date = _ref3.date;
+      participants = _ref3.participants;
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveEventStart);
-    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.updateEvent(apiUrl, id, time, date).then(function (response) {
+    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.updateEvent(apiUrl, id, title, content, date, time, participants).then(function (response) {
       console.log(response.data);
       context.commit(mutationTypes.saveEventSuccess, response.data);
     })["catch"](function (e) {

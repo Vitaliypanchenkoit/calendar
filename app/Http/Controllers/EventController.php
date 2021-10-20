@@ -28,6 +28,9 @@ class EventController extends Controller
             $persistModule = new PersistEvent();
             $event = $persistModule->create($data);
 
+            $event->participants = $event->participants->keyBy('id');
+            $event->unsetRelation('participants');
+
             CacheHelper::createOrUpdateRecord(CacheHelper::EVENTS, $data['date'], $event);
 
             return new EventResource($event);
@@ -77,5 +80,11 @@ class EventController extends Controller
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
+    }
+
+    public function acceptInvitation(string $encodedData)
+    {
+        $decodedData = json_decode(base64_decode($encodedData));
+
     }
 }
