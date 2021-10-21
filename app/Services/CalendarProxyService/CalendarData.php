@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sevices\CalendarProxyService;
+namespace App\Services\CalendarProxyService;
 
 use App\Helpers\EventHelper;
 use App\Helpers\NewsHelper;

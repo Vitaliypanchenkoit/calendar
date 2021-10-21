@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sevices\CalendarProxyService;
+namespace App\Services\CalendarProxyService;
 
 interface CalendarDataInterface
 {

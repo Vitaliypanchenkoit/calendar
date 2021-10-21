@@ -9,7 +9,7 @@ const state = {
 				content: '',
 				date: '',
 				time: '',
-				participants: ['1234@sdsd.sdf', 'sdfsdre@df.sdf']
+				participants: []
 		},
 		isLoading: false,
 		errors: {
@@ -87,6 +87,7 @@ const mutations = {
 
 		},
 		[mutationTypes.saveEventSuccess](state, payload) {
+				console.log(payload);
 				state.isLoading = false
 				state.successMessage = 'The Event was created successfully';
 				router.push({path: `/events/edit/${payload.id}`})
@@ -152,6 +153,9 @@ const actions = {
 						context.commit(mutationTypes.saveEventStart)
 						eventApi.createEvent(apiUrl, title, content, date, time, participants)
 								.then(response => {
+										console.log(response);
+										console.log(response.data);
+										console.log(JSON.parse(response.data));
 										context.commit(mutationTypes.saveEventSuccess, response.data.data)
 								})
 								.catch((e) => {

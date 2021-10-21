@@ -14,7 +14,7 @@ use App\Notifications\NewsWasMarkAsImportant;
 use App\PersistModule\PersistNews;
 use App\Repositories\NewsMarkRepository;
 use App\Repositories\NewsRepository;
-use App\Sevices\NewsService;
+use App\Services\NewsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 

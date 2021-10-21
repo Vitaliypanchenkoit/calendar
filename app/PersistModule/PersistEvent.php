@@ -4,8 +4,8 @@ namespace App\PersistModule;
 
 use App\Models\Event;
 use App\Models\User;
-use App\Sevices\ObserverService\Observers\NotifyParticipant;
-use App\Sevices\ObserverService\Subjects\CreateUpdateEvent;
+use App\Services\ObserverService\Observers\NotifyParticipant;
+use App\Services\ObserverService\Subjects\CreateUpdateEvent;
 
 class PersistEvent implements PersistInterface
 {

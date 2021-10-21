@@ -82,9 +82,9 @@ class EventController extends Controller
         }
     }
 
-    public function acceptInvitation(string $encodedData)
+    public function acceptInvitation(string $data)
     {
-        $decodedData = json_decode(base64_decode($encodedData));
+        $decodedData = json_decode(base64_decode($data));
 
     }
 }

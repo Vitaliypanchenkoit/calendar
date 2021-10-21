@@ -5576,7 +5576,7 @@ var state = {
     content: '',
     date: '',
     time: '',
-    participants: ['1234@sdsd.sdf', 'sdfsdre@df.sdf']
+    participants: []
   },
   isLoading: false,
   errors: {
@@ -5639,6 +5639,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     participants: ''
   };
 }), _defineProperty(_mutations, mutationTypes.saveEventSuccess, function (state, payload) {
+  console.log(payload);
   state.isLoading = false;
   state.successMessage = 'The Event was created successfully';
   _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
@@ -5689,6 +5690,9 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveEventStart);
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time, participants).then(function (response) {
+      console.log(response);
+      console.log(response.data);
+      console.log(JSON.parse(response.data));
       context.commit(mutationTypes.saveEventSuccess, response.data.data);
     })["catch"](function (e) {
       console.log(e);

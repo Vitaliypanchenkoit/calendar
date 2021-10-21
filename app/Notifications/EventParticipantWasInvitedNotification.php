@@ -47,7 +47,7 @@ class EventParticipantWasInvitedNotification extends Notification implements Sho
             ->subject('Event invitation')
             ->greeting('Hello!')
             ->line('You was invited to the "' . $this->event->title . '" event.')
-            ->action('Click this link to accept the invitation', route('markEvent', ['encodedData' => $encodedData]));
+            ->action('Click this link to accept the invitation', route('markEvent', ['data' => $encodedData]));
     }
 
     /**

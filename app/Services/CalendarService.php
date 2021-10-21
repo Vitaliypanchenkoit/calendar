@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Sevices;
+namespace App\Services;
 
 use App\Helpers\ObjectHelper;
 use App\Repositories\CalendarRepository;

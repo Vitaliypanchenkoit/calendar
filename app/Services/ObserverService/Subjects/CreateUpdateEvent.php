@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sevices\ObserverService\Subjects;
+namespace App\Services\ObserverService\Subjects;
 
 use App\Models\Event;
 

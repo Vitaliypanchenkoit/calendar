@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Sevices;
+namespace App\Services;
 
 class ReminderService
 {
     public function createReminder()
     {
-        
+
     }
 
 }
