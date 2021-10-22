@@ -18,7 +18,7 @@ class EventParticipantWasInvitedNotification extends Notification implements Sho
      *
      * @return void
      */
-    public function __construct(private Event $event, private User $user)
+    public function __construct(private Event $event)
     {
         //
     }
@@ -42,12 +42,11 @@ class EventParticipantWasInvitedNotification extends Notification implements Sho
      */
     public function toMail($notifiable)
     {
-        $encodedData = base64_encode(json_encode(['eventId' => $this->event->id, 'userId' => $this->user->id, 'takePart' => 1]));
         return (new MailMessage)
-            ->subject('Event invitation')
+            ->subject('Event planning')
             ->greeting('Hello!')
-            ->line('You was invited to the "' . $this->event->title . '" event.')
-            ->action('Click this link to accept the invitation', route('markEvent', ['data' => $encodedData]));
+            ->line('You was mentioned in the event planning: "' . $this->event->title . '"')
+            ->action('Click this link to view event details', route('home', ['event' => $this->event->id]));
     }
 
     /**

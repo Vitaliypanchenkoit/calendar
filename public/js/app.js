@@ -5113,8 +5113,6 @@ var createEvent = function createEvent(apiUrl, title, content, date, time, parti
   formData.append('date', date);
   formData.append('time', time);
   formData.append('participants', JSON.stringify(participants));
-  console.log(participants);
-  console.log(JSON.stringify(participants));
   return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.post(apiUrl, formData);
 };
 
@@ -5643,7 +5641,10 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   state.isLoading = false;
   state.successMessage = 'The Event was created successfully';
   _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
-    path: "/events/edit/".concat(payload.id)
+    name: 'editEvent',
+    params: {
+      'id': payload.id
+    }
   });
 }), _defineProperty(_mutations, mutationTypes.saveEventFailure, function (state, payload) {
   state.isLoading = false;
@@ -5674,7 +5675,7 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
 
   return new Promise(function (resolve) {
     context.commit(mutationTypes.getSingleEventStart);
-    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.getEvent(apiUrl, id).then(function (response) {
+    _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.getEvent(apiUrl + '/edit', id).then(function (response) {
       context.commit(mutationTypes.getSingleEventSuccess, response.data);
       resolve(response.data);
     })["catch"](function (e) {
@@ -5690,13 +5691,10 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveEventStart);
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time, participants).then(function (response) {
-      console.log(response);
-      console.log(response.data);
-      console.log(JSON.parse(response.data));
       context.commit(mutationTypes.saveEventSuccess, response.data.data);
     })["catch"](function (e) {
-      console.log(e);
-      context.commit(mutationTypes.saveEventFailure, e.response.data.errors);
+      console.log(e.response.data);
+      context.commit(mutationTypes.saveEventFailure, e.response.data.message);
     });
   });
 }), _defineProperty(_actions, actionTypes.updateEvent, function (context, _ref3) {
@@ -60102,7 +60100,7 @@ var render = function() {
                       _c("div", [
                         _c("span", [
                           _vm._v(
-                            "Partisipants: " + _vm._s(item.take_part.length)
+                            "participants: " + _vm._s(item.take_part.length)
                           )
                         ]),
                         _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
@@ -60129,11 +60127,7 @@ var render = function() {
                           {
                             staticClass: "body-item__edit absolute",
                             attrs: {
-                              to: {
-                                name: "editEvent",
-                                params: { id: item.id },
-                                props: { id: item.id }
-                              }
+                              to: { name: "editEvent", params: { id: item.id } }
                             }
                           },
                           [
@@ -60175,7 +60169,7 @@ var render = function() {
                                   _vm.markEvent(
                                     item.id,
                                     "take_part",
-                                    !item.partisipants.includes(
+                                    !item.participants.includes(
                                       _vm.$parent.currentUser.id
                                     )
                                   )

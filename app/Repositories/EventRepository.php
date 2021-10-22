@@ -3,29 +3,37 @@
 
 namespace App\Repositories;
 
-
+use App\Helpers\EventHelper;
 use App\Models\Event;
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class EventRepository implements EventRepositoryInterface
 {
     /**
      * @param int $id
-     * @return mixed
+     * @return Event|null
      */
-    public function getSingleEvent(int $id)
+    public function getSingleEvent(int $id): ?Event
     {
-        return Event::select(['*'])
-            ->where('id', $id)
-            ->with('newsMarks')
+        $event = Event::where('id', $id)
+            ->with('eventMarks')
+            ->with('participants')
             ->first();
+
+        if ($event) {
+            $event = EventHelper::reformat($event);
+            $event = EventHelper::reformatParticipants($event);
+        }
+
+        return $event;
     }
 
     /**
      * @param string $date
-     * @return mixed
+     * @return Collection
      */
-    public function getDateEvents(string $date)
+    public function getDateEvents(string $date): Collection
     {
         return Event::select(
             'events.*',

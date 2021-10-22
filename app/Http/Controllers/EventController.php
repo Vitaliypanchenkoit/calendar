@@ -9,6 +9,7 @@ use App\Http\Requests\ValidateEventIdRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\PersistModule\PersistEvent;
+use App\Repositories\EventRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,8 @@ class EventController extends Controller
     {
         $data = $request->validated();
 
-        return Event::find($data['id']);
+        $repository = new EventRepository();
+        return $repository->getSingleEvent($data['id']);
     }
 
     /**
@@ -64,6 +66,8 @@ class EventController extends Controller
 
             $dateTime = new Carbon($data['date']);
             $data['date'] = $dateTime->format('Y-m-d');
+
+            $data['participants'] = $data['participants'] ? json_decode($data['participants']) : [];
 
             $event = Event::find($data['id']);
             if ($event->author_id !== auth()->user()->id) {

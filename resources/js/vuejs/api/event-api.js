@@ -17,9 +17,6 @@ const createEvent = (apiUrl, title, content, date, time, participants) => {
 		formData.append('time', time)
 		formData.append('participants', JSON.stringify(participants))
 
-		console.log(participants);
-		console.log(JSON.stringify(participants));
-
 		return axios.post(apiUrl, formData)
 }
 

@@ -90,7 +90,7 @@ const mutations = {
 				console.log(payload);
 				state.isLoading = false
 				state.successMessage = 'The Event was created successfully';
-				router.push({path: `/events/edit/${payload.id}`})
+				router.push({name: 'editEvent', params: { 'id': payload.id}})
 		},
 		[mutationTypes.saveEventFailure](state, payload) {
 				state.isLoading = false
@@ -137,7 +137,7 @@ const actions = {
 				}
 				return new Promise(resolve => {
 						context.commit(mutationTypes.getSingleEventStart)
-						eventApi.getEvent(apiUrl, id)
+						eventApi.getEvent(apiUrl + '/edit', id)
 								.then(response => {
 										context.commit(mutationTypes.getSingleEventSuccess, response.data)
 										resolve(response.data)
@@ -153,14 +153,11 @@ const actions = {
 						context.commit(mutationTypes.saveEventStart)
 						eventApi.createEvent(apiUrl, title, content, date, time, participants)
 								.then(response => {
-										console.log(response);
-										console.log(response.data);
-										console.log(JSON.parse(response.data));
 										context.commit(mutationTypes.saveEventSuccess, response.data.data)
 								})
 								.catch((e) => {
-										console.log(e);
-										context.commit(mutationTypes.saveEventFailure, e.response.data.errors)
+										console.log(e.response.data);
+										context.commit(mutationTypes.saveEventFailure, e.response.data.message)
 								})
 				})
 		},

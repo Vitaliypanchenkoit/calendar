@@ -4,8 +4,11 @@ namespace App\PersistModule;
 
 use App\Models\Event;
 use App\Models\User;
-use App\Services\ObserverService\Observers\NotifyParticipant;
-use App\Services\ObserverService\Subjects\CreateUpdateEvent;
+//use App\Services\ObserverService\Observers\NotifyParticipant;
+//use App\Services\ObserverService\Subjects\CreateUpdateEvent;
+use App\Events\CreateUpdateEvent;
+use App\Repositories\EventRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class PersistEvent implements PersistInterface
 {
@@ -25,36 +28,69 @@ class PersistEvent implements PersistInterface
             'author_id' => auth()->user()->id,
         ]);
 
-        $event->participants()->saveMany($users);
-
-        $subject = new CreateUpdateEvent($event);
-
-        foreach ($users as $user) {
-            $observer = new NotifyParticipant($user);
-            $subject->attach($observer);
+        if ($users) {
+            $event->participants()->saveMany($users);
         }
 
-        $subject->notify();
+        CreateUpdateEvent::dispatch($event);
+
+        /* Clear observer implementation */
+//        $subject = new CreateUpdateEvent($event);
+//
+//        foreach ($users as $user) {
+//            $observer = new NotifyParticipant($user);
+//            $subject->attach($observer);
+//        }
+//
+//        $subject->notify();
+        /* End */
 
         return Event::where('id', $event->id)->with('participants')->first();
     }
 
     /**
      * @param array $data
-     * @return mixed
+     * @return Event
      */
-    public function update(array $data)
+    public function update(array $data): Event
     {
-        return Event::where(['id' => $data['id']])
-            ->update([
-                'time' => $data['time'],
-            ]);
+        $hasChanches = false;
+        $repository = new EventRepository();
+        $event = $repository->getSingleEvent($data['id']);
+
+        CreateUpdateEvent::dispatch($event);
+        return $event;
+
+        $existingParticipants = $event->participants()->keyBy('email')->keys()->toArray();
+
+        if ($existingParticipants !== $data['participants']) {
+            $users = $data['participants'] ? $this->saveParticipants($data['participants'])->keyBy('id')->keys()->toArray() : [];
+            $event->participants()->sync($users);
+            $hasChanches = true;
+        }
+
+        if ($hasChanches ||
+            $event->title !== $data['title'] ||
+            $event->content !== $data['content'] ||
+            $event->date !== $data['date'] ||
+            $event->time !== $data['time']
+        ) {
+            CreateUpdateEvent::dispatch($event);
+        }
+
+        $event->title = $data['title'];
+        $event->content = $data['content'];
+        $event->date = $data['date'];
+        $event->time = $data['time'];
+        $event->save();
+
+        return $event;
 
     }
 
     /**
      * @param array $participants
-     * @return array|void
+     * @return Collection|void
      */
     private function saveParticipants(array $participants)
     {

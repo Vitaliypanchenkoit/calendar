@@ -84,7 +84,7 @@
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
 																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
 																<div>
-																		<span>Partisipants: {{ item.take_part.length }}</span>&#160;&#160;
+																		<span>participants: {{ item.take_part.length }}</span>&#160;&#160;
 																		<span>Marked as not interesting: {{ item.not_interesting.length }}</span>
 																</div>
 														</div>
@@ -94,14 +94,14 @@
 														<router-link
 																v-if="$parent.currentUser.id === item.author_id"
 																class="body-item__edit absolute"
-																:to="{name: 'editEvent', params: {id:  item.id}, props: {id:  item.id}}"
+																:to="{name: 'editEvent', params: {id:  item.id}}"
 														>
 																<<<< Edit Event
 														</router-link>
 														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('Event', item.id, index)">&#10060;</div>
 														<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
 																<label>
-																		<input type="checkbox" :checked="item.take_part.includes($parent.currentUser.id)" @change="markEvent(item.id, 'take_part', !item.partisipants.includes($parent.currentUser.id))">
+																		<input type="checkbox" :checked="item.take_part.includes($parent.currentUser.id)" @change="markEvent(item.id, 'take_part', !item.participants.includes($parent.currentUser.id))">
 																		<span>I'll take part</span>
 																</label>&#160;&#160;
 																<label>
