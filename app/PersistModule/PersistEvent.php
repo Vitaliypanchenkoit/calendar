@@ -32,7 +32,7 @@ class PersistEvent implements PersistInterface
             $event->participants()->saveMany($users);
         }
 
-        CreateUpdateEvent::dispatch($event);
+        CreateUpdateEvent::dispatch($event, $users);
 
         /* Clear observer implementation */
 //        $subject = new CreateUpdateEvent($event);
@@ -45,7 +45,8 @@ class PersistEvent implements PersistInterface
 //        $subject->notify();
         /* End */
 
-        return Event::where('id', $event->id)->with('participants')->first();
+        $repository = new EventRepository();
+        return $repository->getSingleEvent($event->id);
     }
 
     /**
@@ -58,13 +59,8 @@ class PersistEvent implements PersistInterface
         $repository = new EventRepository();
         $event = $repository->getSingleEvent($data['id']);
 
-        CreateUpdateEvent::dispatch($event);
-        return $event;
-
-        $existingParticipants = $event->participants()->keyBy('email')->keys()->toArray();
-
-        if ($existingParticipants !== $data['participants']) {
-            $users = $data['participants'] ? $this->saveParticipants($data['participants'])->keyBy('id')->keys()->toArray() : [];
+        $users = $this->saveParticipants($data['participants']);
+        if ($event->participants !== $data['participants']) {
             $event->participants()->sync($users);
             $hasChanches = true;
         }
@@ -75,16 +71,17 @@ class PersistEvent implements PersistInterface
             $event->date !== $data['date'] ||
             $event->time !== $data['time']
         ) {
-            CreateUpdateEvent::dispatch($event);
+            CreateUpdateEvent::dispatch($event, $users);
         }
 
-        $event->title = $data['title'];
-        $event->content = $data['content'];
-        $event->date = $data['date'];
-        $event->time = $data['time'];
-        $event->save();
+        Event::where('id', $event->id)->update([
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'date' => $data['date'],
+            'time' => $data['time'],
+        ]);
 
-        return $event;
+        return $repository->getSingleEvent($data['id']);
 
     }
 

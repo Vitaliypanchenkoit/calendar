@@ -29,9 +29,6 @@ class EventController extends Controller
             $persistModule = new PersistEvent();
             $event = $persistModule->create($data);
 
-            $event->participants = $event->participants->keyBy('id');
-            $event->unsetRelation('participants');
-
             CacheHelper::createOrUpdateRecord(CacheHelper::EVENTS, $data['date'], $event);
 
             return new EventResource($event);

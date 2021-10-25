@@ -32,7 +32,7 @@ class UpdateEventRequest extends FormRequest
         }
 
         return [
-            'id' => ['required', 'exists:reminders,id'],
+            'id' => ['required', 'exists:events,id'],
             'title' => ['required'],
             'content' => ['required'],
             'date' => ['required', 'date', new FutureOrCurrentDate($time)],

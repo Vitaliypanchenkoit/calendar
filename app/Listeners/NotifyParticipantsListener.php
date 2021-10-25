@@ -6,6 +6,7 @@ use App\Events\CreateUpdateEvent;
 use App\Notifications\EventParticipantWasInvitedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class NotifyParticipantsListener implements ShouldQueue
 {
@@ -27,11 +28,16 @@ class NotifyParticipantsListener implements ShouldQueue
      */
     public function handle(CreateUpdateEvent $createUpdateEvent)
     {
-        $participants = $createUpdateEvent->event->participants();
-        if ($participants) {
-            foreach ($participants as $participant) {
-                $participant->notify(new EventParticipantWasInvitedNotification($createUpdateEvent->event));
+        try {
+            $participants = $createUpdateEvent->participants;
+            if ($participants) {
+                foreach ($participants as $participant) {
+                    $participant->notify(new EventParticipantWasInvitedNotification($createUpdateEvent->event));
+                }
             }
+
+        } catch (\Throwable $e) {
+            Log::error('Participant notification error: ' . $e->getMessage());
         }
     }
 }

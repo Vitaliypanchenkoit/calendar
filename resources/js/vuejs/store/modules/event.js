@@ -87,10 +87,11 @@ const mutations = {
 
 		},
 		[mutationTypes.saveEventSuccess](state, payload) {
-				console.log(payload);
 				state.isLoading = false
-				state.successMessage = 'The Event was created successfully';
-				router.push({name: 'editEvent', params: { 'id': payload.id}})
+				state.successMessage = 'The Event was saved successfully';
+				if (router.currentRoute.name === createEvent) {
+						router.push({name: 'editEvent', params: { 'id': payload.id}})
+				}
 		},
 		[mutationTypes.saveEventFailure](state, payload) {
 				state.isLoading = false
@@ -167,7 +168,6 @@ const actions = {
 						context.commit(mutationTypes.saveEventStart)
 						eventApi.updateEvent(apiUrl, id, title, content, date, time, participants)
 								.then(response => {
-										console.log(response.data);
 										context.commit(mutationTypes.saveEventSuccess, response.data)
 								})
 								.catch((e) => {

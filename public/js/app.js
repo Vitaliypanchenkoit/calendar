@@ -5637,15 +5637,17 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     participants: ''
   };
 }), _defineProperty(_mutations, mutationTypes.saveEventSuccess, function (state, payload) {
-  console.log(payload);
   state.isLoading = false;
-  state.successMessage = 'The Event was created successfully';
-  _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
-    name: 'editEvent',
-    params: {
-      'id': payload.id
-    }
-  });
+  state.successMessage = 'The Event was saved successfully';
+
+  if (_router_router__WEBPACK_IMPORTED_MODULE_1__.default.currentRoute.name === createEvent) {
+    _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
+      name: 'editEvent',
+      params: {
+        'id': payload.id
+      }
+    });
+  }
 }), _defineProperty(_mutations, mutationTypes.saveEventFailure, function (state, payload) {
   state.isLoading = false;
   state.errors = payload;
@@ -5707,7 +5709,6 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
   return new Promise(function (resolve) {
     context.commit(mutationTypes.saveEventStart);
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.updateEvent(apiUrl, id, title, content, date, time, participants).then(function (response) {
-      console.log(response.data);
       context.commit(mutationTypes.saveEventSuccess, response.data);
     })["catch"](function (e) {
       context.commit(mutationTypes.saveEventFailure, e.response.data.errors);
