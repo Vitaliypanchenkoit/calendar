@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\CreateUpdateEvent;
-use App\Events\TimeToRemindEvent;
 use App\Http\Requests\DeleteObjectRequest;
 use App\Http\Requests\GetDateDataRequest;
 use App\Http\Requests\GetMonthDataRequest;
-use App\Models\Event;
-use App\Models\User;
 use App\Repositories\ReminderRepository;
 use App\Services\CalendarProxyService\CachingData;
 use App\Services\CalendarService;
@@ -33,10 +29,6 @@ class CalendarDateController extends Controller
      */
     public function getMonthData(GetMonthDataRequest $request): JsonResponse
     {
-        $event = Event::find(53);
-        $user = User::find(1);
-//        CreateUpdateEvent::dispatch($event, [$user]);
-
         $data = $request->validated();
 
         $result = [

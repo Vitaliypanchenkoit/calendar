@@ -12,8 +12,8 @@
 														<div class="arrow" :class="[isVisible.reminders ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.reminders}">
-												<div v-for="(reminder, index) in dateData['reminders']" class="date-element__body-item body-item relative">
+										<transition-group class="date-element__body" name="date-element" tag="div" :class="{visible: isVisible.reminders}">
+												<div v-for="(reminder, index) in dateData['reminders']" :key="reminder.id" class="date-element__body-item body-item relative">
 														<div class="body-item__time">{{ reminder.time }}</div>
 														<div class="body-item__title">{{ reminder.title }}</div>
 														<div class="body-item__content">{{ reminder.content }}</div>
@@ -26,7 +26,7 @@
 														</router-link>
 														<div v-if="$parent.currentUser.id === reminder.author_id" class="remove" title="Remove" @click="removeObject('Reminder', reminder.id, index)">&#10060;</div>
 												</div>
-										</div>
+										</transition-group>
 								</div>
 								<div class="date-element news">
 										<div class="date-element__head">
@@ -35,8 +35,8 @@
 														<div class="arrow" :class="[isVisible.news ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.news}">
-												<div v-for="(item, index) in dateData['news']" class="date-element__body-item body-item relative">
+										<transition-group class="date-element__body" name="date-element" tag="div" :class="{visible: isVisible.news}">
+												<div v-for="(item, index) in dateData['news']" :key="item.id" class="date-element__body-item body-item relative">
 																<div class="body-item__title">{{ item.title }}</div>
 														<div class="body-item__meta">
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
@@ -68,7 +68,7 @@
 																</label>
 														</div>
 												</div>
-										</div>
+										</transition-group>
 								</div>
 								<div class="date-element events">
 										<div class="date-element__head">
@@ -77,8 +77,8 @@
 														<div class="arrow" :class="[isVisible.events ? 'arrow-up' : 'arrow-down']"></div>
 												</div>
 										</div>
-										<div class="date-element__body" :class="{visible: isVisible.events}">
-												<div v-for="(item, index) in dateData['events']" class="date-element__body-item body-item relative" :id="'event-' + item.id">
+										<transition-group class="date-element__body" name="date-element" tag="div" :class="{visible: isVisible.events}" >
+												<div v-for="(item, index) in dateData['events']" class="date-element__body-item body-item relative" :key="item.id">
 														<div class="body-item__title">{{ item.title }}</div>
 														<div class="body-item__meta">
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
@@ -106,7 +106,7 @@
 														</router-link>
 														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('Event', item.id, index)">&#10060;</div>
 												</div>
-										</div>
+										</transition-group>
 								</div>
 						</div>
 				</div>
@@ -239,6 +239,13 @@ export default {
 		top: 10px;
 		right: 5px;
 		cursor: pointer;
+}
+.date-element-enter-active, .date-element-leave-active {
+		transition: all 0.6s;
+}
+.date-element-enter, .date-element-leave-to {
+		opacity: 0;
+		transform: translateY(30px);
 }
 
 </style>

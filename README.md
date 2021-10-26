@@ -43,3 +43,9 @@ https://github.com/stuartjnelson/badger-accordion <br>
 Так как паттерн Observer в Ларавел реализован в виде Events/Listeners, в приложении используется данные возможности Ларавел
 * Events - это Subjects
 * Listeners - это Observers
+
+3. Chain of responsibility
+Laravel Middleware реализует инверсию данного паттерна. То есть кажый Middleware проверяет, если выполняется заданное условие, он
+передаёт запрос по цепочке на дальнейшую обработку.
+
+Кроме этого, данный паттерн был реализован в сервисе app/Services/LoggerChaneService для многоуровневого логирования ошибок.

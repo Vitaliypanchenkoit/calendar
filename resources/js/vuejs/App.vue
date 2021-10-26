@@ -16,7 +16,13 @@ export default {
 		},
 		data() {
 			return {
-					currentUser: window.currentUser
+					currentUser: window.currentUser,
+					goTo: window.goTo,
+			}
+		},
+		created() {
+			if (this.goTo) {
+					this.$router.push({name: this.goTo.routerName, params: {id: this.goTo.id}})
 			}
 		}
 }

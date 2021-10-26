@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Helpers\EncryptionHelper;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -46,7 +47,7 @@ class SomeoneAgreeToTakePartInEventNotification extends Notification implements 
             ->subject('Event invitation was accepted')
             ->greeting('Hello!')
             ->line( $this->user->name . ' has accepted an event "' . $this->event->title . '" invitation')
-            ->action('Click this link to view event details', route('home', ['event' => $this->event->id]));
+            ->action('Click this link to view event details', route('home', ['goTo' => EncryptionHelper::encodeRequestAttribute(['routerName' => 'eventDetails', 'id' => $this->event->id])]));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\EncryptionHelper;
+use App\Services\LoggerChainService\Logger;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,9 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        $goToEvent
+        $goTo = request()->goTo ?? session('goTo') ?? [];
+        try {
+            $goTo = $goTo ? EncryptionHelper::decodeRequestAttribute($goTo) : [];
+            session()->forget('goTo');
+
+        } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
+        }
+
         return view('index', [
-            'currentUser' => auth()->user()->only('id', 'name', 'email')
+            'currentUser' => auth()->user()->only('id', 'name', 'email'),
+            'goTo' => $goTo
         ]);
     }
 
