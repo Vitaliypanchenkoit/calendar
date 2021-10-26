@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CacheHelper;
 use App\Http\Requests\Event\CreateEventRequest;
+use App\Http\Requests\Event\MarkEventRequest;
 use App\Http\Requests\Event\UpdateEventRequest;
 use App\Http\Requests\ValidateEventIdRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Models\EventMark;
 use App\PersistModule\PersistEvent;
+use App\Repositories\EventMarkRepository;
 use App\Repositories\EventRepository;
+use App\Services\EventService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -83,9 +87,22 @@ class EventController extends Controller
         }
     }
 
-    public function acceptInvitation(string $data)
+    /**
+     * Mark the event
+     * @param MarkEventRequest $request
+     * @return \Illuminate\Http\JsonResponse|EventResource
+     */
+    public function mark(MarkEventRequest $request)
     {
-        $decodedData = json_decode(base64_decode($data));
+        try {
+            $data = $request->validated();
+            $service = new EventService();
+            $event = $service->markEvent($data['id'], $data['key'], $data['value']);
+            return new EventResource($event);
+
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
+        }
 
     }
 }

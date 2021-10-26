@@ -13,6 +13,8 @@ class EventHelper
      */
     public static function reformat(Event $event): Event
     {
+
+
         $event->take_part = $event->eventMarks->where('take_part', 1)->keyBy('user_id')->keys();
         $event->not_interesting = $event->eventMarks->where('not_interesting', 1)->keyBy('user_id')->keys();
         $event->unsetRelation('eventMarks');

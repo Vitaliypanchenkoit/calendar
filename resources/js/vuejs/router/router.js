@@ -5,6 +5,7 @@ import Date from "../views/Date";
 import CreateEditEvent from "../views/Event/CreateEditEvent";
 import CreateEditNews from "../views/News/CreateEditNews";
 import CreateEditReminder from "../views/Reminder/CreateEditReminder";
+import EventDetails from "../views/Event/EventDetails";
 
 Vue.use(VueRouter);
 
@@ -54,6 +55,12 @@ const routes = [
 				name: 'editReminder',
 				props: true,
 				component: CreateEditReminder,
+		},
+		{
+				path: '/events/details/:id',
+				name: 'eventDetails',
+				props: true,
+				component: EventDetails,
 		},
 ];
 

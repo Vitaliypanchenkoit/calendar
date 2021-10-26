@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+//        $goToEvent
         return view('index', [
             'currentUser' => auth()->user()->only('id', 'name', 'email')
         ]);

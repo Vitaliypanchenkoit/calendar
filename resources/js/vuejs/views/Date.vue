@@ -78,7 +78,7 @@
 												</div>
 										</div>
 										<div class="date-element__body" :class="{visible: isVisible.events}">
-												<div v-for="(item, index) in dateData['events']" class="date-element__body-item body-item relative">
+												<div v-for="(item, index) in dateData['events']" class="date-element__body-item body-item relative" :id="'event-' + item.id">
 														<div class="body-item__title">{{ item.title }}</div>
 														<div class="body-item__meta">
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
@@ -98,17 +98,13 @@
 														>
 																<<<< Edit Event
 														</router-link>
+														<router-link
+																class="body-item__details absolute"
+																:to="{name: 'eventDetails', params: {id:  item.id}}"
+														>
+																<<<< Details
+														</router-link>
 														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('Event', item.id, index)">&#10060;</div>
-														<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
-																<label>
-																		<input type="checkbox" :checked="item.take_part.includes($parent.currentUser.id)" @change="markEvent(item.id, 'take_part', !item.participants.includes($parent.currentUser.id))">
-																		<span>I'll take part</span>
-																</label>&#160;&#160;
-																<label>
-																		<input type="checkbox" :checked="item.not_interesting.includes($parent.currentUser.id)" @change="markEvent(item.id,'not_interesting', !item.not_interesting.includes($parent.currentUser.id))">
-																		<span>Not interesting</span>
-																</label>
-														</div>
 												</div>
 										</div>
 								</div>
@@ -166,10 +162,6 @@ export default {
 				removeObject(objectName, id, index) {
 						this.$store.dispatch(actionTypes.removeObject, {objectName, id, index})
 				},
-				markEvent(id, key, value) {
-						this.$store.dispatch(actionTypes.markEvent, {id, key, value})
-
-				}
 
 		},
 }
@@ -233,6 +225,11 @@ export default {
 		cursor: pointer;
 }
 .body-item__edit {
+		top: 0.5rem;
+		right: 175px;
+}
+
+.body-item__details {
 		top: 0.5rem;
 		right: 55px;
 }

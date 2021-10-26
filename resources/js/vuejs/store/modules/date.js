@@ -21,10 +21,6 @@ export const mutationTypes = {
 		markNewsStart: '[date] Mark/unmark news start',
 		markNewsSuccess: '[date] Mark/unmark news success',
 		markNewsFailed: '[date] Mark/unmark news as read or important',
-
-		markEventStart: '[date] Mark/unmark event start',
-		markEventSuccess: '[date] Mark/unmark event success',
-		markEventFailed: '[date] Mark/unmark event',
 }
 
 const mutations = {
@@ -75,17 +71,6 @@ const mutations = {
 				state.isLoading = false
 		},
 
-		/* Mark/unmark event */
-		[mutationTypes.markEventStart](state) {
-				state.isLoading = true
-		},
-		[mutationTypes.markEventSuccess](state, payload) {
-				state.isLoading = false
-		},
-		[mutationTypes.markEventFailed](state, payload) {
-				state.isLoading = false
-		}
-
 
 }
 
@@ -93,7 +78,6 @@ export const actionTypes = {
 		getData: '[date] Get data of a certain date',
 		removeObject: '[date] Remove an object',
 		markNews: '[date] Mark/unmark news as read or important',
-		markEvent: '[date] Mark/unmark event',
 }
 
 const actions = {
@@ -136,21 +120,6 @@ const actions = {
 								})
 				})
 		},
-
-		[actionTypes.markEvent](context, {id, key, value}) { // key may be "take_part" or "not_interesting"; value may be true or false
-				return new Promise(resolve => {
-						context.commit(mutationTypes.markEventStart)
-						newsApi.markNews('/news/mark', id, key, value)
-								.then(response => {
-										context.commit(mutationTypes.markEventSuccess, {})
-								})
-								.catch((e) => {
-										console.log(e);
-										context.commit(mutationTypes.markEventFailed, e.response.data)
-								})
-				})
-		},
-
 }
 
 export default {

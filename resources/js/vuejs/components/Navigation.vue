@@ -17,16 +17,9 @@ export default {
 				vSelect
 		},
 		props: {
-				year: {
-						type: Number,
-				},
-				month: {
-						type: Number,
-				},
-				date: {
-						type: Number,
-						default: 0
-				},
+				year: 0,
+				month: 0,
+				date: 0,
 				hide: {
 						type: Array,
 						default: function () {

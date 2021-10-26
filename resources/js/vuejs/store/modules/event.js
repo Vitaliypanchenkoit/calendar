@@ -1,15 +1,19 @@
 import eventApi from '../../api/event-api'
 import router from '../../router/router'
+import newsApi from "../../api/news-api";
 const apiUrl = '/events';
 
 const state = {
 		events: {},
 		singleEventData: {
+				author_id: '',
 				title: '',
 				content: '',
 				date: '',
 				time: '',
-				participants: []
+				participants: [],
+				take_part: [],
+				not_interesting: [],
 		},
 		isLoading: false,
 		errors: {
@@ -35,17 +39,24 @@ export const mutationTypes = {
 
 		addParticipant: '[event] Add a participant',
 		removeParticipant: '[event] Remove a participant',
+
+		markEventStart: '[event] Mark/unmark event start',
+		markEventSuccess: '[event] Mark/unmark event success',
+		markEventFailed: '[event] Mark/unmark event failure',
 }
 
 const mutations = {
 		[mutationTypes.getSingleEventStart](state) {
 				state.isLoading = true
 				state.singleEventData = {
+						author_id: '',
 						title: '',
 						content: '',
 						date: '',
 						time: '',
-						participants: []
+						participants: [],
+						take_part: [],
+						not_interesting: [],
 				}
 
 				state.errors = {
@@ -64,11 +75,14 @@ const mutations = {
 		[mutationTypes.getSingleEventFailure](state, payload) {
 				state.isLoading = false
 				state.singleEventData = {
+						author_id: '',
 						title: '',
 						content: '',
 						date: '',
 						time: '',
 						participants: [],
+						take_part: [],
+						not_interesting: [],
 				}
 				state.errors = payload
 		},
@@ -120,6 +134,18 @@ const mutations = {
 				}
 		},
 
+		/* Mark/unmark event */
+		[mutationTypes.markEventStart](state) {
+				state.isLoading = true
+		},
+		[mutationTypes.markEventSuccess](state, payload) {
+				state.isLoading = false
+				state.singleEventData = payload
+		},
+		[mutationTypes.markEventFailed](state, payload) {
+				state.isLoading = false
+		}
+
 }
 
 export const actionTypes = {
@@ -129,6 +155,7 @@ export const actionTypes = {
 		getInputValue: '[event] Get input value',
 		addParticipant: '[event] Add participant',
 		removeParticipant: '[event] Remove participant',
+		markEvent: '[event] Mark/unmark event',
 }
 
 const actions = {
@@ -172,6 +199,20 @@ const actions = {
 								})
 								.catch((e) => {
 										context.commit(mutationTypes.saveEventFailure, e.response.data.errors)
+								})
+				})
+		},
+
+		[actionTypes.markEvent](context, {id, key, value}) { // key may be "take_part" or "not_interesting"; value may be true or false
+				return new Promise(resolve => {
+						context.commit(mutationTypes.markEventStart)
+						eventApi.markEvent('/events/mark', id, key, value)
+								.then(response => {
+										context.commit(mutationTypes.markEventSuccess, response.data.data)
+								})
+								.catch((e) => {
+										console.log(e);
+										context.commit(mutationTypes.markEventFailed, e.response.data)
 								})
 				})
 		},

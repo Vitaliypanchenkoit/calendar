@@ -34,8 +34,20 @@ const updateEvent = (apiUrl, id, title, content, date, time, participants) => {
 		return axios.post(apiUrl, formData)
 }
 
+const markEvent = (apiUrl, id, key, value) => {
+		let formData = new FormData();
+		value = value ? 1 : 0
+
+		formData.append('id', id)
+		formData.append('key', key)
+		formData.append('value', value)
+
+		return axios.post(apiUrl, formData)
+}
+
 export default {
 		getEvent,
 		createEvent,
-		updateEvent
+		updateEvent,
+		markEvent
 }

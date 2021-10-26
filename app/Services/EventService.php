@@ -3,47 +3,61 @@
 namespace App\Services;
 
 use App\Helpers\CacheHelper;
-use App\Models\Event;
 use App\Models\EventMark;
+use App\Notifications\SomeoneAgreeToTakePartInEventNotification;
 use App\Repositories\EventMarkRepository;
+use App\Repositories\EventRepository;
 
 class EventService
 {
-    public function __construct(private EventMarkRepository $repository)
-    {
+    /**
+     * @var EventMarkRepository
+     */
+    private EventMarkRepository $repository;
 
+    /**
+     * @var EventRepository
+     */
+    private EventRepository $eventRepository;
+
+    public function __construct()
+    {
+        $this->repository = new EventMarkRepository();
+        $this->eventRepository = new EventRepository();
     }
 
     /**
      * @param int $eventId
-     * @param int $userId
-     * @param int|null $takePart
-     * @param int|null $notInteresting
+     * @param string $key
+     * @param int $value
+     * @return \App\Models\Event|null
      */
-    public function markEvent(int $eventId, int $userId, int $takePart = null, int $notInteresting = null)
+    public function markEvent(int $eventId, string $key, int $value)
     {
-        $eventMark = $this->repository->getEventBy($eventId, $userId);
+        $user = auth()->user();
+        $eventMark = $this->repository->getEventBy($eventId, $user->id);
 
         if (!$eventMark) {
             $eventMark = new EventMark();
             $eventMark->event_id = $eventId;
-            $eventMark->user_id = $userId;
+            $eventMark->user_id = $user->id;
         }
 
-        $eventMark->take_part = $takePart ?? null;
-        $eventMark->not_interesting = $notInteresting ?? null;
+        $eventMark->{$key} = $value;
         $eventMark->save();
 
         /* Update cache data */
-        $event = Event::with('participants')->where('id', $eventId)->first();
-
-        $event->participants = $event->participants->keyBy('id');
-        $event->unsetRelation('participants');
-
-        $event->participants[$userId]->take_part = $takePart ?? null;
-        $event->participants[$userId]->not_interesting = $notInteresting ?? null;
+        $event = $this->eventRepository->getSingleEvent($eventId);
 
         CacheHelper::createOrUpdateRecord(CacheHelper::EVENTS, $event->date, $event);
+
+        /* Notify the event author if somebody agreed to take part */
+        if ($key === 'take_part' && $value) {
+            $eventAuthor = $event->author;
+            $eventAuthor->notify(new SomeoneAgreeToTakePartInEventNotification($event, $user));
+        }
+
+        return $event;
     }
 
 }
