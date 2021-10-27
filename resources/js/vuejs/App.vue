@@ -1,5 +1,6 @@
 <template>
-  <div id="calendar">
+  <div id="calendar" class="position-relative">
+			<reminder-pop-up v-if="showReminderPopUp" :reminder="reminder"></reminder-pop-up>
 			<create-buttons></create-buttons>
 			<transition name="fade">
     		<router-view></router-view>
@@ -9,19 +10,23 @@
 
 <script>
 import CreateButtons from "./components/CreateButtons";
+import ReminderPopUp from "./components/ReminderPopUp";
 export default {
   name: "App",
 		components: {
-				CreateButtons
+				CreateButtons,
+				ReminderPopUp
 		},
 		data() {
 			return {
 					currentUser: window.currentUser,
 					goTo: window.goTo,
+					showReminderPopUp: true,
+					reminder: {},
 			}
 		},
 		created() {
-			if (this.goTo) {
+			if (this.goTo.length) {
 					this.$router.push({name: this.goTo.routerName, params: {id: this.goTo.id}})
 			}
 		}

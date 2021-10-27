@@ -31,6 +31,10 @@ export const mutationTypes = {
 		saveReminderFailure: '[reminder] Save reminder failure',
 
 		getInputValue: '[reminder] Get value from input',
+
+		holdStart: '[reminder] Hold start',
+		holdSuccess: '[reminder] Hold success',
+		holdFailure: '[reminder] Hold failure',
 }
 
 const mutations = {
@@ -99,6 +103,17 @@ const mutations = {
 						...state.singleReminderData,
 						[payload.name]: payload.value
 				}
+		},
+
+		/* Hold reminder */
+		[mutationTypes.holdStart](state) {
+
+		},
+		[mutationTypes.holdSuccess](state) {
+
+		},
+		[mutationTypes.holdFailure](state, payload) {
+				state.errors = payload
 		},
 }
 

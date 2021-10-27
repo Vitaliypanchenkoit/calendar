@@ -28,12 +28,12 @@ class HomeController extends Controller
         $goTo = request()->goTo ?? session('goTo') ?? [];
         try {
             $goTo = $goTo ? EncryptionHelper::decodeRequestAttribute($goTo) : [];
-            session()->forget('goTo');
 
         } catch (\Throwable $e) {
             $log = new Logger($e);
             $log->log();
         }
+        session()->forget('goTo');
 
         return view('index', [
             'currentUser' => auth()->user()->only('id', 'name', 'email'),

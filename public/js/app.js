@@ -3815,6 +3815,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_CreateButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/CreateButtons */ "./resources/js/vuejs/components/CreateButtons.vue");
+/* harmony import */ var _components_ReminderPopUp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/ReminderPopUp */ "./resources/js/vuejs/components/ReminderPopUp.vue");
+//
 //
 //
 //
@@ -3825,19 +3827,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
   components: {
-    CreateButtons: _components_CreateButtons__WEBPACK_IMPORTED_MODULE_0__.default
+    CreateButtons: _components_CreateButtons__WEBPACK_IMPORTED_MODULE_0__.default,
+    ReminderPopUp: _components_ReminderPopUp__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
       currentUser: window.currentUser,
-      goTo: window.goTo
+      goTo: window.goTo,
+      showReminderPopUp: true,
+      reminder: {}
     };
   },
   created: function created() {
-    if (this.goTo) {
+    if (this.goTo.length) {
       this.$router.push({
         name: this.goTo.routerName,
         params: {
@@ -3990,6 +3996,62 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return dates;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../store/modules/reminder'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "ReminderPopUp",
+  props: {
+    reminder: {
+      type: Object,
+      "default": {
+        id: 0,
+        time: '',
+        time_hold: '00:00:00',
+        title: '',
+        content: ''
+      }
+    }
+  },
+  methods: {
+    hold: function hold(period, interval) {},
+    ok: function ok() {
+      this.$parent.showReminderPopUp = false;
+      this.$parent.reminder = {};
     }
   }
 });
@@ -4742,20 +4804,25 @@ var now = new Date();
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              window.Echo["private"]('reminders.1').listen('TimeToRemindEvent', function (e) {
+                _this.$parent.reminder = e.reminder;
+                _this.$parent.showReminderPopUp = true; // console.log(7777);
+                // console.log(e);
+              });
+              _context.next = 3;
               return _this.$store.dispatch(_store_modules_month__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getData, {
                 year: _this.selectedYear,
                 month: _this.selectedMonth
               });
 
-            case 2:
+            case 3:
               for (i = 0; i < _this.monthData.remindersForToday.length; i++) {
-                window.Echo["private"]("reminder.".concat(_this.monthData.remindersForToday[i].id)).listen('TimeToRemindEvent', function (e) {
-                  console.log(e.reminder);
+                window.Echo["private"]("reminders.".concat(_this.monthData.remindersForToday[i].id)).listen('.TimeToRemindEvent', function (e) {
+                  console.log(e);
                 });
               }
 
-            case 3:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -5176,7 +5243,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   broadcaster: 'pusher',
   key: "3909a984319ecf407645",
   cluster: "eu",
-  forceTLS: false
+  forceTLS: false,
+  encrypted: false
 });
 
 /***/ }),
@@ -6218,7 +6286,10 @@ var mutationTypes = {
   saveReminderStart: '[reminder] Save reminder start',
   saveReminderSuccess: '[reminder] Save reminder success',
   saveReminderFailure: '[reminder] Save reminder failure',
-  getInputValue: '[reminder] Get value from input'
+  getInputValue: '[reminder] Get value from input',
+  holdStart: '[reminder] Hold start',
+  holdSuccess: '[reminder] Hold success',
+  holdFailure: '[reminder] Hold failure'
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getSingleReminderStart, function (state) {
   state.isLoading = true;
@@ -6271,6 +6342,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
   state.singleReminderData = _objectSpread(_objectSpread({}, state.singleReminderData), {}, _defineProperty({}, payload.name, payload.value));
+}), _defineProperty(_mutations, mutationTypes.holdStart, function (state) {}), _defineProperty(_mutations, mutationTypes.holdSuccess, function (state) {}), _defineProperty(_mutations, mutationTypes.holdFailure, function (state, payload) {
+  state.errors = payload;
 }), _mutations);
 var actionTypes = {
   getSingleReminder: '[reminder] Get single reminder data',
@@ -10971,6 +11044,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-container[data-v-18aafc7f] {\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n}\n.nav-select[data-v-18aafc7f] {\n\t\twidth: 200px;\n\t\tmargin: 0 1rem 1rem 0;\n}\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pop-up[data-v-cb990b42] {\n\t\tposition: absolute;\n\t\tleft: 50%;\n\t\tpadding: 1.5rem 2rem;\n\t\twidth: 100%;\n\t\ttransform: translate(-50%);\n\t\tbackground: #ffffff;\n\t\tborder-radius: 5px;\n\t\tborder: 1px solid rgba(60, 60, 60, .26);\n\t\tz-index: 2;\n}\n.pop-up__time[data-v-cb990b42] {\n\t\ttext-align: center;\n\t\tfont-size: 2rem;\n}\n.pop-up__time-hold[data-v-cb990b42] {\n\t\tfont-size: 1.5rem;\n}\n.pop-up__pre-title[data-v-cb990b42] {\n\t\tmargin-bottom: 0.5rem;\n\t\tcolor: orangered;\n\t\ttext-align: center;\n\t\tfont-size: 1.5rem;\n\t\tfont-weight: bold;\n}\n.pop-up__title[data-v-cb990b42] {\n\t\tmargin-bottom: 1rem;\n\t\ttext-align: center;\n\t\tfont-size: 1.5rem;\n\t\tfont-weight: bold;\n}\n.pop-up__control[data-v-cb990b42] {\n\t\tdisplay: block;\n}\n.pop-up__control div[data-v-cb990b42] {\n\t\tmin-width: 100%;\n\t\ttext-align: center;\n\t\tmargin-bottom: 1rem;\n\t\tcursor: pointer;\n}\n@media all and (min-width: 420px) {\n.pop-up[data-v-cb990b42] {\n\t\t\t\twidth: 400px;\n}\n.pop-up__control[data-v-cb990b42] {\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tjustify-content: space-between;\n\t\t\t\tmargin-top: 1rem;\n}\n.pop-up__control div[data-v-cb990b42] {\n\t\t\t\tmin-width: 80px;\n\t\t\t\tmargin-bottom: 0;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -57683,6 +57780,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_style_index_0_id_cb990b42_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_style_index_0_id_cb990b42_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_style_index_0_id_cb990b42_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Date.vue?vue&type=style&index=0&id=fe7d9ee6&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Date.vue?vue&type=style&index=0&id=fe7d9ee6&scoped=true&lang=css& ***!
@@ -59180,6 +59307,47 @@ component.options.__file = "resources/js/vuejs/components/Navigation.vue"
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/components/ReminderPopUp.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/vuejs/components/ReminderPopUp.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true& */ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true&");
+/* harmony import */ var _ReminderPopUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReminderPopUp.vue?vue&type=script&lang=js& */ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js&");
+/* harmony import */ var _ReminderPopUp_vue_vue_type_style_index_0_id_cb990b42_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& */ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
+  _ReminderPopUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "cb990b42",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/vuejs/components/ReminderPopUp.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/views/Date.vue":
 /*!*******************************************!*\
   !*** ./resources/js/vuejs/views/Date.vue ***!
@@ -59486,6 +59654,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReminderPopUp.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/views/Date.vue?vue&type=script&lang=js&":
 /*!********************************************************************!*\
   !*** ./resources/js/vuejs/views/Date.vue?vue&type=script&lang=js& ***!
@@ -59621,6 +59805,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& ***!
+  \******************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_style_index_0_id_cb990b42_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=style&index=0&id=cb990b42&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/views/Date.vue?vue&type=style&index=0&id=fe7d9ee6&scoped=true&lang=css&":
 /*!****************************************************************************************************!*\
   !*** ./resources/js/vuejs/views/Date.vue?vue&type=style&index=0&id=fe7d9ee6&scoped=true&lang=css& ***!
@@ -59737,6 +59934,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_template_id_18aafc7f_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_template_id_18aafc7f_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Navigation.vue?vue&type=template&id=18aafc7f&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/Navigation.vue?vue&type=template&id=18aafc7f&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true& ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReminderPopUp_vue_vue_type_template_id_cb990b42_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true&");
 
 
 /***/ }),
@@ -59861,8 +60075,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "calendar" } },
+    { staticClass: "position-relative", attrs: { id: "calendar" } },
     [
+      _vm.showReminderPopUp
+        ? _c("reminder-pop-up", { attrs: { reminder: _vm.reminder } })
+        : _vm._e(),
+      _vm._v(" "),
       _c("create-buttons"),
       _vm._v(" "),
       _c("transition", { attrs: { name: "fade" } }, [_c("router-view")], 1)
@@ -60064,6 +60282,97 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/components/ReminderPopUp.vue?vue&type=template&id=cb990b42&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "pop-up" }, [
+    _c("div", { staticClass: "pop-up__pre-title" }, [
+      _vm._v("!!!!  Reminder  !!!!")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "pop-up__time" }, [
+      _c("span", [_vm._v(_vm._s(_vm.reminder.time))]),
+      _vm._v(" "),
+      _vm.reminder.time_hold && _vm.reminder.time_hold !== "00:00:00"
+        ? _c("span", { staticClass: "pop-up__time-hold" }, [
+            _vm._v("(Time hold: " + _vm._s(_vm.reminder.time_hold) + ")")
+          ])
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "pop-up__title" }, [
+      _vm._v(_vm._s(_vm.reminder.title))
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "pop-up__content" }, [
+      _vm._v(_vm._s(_vm.reminder.content))
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "pop-up__control" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full",
+          on: {
+            click: function($event) {
+              return _vm.ok()
+            }
+          }
+        },
+        [_vm._v("Ok")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full",
+          on: {
+            click: function($event) {
+              return _vm.hold("30", "m")
+            }
+          }
+        },
+        [_vm._v("Hold 30m")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full",
+          on: {
+            click: function($event) {
+              return _vm.hold("1", "h")
+            }
+          }
+        },
+        [_vm._v("Hold 1h")]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

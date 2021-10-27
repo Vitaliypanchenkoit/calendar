@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Events\TimeToRemindEvent;
+use App\Models\Reminder;
 use App\Repositories\ReminderRepository;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class Remind extends Command
 {
@@ -39,14 +41,18 @@ class Remind extends Command
      */
     public function handle()
     {
+        Log::debug('Event was dispatched');
         $repository = new ReminderRepository();
-        $reminders = $repository->getRemindersForNow();
-        if ($reminders->count()) {
-            foreach ($reminders as $reminder) {
-                TimeToRemindEvent::dispatch($reminder);
-            }
-
-        }
+        $reminder = Reminder::find(1);
+        TimeToRemindEvent::dispatch($reminder);
+//        $repository = new ReminderRepository();
+//        $reminders = $repository->getRemindersForNow();
+//        if ($reminders->count()) {
+//            foreach ($reminders as $reminder) {
+//                TimeToRemindEvent::dispatch($reminder);
+//            }
+//
+//        }
         return 0;
     }
 }

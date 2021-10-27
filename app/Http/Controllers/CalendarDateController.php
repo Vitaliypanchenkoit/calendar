@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TimeToRemindEvent;
 use App\Http\Requests\DeleteObjectRequest;
 use App\Http\Requests\GetDateDataRequest;
 use App\Http\Requests\GetMonthDataRequest;
+use App\Models\Reminder;
 use App\Repositories\ReminderRepository;
 use App\Services\CalendarProxyService\CachingData;
 use App\Services\CalendarService;
@@ -30,6 +32,10 @@ class CalendarDateController extends Controller
      */
     public function getMonthData(GetMonthDataRequest $request): JsonResponse
     {
+        $repository = new ReminderRepository();
+        $reminder = Reminder::find(1);
+        TimeToRemindEvent::dispatch($reminder);
+
         $data = $request->validated();
 
         $result = [

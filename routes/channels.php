@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('reminder.{id}', function ($user, $reminderId) {
+Broadcast::channel('reminders.{id}', function ($user, $reminderId) {
+    \Illuminate\Support\Facades\Log::debug(123456);
+    \Illuminate\Support\Facades\Log::debug($user->id === Reminder::find($reminderId)->author_id);
     return (int) $user->id === Reminder::find($reminderId)->author_id;
 });

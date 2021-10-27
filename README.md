@@ -17,6 +17,21 @@ npm 7.12.0 <br>
 vue js 2.5.17 <br>
 redis-server 5.0.7 (for caching data) <br>
 
+## CRON configuration
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1  (for checking reminders every minute)
+
+## Supervisor configuration
+[program:calendar-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path-to-your-project/artisan queue:work --sleep=5 --tries=2
+autostart=true
+autorestart=true
+user=UNIX_USER
+numprocs=2
+redirect_stderr=true
+stopwaitsecs=10800
+stdout_logfile=/path-to-your-project/calendar/storage/logs/worker.log
+
 ## Node packages
 1. badger-accordion <br>
 https://vuejsexamples.com/badger-accordion-component-for-vue-2/ <br>

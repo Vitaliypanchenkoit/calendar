@@ -3,9 +3,7 @@
 namespace App\Events;
 
 use App\Models\Reminder;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -15,7 +13,7 @@ class TimeToRemindEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $afterCommit = true;
+    public bool $afterCommit = true;
 
     /**
      * Create a new event instance.
@@ -34,6 +32,6 @@ class TimeToRemindEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('reminder' . $this->reminder->id);
+        return new PrivateChannel('reminders.' . $this->reminder->id);
     }
 }
