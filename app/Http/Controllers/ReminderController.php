@@ -9,6 +9,7 @@ use App\Http\Requests\Reminder\ValidateReminderIdRequest;
 use App\Http\Resources\ReminderResource;
 use App\Models\Reminder;
 use App\PersistModule\PersistReminder;
+use App\Services\LoggerChainService\Logger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -37,6 +38,8 @@ class ReminderController extends Controller
             return new ReminderResource($reminder);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }
@@ -79,6 +82,8 @@ class ReminderController extends Controller
             return new ReminderResource($reminder);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }

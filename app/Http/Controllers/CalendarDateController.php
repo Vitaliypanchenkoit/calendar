@@ -8,6 +8,7 @@ use App\Http\Requests\GetMonthDataRequest;
 use App\Repositories\ReminderRepository;
 use App\Services\CalendarProxyService\CachingData;
 use App\Services\CalendarService;
+use App\Services\LoggerChainService\Logger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -56,6 +57,8 @@ class CalendarDateController extends Controller
             $remindersForToday = $repository->getRemindersForToday();
             $result['remindersForToday'] = $remindersForToday;
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
 
@@ -84,6 +87,8 @@ class CalendarDateController extends Controller
             $result['news'] = $records['news'];
             $result['reminders'] = $records['reminders'];
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
 
@@ -104,6 +109,8 @@ class CalendarDateController extends Controller
             $service->deleteObject($data['objectName'], $data['id']);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
 

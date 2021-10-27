@@ -14,6 +14,7 @@ use App\PersistModule\PersistEvent;
 use App\Repositories\EventMarkRepository;
 use App\Repositories\EventRepository;
 use App\Services\EventService;
+use App\Services\LoggerChainService\Logger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,8 @@ class EventController extends Controller
             return new EventResource($event);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }
@@ -83,6 +86,8 @@ class EventController extends Controller
             return new EventResource($event);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }
@@ -101,6 +106,8 @@ class EventController extends Controller
             return new EventResource($event);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
 

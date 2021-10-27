@@ -14,6 +14,7 @@ use App\Notifications\NewsWasMarkAsImportant;
 use App\PersistModule\PersistNews;
 use App\Repositories\NewsMarkRepository;
 use App\Repositories\NewsRepository;
+use App\Services\LoggerChainService\Logger;
 use App\Services\NewsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -36,6 +37,8 @@ class NewsController extends Controller
             return new NewsResource($news);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }
@@ -80,6 +83,8 @@ class NewsController extends Controller
             return new NewsResource($news);
 
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
     }
@@ -95,6 +100,8 @@ class NewsController extends Controller
             $service = new NewsService();
             $service->markNews($data['newsId'], $data['key'], $data['value']);
         } catch (\Throwable $e) {
+            $log = new Logger($e);
+            $log->log();
             return response()->json($e->getMessage(), is_numeric($e->getCode()) ? $e->getCode() : 500);
         }
 

@@ -18,11 +18,13 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * @param \Throwable $e
-     * @return null
+     * @return void
      */
     public function handle(\Throwable $e)
     {
-        return $this->next ??= $this->next->handle($e);
+        if (isset($this->next)) {
+            $this->next->handle($e);
+        }
     }
 
 
