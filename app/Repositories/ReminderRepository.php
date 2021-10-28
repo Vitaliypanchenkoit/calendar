@@ -15,9 +15,11 @@ class ReminderRepository implements ReminderRepositoryInterface
     public function getRemindersForNow()
     {
         $now = now();
+        $currentUser = auth()->user();
         return Reminder::where('date', $now->format('Y-m-d'))
             ->where('time', '<=', $now->startOfMinute()->format('H:m:s'))
             ->where('status', '<>', Reminder::STATUS_COMPLETED)
+            ->where('author_id', '=', $currentUser->id)
             ->get();
     }
 

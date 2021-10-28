@@ -38,7 +38,6 @@ import {actionTypes} from '../store/modules/month'
 import {mapState} from 'vuex'
 import Navigation from "../components/Navigation";
 import {getMonthNumber} from "../helpers/monthHelper";
-import Echo from "laravel-echo";
 
 let now = new Date();
 export default {
@@ -72,13 +71,6 @@ export default {
 				}),
 		},
     async created() {
-				// window.Echo.private('reminders.1')
-				// 		.listen('TimeToRemindEvent', (e) => {
-				// 				this.$parent.reminder = e.reminder;
-				// 				this.$parent.showReminderPopUp = true;
-				// 				// console.log(7777);
-				// 				// console.log(e);
-				// 		});
 				await this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
 				for ( let i = 0; i < this.monthData.remindersForToday.length; i++) {
 						window.Echo.private(`reminders.${this.monthData.remindersForToday[i].id}`)
