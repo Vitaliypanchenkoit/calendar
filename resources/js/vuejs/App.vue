@@ -21,7 +21,7 @@ export default {
 			return {
 					currentUser: window.currentUser,
 					goTo: window.goTo,
-					showReminderPopUp: true,
+					showReminderPopUp: false,
 					reminder: {},
 			}
 		},

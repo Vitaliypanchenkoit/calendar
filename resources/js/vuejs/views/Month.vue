@@ -72,18 +72,19 @@ export default {
 				}),
 		},
     async created() {
-				window.Echo.private('reminders.1')
-						.listen('TimeToRemindEvent', (e) => {
-								this.$parent.reminder = e.reminder;
-								this.$parent.showReminderPopUp = true;
-								// console.log(7777);
-								// console.log(e);
-						});
+				// window.Echo.private('reminders.1')
+				// 		.listen('TimeToRemindEvent', (e) => {
+				// 				this.$parent.reminder = e.reminder;
+				// 				this.$parent.showReminderPopUp = true;
+				// 				// console.log(7777);
+				// 				// console.log(e);
+				// 		});
 				await this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})
 				for ( let i = 0; i < this.monthData.remindersForToday.length; i++) {
 						window.Echo.private(`reminders.${this.monthData.remindersForToday[i].id}`)
-								.listen('.TimeToRemindEvent', (e) => {
-										console.log(e);
+								.listen('TimeToRemindEvent', (e) => {
+										this.$parent.reminder = e.reminder;
+										this.$parent.showReminderPopUp = true;
 								});
 
 				}

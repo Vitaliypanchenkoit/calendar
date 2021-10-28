@@ -17,6 +17,7 @@ class ReminderRepository implements ReminderRepositoryInterface
         $now = now();
         return Reminder::where('date', $now->format('Y-m-d'))
             ->where('time', '<=', $now->startOfMinute()->format('H:m:s'))
+            ->where('status', '<>', Reminder::STATUS_COMPLETED)
             ->get();
     }
 
@@ -27,7 +28,7 @@ class ReminderRepository implements ReminderRepositoryInterface
     {
         $now = now();
         return Reminder::where('date', $now->format('Y-m-d'))
-            ->where('time', '>=', $now->startOfMinute()->format('H:m:s'))
+            ->where('status', '<>', Reminder::STATUS_COMPLETED)
             ->get();
     }
 

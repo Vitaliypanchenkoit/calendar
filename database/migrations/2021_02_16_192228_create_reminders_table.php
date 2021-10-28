@@ -26,6 +26,7 @@ class CreateRemindersTable extends Migration
                 ->onDelete('cascade');
 
             $table->text('content')->nullable();
+            $table->string('status')->default('');
             $table->timestamps();
 
             $table->index('date');

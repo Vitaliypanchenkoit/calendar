@@ -19,6 +19,7 @@ const state = {
 				time: '',
 		},
 		successMessage: '',
+		closePopUp: false
 }
 
 export const mutationTypes = {
@@ -35,6 +36,10 @@ export const mutationTypes = {
 		holdStart: '[reminder] Hold start',
 		holdSuccess: '[reminder] Hold success',
 		holdFailure: '[reminder] Hold failure',
+
+		completeStart: '[reminder] Complete start',
+		completeSuccess: '[reminder] Complete success',
+		completeFailure: '[reminder] Complete failure',
 }
 
 const mutations = {
@@ -107,12 +112,28 @@ const mutations = {
 
 		/* Hold reminder */
 		[mutationTypes.holdStart](state) {
+				state.closePopUp = false;
 
 		},
 		[mutationTypes.holdSuccess](state) {
-
+				state.closePopUp = true;
 		},
 		[mutationTypes.holdFailure](state, payload) {
+				state.closePopUp = false;
+				state.errors = payload
+				console.log(payload);
+		},
+
+		/* Hold reminder */
+		[mutationTypes.completeStart](state) {
+				state.closePopUp = false;
+
+		},
+		[mutationTypes.completeSuccess](state) {
+				state.closePopUp = true;
+		},
+		[mutationTypes.completeFailure](state, payload) {
+				state.closePopUp = false;
 				state.errors = payload
 		},
 }
@@ -123,6 +144,8 @@ export const actionTypes = {
 		updateReminder: '[reminder] Update reminder',
 		deleteReminder: '[reminder] Delete reminder',
 		getInputValue: '[reminder] Get input value',
+		holdReminder: '[reminder] Hold reminder',
+		completeReminder: '[reminder] Complete reminder',
 }
 
 const actions = {
@@ -173,6 +196,32 @@ const actions = {
 		[actionTypes.getInputValue](context, {name, value}) {
 				context.commit(mutationTypes.getInputValue, {name, value})
 
+		},
+
+		[actionTypes.holdReminder](context, {id, period}) {
+				return new Promise(resolve => {
+						context.commit(mutationTypes.holdStart)
+						reminderApi.holdReminder(apiUrl + '/hold', id, period)
+								.then(response => {
+										context.commit(mutationTypes.holdSuccess, response.data)
+								})
+								.catch((e) => {
+										context.commit(mutationTypes.saveReminderFailure, e.response.data.errors)
+								})
+				})
+		},
+
+		[actionTypes.completeReminder](context, {id}) {
+				return new Promise(resolve => {
+						context.commit(mutationTypes.completeStart)
+						reminderApi.completeReminder(apiUrl + '/complete', id)
+								.then(response => {
+										context.commit(mutationTypes.completeSuccess, response.data)
+								})
+								.catch((e) => {
+										context.commit(mutationTypes.completeFailure, e.response.data.errors)
+								})
+				})
 		},
 
 

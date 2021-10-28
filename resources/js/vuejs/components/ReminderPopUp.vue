@@ -8,16 +8,17 @@
 				<div class="pop-up__title">{{ reminder.title }}</div>
 				<div class="pop-up__content">{{ reminder.content }}</div>
 				<div class="pop-up__control">
-						<div class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" @click="ok()">Ok</div>
-						<div class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" @click="hold('30', 'm')">Hold 30m</div>
-						<div class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" @click="hold('1', 'h')">Hold 1h</div>
+						<div class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" @click="complete()">Ok</div>
+						<div class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" @click="hold(30)">Hold 30m</div>
+						<div class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" @click="hold(60)">Hold 1h</div>
 				</div>
 		</div>
 
 </template>
 
 <script>
-import {actionTypes} from '../../store/modules/reminder'
+import {actionTypes} from '../store/modules/reminder'
+import {mapState} from "vuex";
 export default {
 		name: "ReminderPopUp",
 		props: {
@@ -32,9 +33,27 @@ export default {
 						}
 				},
 		},
+		computed: {
+				closePopUp: {
+						get() {
+								return this.$store.state.reminder.closePopUp
+						},
+				},
+		},
+		watch: {
+				// whenever question changes, this function will run
+				closePopUp: function (newQvalue, oldvalue) {
+						if (newQvalue) {
+								this.ok()
+						}
+				}
+		},
 		methods: {
-				hold(period, interval) {
-
+				hold(period) {
+						this.$store.dispatch(actionTypes.holdReminder, {id: this.reminder.id, period: period})
+				},
+				complete() {
+						this.$store.dispatch(actionTypes.completeReminder, {id: this.reminder.id})
 				},
 				ok() {
 						this.$parent.showReminderPopUp = false;
@@ -61,6 +80,7 @@ export default {
 		font-size: 2rem;
 }
 .pop-up__time-hold {
+		display: block;
 		font-size: 1.5rem;
 }
 .pop-up__pre-title {
