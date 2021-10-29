@@ -121,3 +121,13 @@ h1 {
 input:focus {
     box-shadow: none !important;
 }
+
+.fake-input,
+.fake-textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5em 1em;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background-color: #fff;
+}

@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 
+use App\Helpers\NewsHelper;
 use App\Models\News;
 use App\Repositories\Interfaces\ClearDataRepositoryInterface;
 use App\Repositories\Interfaces\NewsRepositoryInterface;
@@ -17,10 +18,16 @@ class NewsRepository implements NewsRepositoryInterface, ClearDataRepositoryInte
      */
     public function getSingleNews(int $id)
     {
-        return News::select(['*'])
+        $news = News::select(['*'])
             ->where('id', $id)
             ->with('newsMarks')
             ->first();
+
+        if ($news) {
+            $news = NewsHelper::reformatNews($news);
+        }
+
+        return $news;
     }
 
     /**

@@ -59,6 +59,7 @@ class CalendarData implements CalendarDataInterface
             /* Here we created two additional attributes "take_part" and "not_interesting" in each event object and store an array of user's id into them */
             foreach ($result['events'] as $k => $v) {
                 $result['events'][$k] = EventHelper::reformat($v);
+                $result['events'][$k] = EventHelper::reformatParticipants($v);
             }
         }
         $result['reminders'] = $this->calendarRepository->getDateObjects(Reminder::class, $date);

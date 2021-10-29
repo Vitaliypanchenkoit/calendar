@@ -1,6 +1,5 @@
 import eventApi from '../../api/event-api'
 import router from '../../router/router'
-import newsApi from "../../api/news-api";
 const apiUrl = '/events';
 
 const state = {

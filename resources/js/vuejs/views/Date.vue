@@ -56,17 +56,13 @@
 														>
 																		<<<< Edit News
 														</router-link>
+														<router-link
+																class="body-item__details absolute"
+																:to="{name: 'newsDetails', params: {id:  item.id}}"
+														>
+																<<<< Details
+														</router-link>
 														<div v-if="$parent.currentUser.id === item.author_id" class="remove" title="Remove" @click="removeObject('News', item.id, index)">&#10060;</div>
-														<div v-if="$parent.currentUser.id !== item.author_id" class="body-item__control">
-																<label>
-																		<input type="checkbox" :checked="item.read.includes($parent.currentUser.id)" @change="markNews(item.id, 'read', !item.read.includes($parent.currentUser.id))">
-																		<span>Mark as read</span>
-																</label>&#160;&#160;
-																<label>
-																		<input type="checkbox" :checked="item.important.includes($parent.currentUser.id)" @change="markNews(item.id,'important', !item.important.includes($parent.currentUser.id))">
-																		<span>Mark as important</span>
-																</label>
-														</div>
 												</div>
 										</transition-group>
 								</div>
@@ -84,7 +80,8 @@
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
 																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
 																<div>
-																		<span>participants: {{ item.take_part.length }}</span>&#160;&#160;
+																		<span>Invited: {{ item.participants.length }}</span>&#160;&#160;
+																		<span>Will take part: {{ item.take_part.length }}</span>
 																		<span>Marked as not interesting: {{ item.not_interesting.length }}</span>
 																</div>
 														</div>

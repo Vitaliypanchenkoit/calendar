@@ -9,6 +9,8 @@ const state = {
 		content: '',
 		date: '',
 		time: '',
+		read: [],
+		important: [],
 	},
 	isLoading: false,
 	errors: {
@@ -19,17 +21,21 @@ const state = {
 }
 
 export const mutationTypes = {
-	getSingleNewsStart: '[news] Get single news start',
-	getSingleNewsSuccess: '[news] Get single news success',
-	getSingleNewsFailure: '[news] Get single news failure',
+		getSingleNewsStart: '[news] Get single news start',
+		getSingleNewsSuccess: '[news] Get single news success',
+		getSingleNewsFailure: '[news] Get single news failure',
 
-	createNewsStart: '[news] Create news start',
-	createNewsSuccess: '[news] Create news success',
-	createNewsFailure: '[news] Create news failure',
+		createNewsStart: '[news] Create news start',
+		createNewsSuccess: '[news] Create news success',
+		createNewsFailure: '[news] Create news failure',
 
-	updateNewsStart: '[news] Update news start',
-	updateNewsSuccess: '[news] Update news success',
-	updateNewsFailure: '[news] Update news failure',
+		updateNewsStart: '[news] Update news start',
+		updateNewsSuccess: '[news] Update news success',
+		updateNewsFailure: '[news] Update news failure',
+
+		markNewsStart: '[news] Mark news start',
+		markNewsSuccess: '[news] Mark news success',
+		markNewsFailure: '[news] Mark news failure',
 
 	getInputValue: '[news] Get value from input',
 }
@@ -38,10 +44,12 @@ const mutations = {
 	[mutationTypes.getSingleNewsStart](state) {
 		state.isLoading = true
 		state.singleNewsData = {
-			title: '',
-			content: '',
-			date: '',
-			time: '',
+				title: '',
+				content: '',
+				date: '',
+				time: '',
+				read: [],
+				important: [],
 		}
 		state.errors = {
 			title: '',
@@ -57,10 +65,12 @@ const mutations = {
 [mutationTypes.getSingleNewsFailure](state, payload) {
 	state.isLoading = false
 	state.singleNewsData = {
-		title: '',
-		content: '',
-		date: '',
-		time: '',
+			title: '',
+			content: '',
+			date: '',
+			time: '',
+			read: [],
+			important: [],
 	}
 	state.errors = payload
 },
@@ -78,10 +88,12 @@ const mutations = {
 		state.isLoading = false
 		state.successMessage = 'The News was created successfully';
 		state.singleNewsData = {
-			title: '',
-			content: '',
-			date: '',
-			time: '',
+				title: '',
+				content: '',
+				date: '',
+				time: '',
+				read: [],
+				important: [],
 		}
 
 	},
@@ -116,6 +128,18 @@ const mutations = {
 		}
 	},
 
+		/* Mark/unmark event */
+		[mutationTypes.markNewsStart](state) {
+				state.isLoading = true
+		},
+		[mutationTypes.markNewsSuccess](state, payload) {
+				state.isLoading = false
+				state.singleEventData = payload
+		},
+		[mutationTypes.markNewsFailure](state, payload) {
+				state.isLoading = false
+		}
+
 }
 
 export const actionTypes = {
@@ -124,6 +148,7 @@ export const actionTypes = {
 		updateNews: '[news] Update news',
 		deleteNews: '[news] Delete news',
 		getInputValue: '[news] Get input value',
+		markNews: '[news] Mark news'
 }
 
 const actions = {
@@ -175,6 +200,19 @@ const actions = {
 		context.commit(mutationTypes.getInputValue, {name, value})
 
 	},
+
+		[actionTypes.markNews](context, {id, key, value}) {
+				return new Promise(resolve => {
+						context.commit(mutationTypes.updateNewsStart)
+						newsApi.markNews(apiUrl + '/mark', id, key, value)
+								.then(response => {
+										context.commit(mutationTypes.markNewsSuccess, response.data)
+								})
+								.catch((e) => {
+										context.commit(mutationTypes.markNewsFailure, e.response.data.errors)
+								})
+				})
+		},
 
 }
 

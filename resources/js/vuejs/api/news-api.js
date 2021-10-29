@@ -29,7 +29,6 @@ const updateNews = (apiUrl, id, title, content) => {
 }
 
 const markNews = (apiUrl, id, key, value) => {
-		console.log(3, apiUrl, id, key, value);
 		value = value ? 1 : 0;
 		let formData = new FormData();
 		formData.append('newsId', id)

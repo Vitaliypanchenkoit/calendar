@@ -127,15 +127,6 @@ export default {
 </script>
 
 <style scoped>
-.fake-input,
-.fake-textarea {
-		display: block;
-		width: 100%;
-		padding: 0.5em 1em;
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		border-radius: 5px;
-		background-color: #fff;
-}
 .participants-list {
 		padding: 1rem 1rem 1.7rem 1rem;
 		background: #ffffff;

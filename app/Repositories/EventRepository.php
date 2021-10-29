@@ -40,6 +40,7 @@ class EventRepository implements EventRepositoryInterface
             'users.name as author_name')
             ->join('users', 'users.id', '=', 'events.author_id')
             ->with('eventMarks')
+            ->with('participants')
             ->where('events.date', $date)
             ->orderBy('events.time')
             ->get();

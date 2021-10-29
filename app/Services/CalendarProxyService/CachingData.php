@@ -25,11 +25,11 @@ class CachingData implements CalendarDataInterface
      */
     public function getDayData(string $date): array
     {
-        $result = $this->calendarDataService->getDayData($date);
-//        if (!Cache::has($date)) {
-//        } else {
-//            $result = json_decode(Cache::get($date), true);
-//        }
+        if (!Cache::has($date)) {
+            $result = $this->calendarDataService->getDayData($date);
+        } else {
+            $result = json_decode(Cache::get($date), true);
+        }
 
         return $result;
     }
