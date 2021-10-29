@@ -5,9 +5,10 @@ namespace App\Repositories;
 
 
 use App\Models\Reminder;
+use App\Repositories\Interfaces\ClearDataRepositoryInterface;
 use App\Repositories\Interfaces\ReminderRepositoryInterface;
 
-class ReminderRepository implements ReminderRepositoryInterface
+class ReminderRepository implements ReminderRepositoryInterface, ClearDataRepositoryInterface
 {
     /**
      * @return mixed
@@ -32,6 +33,18 @@ class ReminderRepository implements ReminderRepositoryInterface
         return Reminder::where('date', $now->format('Y-m-d'))
             ->where('status', '<>', Reminder::STATUS_COMPLETED)
             ->get();
+    }
+
+    /**
+     * @param int $numberOfDays
+     * @return mixed
+     */
+    public function getOldData(int $numberOfDays)
+    {
+        $now = now();
+        $before = $now->subDays($numberOfDays);
+        return Reminder::where('date', '<=', $before)->get();
+
     }
 
 }

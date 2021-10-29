@@ -23,4 +23,19 @@ class CacheHelper
 
     }
 
+    /**
+     * @param object $object
+     * @param string $dbTable
+     */
+    public static function deleteRecord(object $object, string $dbTable)
+    {
+        $dateData = Cache::get($object->date);
+        if ($dateData) {
+            $dateData = json_decode($dateData, true);
+            unset($dateData[$dbTable][$object->id]);
+            Cache::put($object->date, json_encode($dateData));
+        }
+
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClearOldData;
 use App\Console\Commands\Remind;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command(Remind::class)->everyMinute();
+        $schedule->command(ClearOldData::class)->twiceDaily(1, 13);
     }
 
     /**

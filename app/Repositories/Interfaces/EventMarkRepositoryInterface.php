@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface IventMarkRepositoryInterface
+interface EventMarkRepositoryInterface
 {
     /**
      * @param int $eventId

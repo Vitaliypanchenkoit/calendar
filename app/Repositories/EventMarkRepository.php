@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\EventMark;
-use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\Interfaces\EventMarkRepositoryInterface;
 
-class EventMarkRepository implements EventRepositoryInterface
+class EventMarkRepository implements EventMarkRepositoryInterface
 {
     /**
      * @param int $eventId

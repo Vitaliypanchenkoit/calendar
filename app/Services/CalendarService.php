@@ -3,9 +3,9 @@
 
 namespace App\Services;
 
+use App\Helpers\CacheHelper;
 use App\Helpers\ObjectHelper;
 use App\Repositories\CalendarRepository;
-use Illuminate\Support\Facades\Cache;
 
 class CalendarService
 {
@@ -22,12 +22,7 @@ class CalendarService
         $dbTable = ObjectHelper::getDbTableName($objectName);
 
         /* Remove data from cache */
-        $dateData = Cache::get($object->date);
-        if ($dateData) {
-            $dateData = json_decode($dateData, true);
-            unset($dateData[$dbTable][$id]);
-            Cache::put($object->date, json_encode($dateData));
-        }
+        CacheHelper::deleteRecord($object, $dbTable);
 
         /* Remove data from DB */
         $object->delete();
