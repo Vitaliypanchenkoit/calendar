@@ -3,6 +3,11 @@
         <div class="calendar_nav mx-auto px-4 sm:px-6 lg:px-8">
             <div class="calendar_nav__current">
 								<navigation :year="year" :month="month" :hide="['date']"></navigation>
+								<router-link
+										class="mode"
+										:to="{
+										name: 'week', params: {weekStart: weekStart, weekEnd: weekEnd}}"
+								>Week mode</router-link>
             </div>
         </div>
         <div class="calendar_body">
@@ -69,6 +74,17 @@ export default {
 						isLoading: state => state.month.isLoading,
 						errors: state => state.month.errors,
 				}),
+				weekStart() {
+						let date = new Date(this.selectedYear, this.selectedMonth)
+						let firstday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
+						return firstday.getFullYear() + '-' + firstday.getMonth() + '-' + firstday.getDate();
+				},
+				weekEnd() {
+						let date = new Date(this.selectedYear, this.selectedMonth)
+						let last = new Date(date.setDate(date.getDate() - date.getDay() + 7));
+						return last.getFullYear() + '-' + last.getMonth() + '-' + last.getDate();
+
+				},
 		},
     async created() {
 				await this.$store.dispatch(actionTypes.getData, {year: this.selectedYear, month: this.selectedMonth})

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Month from "../views/Month";
+import Week from "../views/Week";
 import Date from "../views/Date";
 import CreateEditEvent from "../views/Event/CreateEditEvent";
 import CreateEditNews from "../views/News/CreateEditNews";
@@ -11,16 +12,22 @@ import NewsDetails from "../views/News/NewsDetails";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'month',
-    component: Month,
-  },
-  {
-    path: '/:year/:month/:date',
-    name: 'day',
-    component: Date,
-  },
+		{
+				path: '/',
+				name: 'month',
+				component: Month,
+		},
+		{
+				path: '/week',
+				name: 'week',
+				props: true,
+				component: Week,
+		},
+		{
+				path: '/:year/:month/:date',
+				name: 'day',
+				component: Date,
+		},
 		/* CREATE */
 		{
 				path: '/events/create/',
@@ -74,8 +81,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
-  routes: routes,
+		mode: 'history',
+		routes: routes,
 });
 
 export default router;

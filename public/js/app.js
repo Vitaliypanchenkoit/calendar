@@ -4775,6 +4775,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -4805,7 +4810,7 @@ var now = new Date();
       selectedYear: this.year
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     monthData: function monthData(state) {
       return state.month.data;
     },
@@ -4815,7 +4820,18 @@ var now = new Date();
     errors: function errors(state) {
       return state.month.errors;
     }
-  })),
+  })), {}, {
+    weekStart: function weekStart() {
+      var date = new Date(this.selectedYear, this.selectedMonth);
+      var firstday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
+      return firstday.getFullYear() + '-' + firstday.getMonth() + '-' + firstday.getDate();
+    },
+    weekEnd: function weekEnd() {
+      var date = new Date(this.selectedYear, this.selectedMonth);
+      var last = new Date(date.setDate(date.getDate() - date.getDay() + 7));
+      return last.getFullYear() + '-' + last.getMonth() + '-' + last.getDate();
+    }
+  }),
   created: function created() {
     var _this = this;
 
@@ -5326,6 +5342,189 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store_modules_week__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/modules/week */ "./resources/js/vuejs/store/modules/week.js");
+/* harmony import */ var _components_Navigation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Navigation */ "./resources/js/vuejs/components/Navigation.vue");
+/* harmony import */ var _helpers_monthHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/monthHelper */ "./resources/js/vuejs/helpers/monthHelper.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+var now = new Date();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Week",
+  components: {
+    Navigation: _components_Navigation__WEBPACK_IMPORTED_MODULE_2__.default
+  },
+  props: {
+    weekStart: {
+      type: String
+    },
+    weekEnd: {
+      type: String
+    }
+  },
+  data: function data() {
+    return {
+      currentYear: now.getFullYear(),
+      currentMonth: now.getMonth(),
+      currentDate: now.getDate(),
+      selectedWeekStart: new Date(this.weekStart),
+      selectedWeekEnd: new Date(this.weekEnd)
+    };
+  },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
+    weekData: function weekData(state) {
+      return state.week.data;
+    },
+    isLoading: function isLoading(state) {
+      return state.week.isLoading;
+    },
+    errors: function errors(state) {
+      return state.week.errors;
+    }
+  })), {}, {
+    nextStart: function nextStart() {
+      var current = new Date(this.selectedWeekStart);
+      var next = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate() + 7);
+      return next.getFullYear() + '-' + next.getMonth() + '-' + next.getDate();
+    },
+    nextEnd: function nextEnd() {
+      var current = new Date(this.selectedWeekEnd);
+      var next = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate() + 7);
+      return next.getFullYear() + '-' + next.getMonth() + '-' + next.getDate();
+    },
+    prevStart: function prevStart() {
+      var current = new Date(this.selectedWeekStart);
+      var next = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate() - 7);
+      return next.getFullYear() + '-' + next.getMonth() + '-' + next.getDate();
+    },
+    prevEnd: function prevEnd() {
+      var current = new Date(this.selectedWeekEnd);
+      var next = new Date(current.getFullYear(), current.getMonth() + 1, current.getDate() - 7);
+      return next.getFullYear() + '-' + next.getMonth() + '-' + next.getDate();
+    },
+    selectedYear: function selectedYear() {
+      var date = new Date(this.selectedWeekStart);
+      console.log(this.selectedWeekStart);
+      console.log(date);
+      return date.getFullYear();
+    },
+    selectedMonth: function selectedMonth() {
+      var date = new Date(this.selectedWeekStart);
+      return date.getMonth() + 1;
+    },
+    weekDates: function weekDates() {
+      var dates = [];
+
+      for (var i = 0; i < 7; i++) {
+        dates.push(new Date(this));
+      }
+    }
+  }),
+  created: function created() {
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this.$store.dispatch(_store_modules_week__WEBPACK_IMPORTED_MODULE_1__.actionTypes.getWeekData, {
+                start: _this.selectedWeekStart,
+                end: _this.selectedWeekEnd
+              });
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {// changeWeek: function () {
+    //
+    // 		this.$store.dispatch(actionTypes.getWeekData, {year: this.selectedStart, month: this.selectedWeekEnd})
+    // },
+    // refreshCalendar: function (year, month, date) {
+    // 		this.selectedYear = year ? year : this.selectedYear;
+    // 		this.selectedMonth = month ? getMonthNumber(month) : this.selectedMonth;
+    //
+    // 		this.$store.dispatch(actionTypes.getWeekData, {year: this.selectedYear, month: this.selectedMonth})
+    // }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -5682,6 +5881,35 @@ var completeReminder = function completeReminder(apiUrl, id) {
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/api/week-api.js":
+/*!********************************************!*\
+  !*** ./resources/js/vuejs/api/week-api.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _api_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/axios */ "./resources/js/vuejs/api/axios.js");
+
+
+var getData = function getData(apiUrl, start, end) {
+  return _api_axios__WEBPACK_IMPORTED_MODULE_0__.default.get(apiUrl, {
+    params: {
+      start: start,
+      end: end
+    }
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  getData: getData
+});
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/helpers/monthHelper.js":
 /*!***************************************************!*\
   !*** ./resources/js/vuejs/helpers/monthHelper.js ***!
@@ -5737,15 +5965,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _views_Month__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../views/Month */ "./resources/js/vuejs/views/Month.vue");
-/* harmony import */ var _views_Date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../views/Date */ "./resources/js/vuejs/views/Date.vue");
-/* harmony import */ var _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../views/Event/CreateEditEvent */ "./resources/js/vuejs/views/Event/CreateEditEvent.vue");
-/* harmony import */ var _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../views/News/CreateEditNews */ "./resources/js/vuejs/views/News/CreateEditNews.vue");
-/* harmony import */ var _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../views/Reminder/CreateEditReminder */ "./resources/js/vuejs/views/Reminder/CreateEditReminder.vue");
-/* harmony import */ var _views_Event_EventDetails__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/Event/EventDetails */ "./resources/js/vuejs/views/Event/EventDetails.vue");
-/* harmony import */ var _views_News_NewsDetails__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/News/NewsDetails */ "./resources/js/vuejs/views/News/NewsDetails.vue");
+/* harmony import */ var _views_Week__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../views/Week */ "./resources/js/vuejs/views/Week.vue");
+/* harmony import */ var _views_Date__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../views/Date */ "./resources/js/vuejs/views/Date.vue");
+/* harmony import */ var _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../views/Event/CreateEditEvent */ "./resources/js/vuejs/views/Event/CreateEditEvent.vue");
+/* harmony import */ var _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../views/News/CreateEditNews */ "./resources/js/vuejs/views/News/CreateEditNews.vue");
+/* harmony import */ var _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/Reminder/CreateEditReminder */ "./resources/js/vuejs/views/Reminder/CreateEditReminder.vue");
+/* harmony import */ var _views_Event_EventDetails__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/Event/EventDetails */ "./resources/js/vuejs/views/Event/EventDetails.vue");
+/* harmony import */ var _views_News_NewsDetails__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../views/News/NewsDetails */ "./resources/js/vuejs/views/News/NewsDetails.vue");
 
 
 
@@ -5755,60 +5984,66 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_8__.default);
+
+vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_9__.default);
 var routes = [{
   path: '/',
   name: 'month',
   component: _views_Month__WEBPACK_IMPORTED_MODULE_0__.default
 }, {
+  path: '/week',
+  name: 'week',
+  props: true,
+  component: _views_Week__WEBPACK_IMPORTED_MODULE_1__.default
+}, {
   path: '/:year/:month/:date',
   name: 'day',
-  component: _views_Date__WEBPACK_IMPORTED_MODULE_1__.default
+  component: _views_Date__WEBPACK_IMPORTED_MODULE_2__.default
 },
 /* CREATE */
 {
   path: '/events/create/',
   name: 'createEvent',
-  component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__.default
+  component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_3__.default
 }, {
   path: '/news/create',
   name: 'createNews',
-  component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_3__.default
+  component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_4__.default
 }, {
   path: '/reminders/create/',
   name: 'createReminder',
-  component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__.default
+  component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_5__.default
 },
 /* EDIT */
 {
   path: '/events/edit/:id',
   name: 'editEvent',
   props: true,
-  component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_2__.default
+  component: _views_Event_CreateEditEvent__WEBPACK_IMPORTED_MODULE_3__.default
 }, {
   path: '/news/edit/:id',
   name: 'editNews',
   props: true,
-  component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_3__.default
+  component: _views_News_CreateEditNews__WEBPACK_IMPORTED_MODULE_4__.default
 }, {
   path: '/reminders/edit/:id',
   name: 'editReminder',
   props: true,
-  component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_4__.default
+  component: _views_Reminder_CreateEditReminder__WEBPACK_IMPORTED_MODULE_5__.default
 },
 /* DETAILS */
 {
   path: '/events/details/:id',
   name: 'eventDetails',
   props: true,
-  component: _views_Event_EventDetails__WEBPACK_IMPORTED_MODULE_5__.default
+  component: _views_Event_EventDetails__WEBPACK_IMPORTED_MODULE_6__.default
 }, {
   path: '/news/details/:id',
   name: 'newsDetails',
   props: true,
-  component: _views_News_NewsDetails__WEBPACK_IMPORTED_MODULE_6__.default
+  component: _views_News_NewsDetails__WEBPACK_IMPORTED_MODULE_7__.default
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_8__.default({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_9__.default({
   mode: 'history',
   routes: routes
 });
@@ -6675,6 +6910,74 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleRem
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/store/modules/week.js":
+/*!**************************************************!*\
+  !*** ./resources/js/vuejs/store/modules/week.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "mutationTypes": () => (/* binding */ mutationTypes),
+/* harmony export */   "actionTypes": () => (/* binding */ actionTypes),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _api_week_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/week-api */ "./resources/js/vuejs/api/week-api.js");
+var _mutations;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var apiUrl = '/week';
+var state = {
+  data: {},
+  isLoading: false,
+  errors: null
+};
+var mutationTypes = {
+  getDataStart: '[week] Get data start',
+  getDataSuccess: '[week] Get data success',
+  getDataFailure: '[week] Get data failure'
+};
+var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getDataStart, function (state) {
+  state.isLoading = true;
+  state.data = {};
+  state.errors = null;
+}), _defineProperty(_mutations, mutationTypes.getDataSuccess, function (state, payload) {
+  state.isLoading = false;
+  state.data = payload;
+}), _defineProperty(_mutations, mutationTypes.getDataFailure, function (state, payload) {
+  state.isLoading = false;
+  state.data = {};
+  state.errors = payload;
+}), _mutations);
+var actionTypes = {
+  getWeekData: '[week] Get data of each date of week'
+};
+
+var actions = _defineProperty({}, actionTypes.getWeekData, function (context, _ref) {
+  var start = _ref.start,
+      end = _ref.end;
+  return new Promise(function (resolve) {
+    context.commit(mutationTypes.getDataStart);
+    _api_week_api__WEBPACK_IMPORTED_MODULE_0__.default.getData(apiUrl, start, end).then(function (response) {
+      context.commit(mutationTypes.getDataSuccess, response.data);
+      resolve(response.data);
+    })["catch"](function (e) {
+      context.commit(mutationTypes.getDataFailure, e.response.data);
+    });
+  });
+});
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  state: state,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/store/store.js":
 /*!*******************************************!*\
   !*** ./resources/js/vuejs/store/store.js ***!
@@ -6686,13 +6989,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_month__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/month */ "./resources/js/vuejs/store/modules/month.js");
 /* harmony import */ var _modules_date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/date */ "./resources/js/vuejs/store/modules/date.js");
 /* harmony import */ var _modules_event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/event */ "./resources/js/vuejs/store/modules/event.js");
 /* harmony import */ var _modules_news__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/news */ "./resources/js/vuejs/store/modules/news.js");
 /* harmony import */ var _modules_reminder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/reminder */ "./resources/js/vuejs/store/modules/reminder.js");
+/* harmony import */ var _modules_week__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/week */ "./resources/js/vuejs/store/modules/week.js");
 
 
 
@@ -6700,8 +7004,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_5__.default.use(vuex__WEBPACK_IMPORTED_MODULE_6__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_6__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vuex__WEBPACK_IMPORTED_MODULE_7__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_7__.default.Store({
   state: {},
   mutations: {},
   actions: {},
@@ -6710,7 +7015,8 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.use(vuex__WEBPACK_IMPORTED_MODULE_6__.d
     date: _modules_date__WEBPACK_IMPORTED_MODULE_1__.default,
     event: _modules_event__WEBPACK_IMPORTED_MODULE_2__.default,
     news: _modules_news__WEBPACK_IMPORTED_MODULE_3__.default,
-    reminder: _modules_reminder__WEBPACK_IMPORTED_MODULE_4__.default
+    reminder: _modules_reminder__WEBPACK_IMPORTED_MODULE_4__.default,
+    week: _modules_week__WEBPACK_IMPORTED_MODULE_5__.default
   }
 }));
 
@@ -11174,7 +11480,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "html, body {\n  font-size: 16px;\n}\n\nh1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  font-size: 24px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input,\n.form-item .disabled-input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea,\n.form-item .disabled-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item .disabled-textarea {\n  height: 160px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}\n\n.event {\n  color: #059669;\n}\n\n.news {\n  color: #2563EB;\n}\n\n.reminder {\n  color: #D97706;\n}\n\ninput:focus {\n  box-shadow: none !important;\n}\n\n.fake-input,\n.fake-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n  background-color: #fff;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "html, body {\n  font-size: 16px;\n}\n\nh1 {\n  font-size: 32px;\n}\n\n#calendar {\n  margin: 1em;\n}\n\n.calendar_nav__current {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: baseline;\n  font-size: 24px;\n}\n\n.calendar_nav__current-month,\n.calendar_nav__current-date {\n  margin-right: 1em;\n}\n\n.mode:hover {\n  text-decoration: underline;\n}\n\n.arrow {\n  display: inline-block;\n  margin-left: 8px;\n  width: 20px;\n  height: 20px;\n  background: transparent;\n  border-top: 2px solid gray;\n  border-left: 2px solid gray;\n  transition: all 0.4s ease;\n  text-decoration: none;\n  color: transparent;\n  cursor: pointer;\n  vertical-align: middle;\n}\n\n.arrow-right {\n  position: relative;\n  transform: rotate(135deg);\n  right: 8px;\n}\n\n.arrow-left {\n  transform: rotate(-45deg);\n  left: 0;\n}\n\n.arrow-up {\n  transform: rotate(45deg);\n  left: 175px;\n}\n\n.arrow-down {\n  transform: rotate(-135deg);\n  right: 175px;\n}\n\n.badger-accordion__panel {\n  max-height: 75vh;\n  overflow: hidden;\n}\n\n.badger-accordion__panel.-ba-is-hidden {\n  max-height: 0 !important;\n  visibility: hidden;\n}\n\n.badger-accordion--initialized .badger-accordion__panel {\n  transition: all ease-in-out 0.2s;\n}\n\n.form-group label {\n  display: block;\n}\n\n.form-item label {\n  display: block;\n}\n\n.form-item input,\n.form-item .disabled-input {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item textarea,\n.form-item .disabled-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n}\n\n.form-item .disabled-textarea {\n  height: 160px;\n}\n\n.save-button {\n  padding: 0.5em 1em;\n  width: 120px;\n  text-align: center;\n  border: 1px solid #000000;\n  border-radius: 5px;\n  cursor: pointer;\n}\n\n.save-button:hover {\n  background-color: rgba(229, 231, 235, 0.9);\n}\n\n.success {\n  color: green;\n}\n\n.event {\n  color: #059669;\n}\n\n.news {\n  color: #2563EB;\n}\n\n.reminder {\n  color: #D97706;\n}\n\ninput:focus {\n  box-shadow: none !important;\n}\n\n.fake-input,\n.fake-textarea {\n  display: block;\n  width: 100%;\n  padding: 0.5em 1em;\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 5px;\n  background-color: #fff;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59886,6 +60192,45 @@ component.options.__file = "resources/js/vuejs/views/Reminder/CreateEditReminder
 
 /***/ }),
 
+/***/ "./resources/js/vuejs/views/Week.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/vuejs/views/Week.vue ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Week.vue?vue&type=template&id=1e67645a&scoped=true& */ "./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true&");
+/* harmony import */ var _Week_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Week.vue?vue&type=script&lang=js& */ "./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Week_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "1e67645a",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/vuejs/views/Week.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/vuejs/App.vue?vue&type=script&lang=js&":
 /*!*************************************************************!*\
   !*** ./resources/js/vuejs/App.vue?vue&type=script&lang=js& ***!
@@ -60075,6 +60420,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateEditReminder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateEditReminder.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Reminder/CreateEditReminder.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateEditReminder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Week_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Week.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Week_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -60382,6 +60743,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateEditReminder_vue_vue_type_template_id_1e4ef386_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateEditReminder_vue_vue_type_template_id_1e4ef386_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateEditReminder.vue?vue&type=template&id=1e4ef386&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Reminder/CreateEditReminder.vue?vue&type=template&id=1e4ef386&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Week_vue_vue_type_template_id_1e67645a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Week.vue?vue&type=template&id=1e67645a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true&");
 
 
 /***/ }),
@@ -61622,7 +62000,21 @@ var render = function() {
         [
           _c("navigation", {
             attrs: { year: _vm.year, month: _vm.month, hide: ["date"] }
-          })
+          }),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "mode",
+              attrs: {
+                to: {
+                  name: "week",
+                  params: { weekStart: _vm.weekStart, weekEnd: _vm.weekEnd }
+                }
+              }
+            },
+            [_vm._v("Week mode")]
+          )
         ],
         1
       )
@@ -62176,6 +62568,160 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/vuejs/views/Week.vue?vue&type=template&id=1e67645a&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "calendar_nav mx-auto px-4 sm:px-6 lg:px-8" }, [
+      _c(
+        "div",
+        { staticClass: "calendar_nav__current" },
+        [
+          _c("navigation", {
+            attrs: {
+              year: _vm.selectedYear,
+              month: _vm.selectedMonth,
+              hide: ["date"]
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "mode",
+              attrs: {
+                to: {
+                  name: "month",
+                  params: { year: _vm.selectedYear, month: _vm.selectedMonth }
+                }
+              }
+            },
+            [_vm._v("Month mode")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "calendar_body__dates" },
+          _vm._l(_vm.monthData.dates, function(date, index) {
+            return _c(
+              "router-link",
+              {
+                key: index,
+                staticClass: "calendar_body__date",
+                attrs: {
+                  to: {
+                    name: "day",
+                    params: {
+                      year: _vm.selectedYear,
+                      month: _vm.selectedMonth + 1,
+                      date: date
+                    }
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "calendar_body__date-number" }, [
+                  _vm._v(_vm._s(date))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "event calendar_body__date-item" }, [
+                  _c("span", [_vm._v("Events: ")]),
+                  _c("span", [
+                    _vm._v(
+                      _vm._s(
+                        "object" === typeof _vm.weekData.events[date]
+                          ? Object.keys(_vm.weekData.events[date]).length
+                          : 0
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "news calendar_body__date-item" }, [
+                  _c("span", [_vm._v("News: ")]),
+                  _c("span", [
+                    _vm._v(
+                      _vm._s(
+                        "object" === typeof _vm.weekData.news[date]
+                          ? Object.keys(_vm.weekData.news[date]).length
+                          : 0
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "reminder calendar_body__date-item" },
+                  [
+                    _c("span", [_vm._v("Reminders: ")]),
+                    _c("span", [
+                      _vm._v(
+                        _vm._s(
+                          "object" === typeof _vm.weekData.reminders[date]
+                            ? Object.keys(_vm.weekData.reminders[date]).length
+                            : 0
+                        )
+                      )
+                    ])
+                  ]
+                )
+              ]
+            )
+          }),
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "calendar_body__days" }, [
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Mo")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Tu")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("We")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Th")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Fr")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Sa")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "calendar_body__day" }, [_vm._v("Su")])
+    ])
+  }
+]
 render._withStripped = true
 
 

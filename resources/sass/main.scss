@@ -10,11 +10,16 @@ h1 {
 .calendar_nav__current {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     font-size: 24px;
 }
 .calendar_nav__current-month,
 .calendar_nav__current-date {
     margin-right: 1em;
+}
+.mode:hover {
+    text-decoration: underline;
+
 }
 .arrow {
     display: inline-block;
