@@ -23,6 +23,7 @@ Route::middleware('auth:web')->group(function () {
 //    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
 
     Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
+    Route::get('/week', [CalendarDateController::class, 'getWeekData'])->name('getWeekData');
     Route::get('/date', [CalendarDateController::class, 'getDateData'])->name('getDateData');
 
     Route::post('/removeObject', [CalendarDateController::class, 'deleteObject'])->name('removeObject');

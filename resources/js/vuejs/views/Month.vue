@@ -77,12 +77,12 @@ export default {
 				weekStart() {
 						let date = new Date(this.selectedYear, this.selectedMonth)
 						let firstday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
-						return firstday.getFullYear() + '-' + firstday.getMonth() + '-' + firstday.getDate();
+						return firstday.getFullYear() + '-' + (firstday.getMonth() + 1) + '-' + firstday.getDate();
 				},
 				weekEnd() {
 						let date = new Date(this.selectedYear, this.selectedMonth)
 						let last = new Date(date.setDate(date.getDate() - date.getDay() + 7));
-						return last.getFullYear() + '-' + last.getMonth() + '-' + last.getDate();
+						return last.getFullYear() + '-' + (last.getMonth() + 1) + '-' + last.getDate();
 
 				},
 		},
@@ -110,43 +110,4 @@ export default {
 </script>
 
 <style scoped>
-
-.calendar_body {
-    margin: 20px 10px;
-}
-.calendar_body__days {
-    display: flex;
-}
-
-.calendar_body__dates {
-    display: flex;
-    flex-wrap: wrap;
-}
-.calendar_body__date,
-.calendar_body__day {
-    width: 14%;
-    text-align: center;
-}
-
-.calendar_body__date {
-  border: 1px solid #000000;
-  margin: 0.1em;
-  padding: 0.2em;
-}
-.calendar_body__date.prev_month {
-		border: none;
-}
-
-.calendar_body__date:not(.prev_month):hover {
-  	cursor: pointer;
-		background: #ffffff;
-}
-
-.calendar_body__date-item {
-		display: flex;
-		justify-content: space-between;
-		padding: 0 0.6rem;
-}
-
-
 </style>

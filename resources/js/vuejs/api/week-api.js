@@ -1,10 +1,11 @@
 import axios from "../api/axios";
 
-const getData = (apiUrl, start, end) => {
+const getData = (apiUrl, start, end, shift) => {
 		return axios.get(apiUrl, {
 				params: {
 						start: start,
-						end: end
+						end: end,
+						shift: shift
 				}
 		})
 }

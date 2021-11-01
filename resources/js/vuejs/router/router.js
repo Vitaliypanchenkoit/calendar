@@ -18,7 +18,7 @@ const routes = [
 				component: Month,
 		},
 		{
-				path: '/week',
+				path: '/week-mode',
 				name: 'week',
 				props: true,
 				component: Week,

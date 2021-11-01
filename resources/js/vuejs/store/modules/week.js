@@ -5,7 +5,7 @@ const apiUrl = '/week';
 const state = {
 		data: {},
 		isLoading: false,
-		errors: null
+		errors: null,
 }
 
 export const mutationTypes = {
@@ -38,10 +38,10 @@ export const actionTypes = {
 }
 
 const actions = {
-		[actionTypes.getWeekData](context, {start, end}) {
+		[actionTypes.getWeekData](context, {start, end, shift = ''}) {
 				return new Promise(resolve => {
 						context.commit(mutationTypes.getDataStart)
-						weekApi.getData(apiUrl, start, end)
+						weekApi.getData(apiUrl, start, end, shift)
 								.then(response => {
 										context.commit(mutationTypes.getDataSuccess, response.data)
 										resolve(response.data)
