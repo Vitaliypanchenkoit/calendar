@@ -47,7 +47,7 @@ class ClearOldData extends Command
     {
         try {
             $isTime = $this->checkTime();
-            Log::info(__('Time of clearing old data was checked at') . ' ' . now()->format('Y-m-d H:m:s') . ' ' .  __('Result:') . ' ' . $isTime);
+            Log::info(__('Time of clearing old data was checked at') . ' ' . now()->format('Y-m-d H:i:s') . ' ' .  __('Result:') . ' ' . $isTime);
 
             if (!$isTime) {
                 return 0;
@@ -68,7 +68,7 @@ class ClearOldData extends Command
                 }
             }
 
-            Log::info(__('Old data was clear at ' . now()->format('Y-m-d H:m:s')));
+            Log::info(__('Old data was clear at ' . now()->format('Y-m-d H:i:s')));
 
         } catch (\Throwable $e) {
             $log = new Logger($e);

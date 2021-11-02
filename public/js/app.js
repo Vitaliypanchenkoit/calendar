@@ -3843,7 +3843,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    if (this.goTo.length) {
+    if (undefined !== this.goTo && this.goTo.routerName) {
       this.$router.push({
         name: this.goTo.routerName,
         params: {
@@ -6084,6 +6084,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 
 
 var apiUrl = '/date';
@@ -6121,7 +6123,15 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getD
   state.isLoading = false;
   var objectName = payload.objectName.toLowerCase();
   objectName = objectName === 'event' ? 'events' : objectName;
-  state.data[objectName].splice(payload.index, 1);
+
+  var type = _typeof(state.data[objectName]);
+
+  if (type === 'object') {
+    delete state.data[objectName][payload.index];
+  } else if (type === 'array') {
+    state.data[objectName].splice(payload.index, 1);
+  }
+
   state.data = _objectSpread({}, state.data);
 }), _defineProperty(_mutations, mutationTypes.removeObjectFailure, function (state, payload) {
   state.isLoading = false;
@@ -6301,7 +6311,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   state.isLoading = false;
   state.successMessage = 'The Event was saved successfully';
 
-  if (_router_router__WEBPACK_IMPORTED_MODULE_1__.default.currentRoute.name === createEvent) {
+  if (_router_router__WEBPACK_IMPORTED_MODULE_1__.default.currentRoute.name === 'createEvent') {
     _router_router__WEBPACK_IMPORTED_MODULE_1__.default.push({
       name: 'editEvent',
       params: {
@@ -6364,7 +6374,6 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time, participants).then(function (response) {
       context.commit(mutationTypes.saveEventSuccess, response.data.data);
     })["catch"](function (e) {
-      console.log(e.response.data);
       context.commit(mutationTypes.saveEventFailure, e.response.data.message);
     });
   });
@@ -61307,16 +61316,22 @@ var render = function() {
                             ),
                         _vm._v(" "),
                         _c("div", [
-                          _c("span", [
-                            _vm._v("Was read by: " + _vm._s(item.read.length))
-                          ]),
+                          item.read
+                            ? _c("span", [
+                                _vm._v(
+                                  "Was read by: " + _vm._s(item.read.length)
+                                )
+                              ])
+                            : _vm._e(),
                           _vm._v("  \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
-                          _c("span", [
-                            _vm._v(
-                              "Marked as important: " +
-                                _vm._s(item.important.length)
-                            )
-                          ])
+                          item.important
+                            ? _c("span", [
+                                _vm._v(
+                                  "Marked as important: " +
+                                    _vm._s(item.important.length)
+                                )
+                              ])
+                            : _vm._e()
                         ])
                       ]),
                       _vm._v(" "),
@@ -61642,7 +61657,8 @@ var render = function() {
             ? _c("span", { staticClass: "text-red-600" }, [
                 _vm._v(_vm._s(_vm.errors.date[0]))
               ])
-            : _vm._e()
+            : _vm._e(),
+          _vm._v("data\n\t\t")
         ],
         1
       ),

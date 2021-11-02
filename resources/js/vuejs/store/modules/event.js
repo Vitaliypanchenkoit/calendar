@@ -102,7 +102,7 @@ const mutations = {
 		[mutationTypes.saveEventSuccess](state, payload) {
 				state.isLoading = false
 				state.successMessage = 'The Event was saved successfully';
-				if (router.currentRoute.name === createEvent) {
+				if (router.currentRoute.name === 'createEvent') {
 						router.push({name: 'editEvent', params: { 'id': payload.id}})
 				}
 		},
@@ -183,7 +183,6 @@ const actions = {
 										context.commit(mutationTypes.saveEventSuccess, response.data.data)
 								})
 								.catch((e) => {
-										console.log(e.response.data);
 										context.commit(mutationTypes.saveEventFailure, e.response.data.message)
 								})
 				})

@@ -10,7 +10,7 @@
 				<div class="form-item mb-2">
 						<label>Date</label>
 						<datetime v-model="date" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
-						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>
+						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>data
 				</div>
 				<div class="form-item mb-2">
 						<label>Time</label>

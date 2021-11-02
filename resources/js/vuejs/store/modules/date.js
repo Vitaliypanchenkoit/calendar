@@ -50,7 +50,14 @@ const mutations = {
 				state.isLoading = false
 				let objectName = payload.objectName.toLowerCase();
 				objectName = objectName === 'event' ? 'events' : objectName;
-				state.data[objectName].splice(payload.index, 1);
+				let type = typeof(state.data[objectName]);
+
+				if (type === 'object') {
+						delete state.data[objectName][payload.index];
+				} else if (type === 'array') {
+						state.data[objectName].splice(payload.index, 1);
+				}
+
 				state.data = {
 						...state.data
 				}

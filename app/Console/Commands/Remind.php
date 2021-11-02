@@ -47,19 +47,18 @@ class Remind extends Command
 
         if ($reminders->count()) {
             foreach ($reminders as $reminder) {
+                $date = Carbon::createFromFormat('Y-m-d H:i:s', $reminder->date . ' ' . $reminder->time);
+
                 if ($reminder->time_hold &&
                     $reminder->time_hold !== '00:00:00'
                 ) {
-                    $date = Carbon::createFromFormat('Y-m-d H:i:s', $reminder->date . ' ' . $reminder->time);
-
                     $timeHold = Carbon::createFromFormat('H:i:s', $reminder->time_hold);
-
                     $date = $date->addHours($timeHold->hour)->addMinutes($timeHold->minute);
+                }
 
-                    $now = now();
-                    if ($now->greaterThanOrEqualTo($date)) {
-                        TimeToRemindEvent::dispatch($reminder);
-                    }
+                $now = now();
+                if ($now->greaterThanOrEqualTo($date)) {
+                    TimeToRemindEvent::dispatch($reminder);
                 }
             }
         }

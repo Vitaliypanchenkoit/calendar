@@ -42,8 +42,8 @@
 																<div v-if="$parent.currentUser.id === item.author_id" class="body-item__created_by">Created by you</div>
 																<div v-else class="body-item__created_by">Created by {{ item.author_name }}</div>
 																<div>
-																		<span>Was read by: {{ item.read.length }}</span>&#160;&#160;
-																		<span>Marked as important: {{ item.important.length }}</span>
+																		<span v-if="item.read">Was read by: {{ item.read.length }}</span>&#160;&#160;
+																		<span v-if="item.important">Marked as important: {{ item.important.length }}</span>
 																</div>
 														</div>
 

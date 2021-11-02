@@ -26,7 +26,7 @@ export default {
 			}
 		},
 		created() {
-			if (this.goTo.length) {
+			if (undefined !== this.goTo && this.goTo.routerName) {
 					this.$router.push({name: this.goTo.routerName, params: {id: this.goTo.id}})
 			}
 		}

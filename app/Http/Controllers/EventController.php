@@ -6,7 +6,7 @@ use App\Helpers\CacheHelper;
 use App\Http\Requests\Event\CreateEventRequest;
 use App\Http\Requests\Event\MarkEventRequest;
 use App\Http\Requests\Event\UpdateEventRequest;
-use App\Http\Requests\ValidateEventIdRequest;
+use App\Http\Requests\Event\ValidateEventIdRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\EventMark;
