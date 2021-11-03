@@ -65,3 +65,10 @@ Laravel Middleware реализует инверсию данного патте
 Кроме этого, данный паттерн был реализован в сервисе app/Services/LoggerChaneService для многоуровневого логирования ошибок.
 Если код ошибки = 0 или >= 500, тогда высылаем сообщение об ошибки на почту администратора.
 При этом во всех случаях записываем ошибку в лог файл.
+
+## Unit Testing
+1. Copy `.env` file to `.env.testing` file and change next constants in the `.env.testing` file:
+- APP_ENV=testing
+- DB_DATABASE=calendar_test
+2. Create a testing database. For instance, `calendar_test`
+3. Apply migrations for testing database `php artisan migrate --env=testing`
