@@ -108,6 +108,7 @@ const mutations = {
 		},
 		[mutationTypes.saveEventFailure](state, payload) {
 				state.isLoading = false
+				console.log(payload);
 				state.errors = payload
 		},
 
@@ -183,7 +184,7 @@ const actions = {
 										context.commit(mutationTypes.saveEventSuccess, response.data.data)
 								})
 								.catch((e) => {
-										context.commit(mutationTypes.saveEventFailure, e.response.data.message)
+										context.commit(mutationTypes.saveEventFailure, e.response.data.errors)
 								})
 				})
 		},

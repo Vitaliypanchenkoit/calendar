@@ -6322,6 +6322,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
   }
 }), _defineProperty(_mutations, mutationTypes.saveEventFailure, function (state, payload) {
   state.isLoading = false;
+  console.log(payload);
   state.errors = payload;
 }), _defineProperty(_mutations, mutationTypes.getInputValue, function (state, payload) {
   state.singleEventData = _objectSpread(_objectSpread({}, state.singleEventData), {}, _defineProperty({}, payload.name, payload.value));
@@ -6375,7 +6376,7 @@ var actions = (_actions = {}, _defineProperty(_actions, actionTypes.getSingleEve
     _api_event_api__WEBPACK_IMPORTED_MODULE_0__.default.createEvent(apiUrl, title, content, date, time, participants).then(function (response) {
       context.commit(mutationTypes.saveEventSuccess, response.data.data);
     })["catch"](function (e) {
-      context.commit(mutationTypes.saveEventFailure, e.response.data.message);
+      context.commit(mutationTypes.saveEventFailure, e.response.data.errors);
     });
   });
 }), _defineProperty(_actions, actionTypes.updateEvent, function (context, _ref3) {
@@ -61672,8 +61673,7 @@ var render = function() {
             ? _c("span", { staticClass: "text-red-600" }, [
                 _vm._v(_vm._s(_vm.errors.date[0]))
               ])
-            : _vm._e(),
-          _vm._v("data\n\t\t")
+            : _vm._e()
         ],
         1
       ),
