@@ -5858,6 +5858,7 @@ var createReminder = function createReminder(apiUrl, title, content, date, time)
 
 var updateReminder = function updateReminder(apiUrl, id, time, date) {
   var formData = new FormData();
+  console.log(time);
   formData.append('id', id);
   formData.append('time', time);
   formData.append('date', date);
@@ -6722,6 +6723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _api_reminder_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/reminder-api */ "./resources/js/vuejs/api/reminder-api.js");
+/* harmony import */ var _router_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router/router */ "./resources/js/vuejs/router/router.js");
 var _mutations, _actions;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -6729,6 +6731,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -6803,15 +6806,26 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, mutationTypes.getS
     date: '',
     time: ''
   };
-}), _defineProperty(_mutations, mutationTypes.saveReminderSuccess, function (state) {
+}), _defineProperty(_mutations, mutationTypes.saveReminderSuccess, function (state, payload) {
   state.isLoading = false;
-  state.successMessage = 'The Reminder was created successfully';
-  state.singleReminderData = {
-    title: '',
-    content: '',
-    date: '',
-    time: ''
-  };
+
+  if (_router_router__WEBPACK_IMPORTED_MODULE_1__.default.currentRoute.name === 'createReminder') {
+    state.successMessage = 'The Reminder was created successfully';
+    state.singleReminderData = {
+      title: '',
+      content: '',
+      date: '',
+      time: ''
+    };
+  } else {
+    state.successMessage = 'The Reminder was updated successfully';
+    state.singleReminderData = {
+      title: payload.data.title,
+      content: payload.data.content,
+      date: payload.data.date,
+      time: payload.data.time
+    };
+  }
 }), _defineProperty(_mutations, mutationTypes.saveReminderFailure, function (state, payload) {
   state.isLoading = false;
   state.errors = payload;
@@ -61642,6 +61656,7 @@ var render = function() {
           _vm._v(" "),
           _c("datetime", {
             attrs: {
+              "value-zone": "local",
               format: { year: "numeric", month: "long", day: "numeric" }
             },
             model: {
@@ -61670,7 +61685,7 @@ var render = function() {
           _c("label", [_vm._v("Time")]),
           _vm._v(" "),
           _c("datetime", {
-            attrs: { type: "time" },
+            attrs: { type: "time", "value-zone": "local" },
             model: {
               value: _vm.time,
               callback: function($$v) {
@@ -62479,6 +62494,7 @@ var render = function() {
           !_vm.id
             ? _c("datetime", {
                 attrs: {
+                  "value-zone": "local",
                   format: { year: "numeric", month: "long", day: "numeric" }
                 },
                 model: {
@@ -62509,7 +62525,7 @@ var render = function() {
           _c("label", [_vm._v("Time")]),
           _vm._v(" "),
           _c("datetime", {
-            attrs: { type: "time" },
+            attrs: { type: "time", "value-zone": "local" },
             model: {
               value: _vm.time,
               callback: function($$v) {

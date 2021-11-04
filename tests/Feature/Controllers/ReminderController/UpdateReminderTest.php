@@ -31,14 +31,13 @@ class UpdateReminderTest extends TestCase
     {
         $reminder = Reminder::factory()->create();
         $user = User::find($reminder->author_id);
-        $tomorrow = now()->addDay();
 
         $response = $this->actingAs($user)->json( 'PUT', '/reminders', [
             'id' => $reminder->id,
-            'time' => $tomorrow,
+            'time' => now(),
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     /**
@@ -49,9 +48,35 @@ class UpdateReminderTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'POST', '/reminders', $data);
+        $response = $this->actingAs($user)->json( 'PUT', '/reminders', $data);
 
         $response->assertStatus(422);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_fail_validation_time()
+    {
+        $reminder = Reminder::factory()->create();
+        $user = User::find($reminder->author_id);
+
+        $response = $this->actingAs($user)->json( 'PUT', '/reminders', ['id' => $reminder->id]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_user_hasnt_access_to_update_reminder()
+    {
+        $reminder = Reminder::factory()->create();
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->json( 'PUT', '/reminders', ['id' => $reminder->id, 'time' => now()]);
+
+        $response->assertForbidden();
     }
 
     /**
@@ -60,7 +85,6 @@ class UpdateReminderTest extends TestCase
      */
     public function provideInvalidData(): array
     {
-        $reminder = Reminder::factory()->create();
         $now = now();
         $tomorrow = $now->addDay();
         return [
@@ -68,11 +92,6 @@ class UpdateReminderTest extends TestCase
             'missing id' => [
                 [
                     'time' => $tomorrow,
-                ]
-            ],
-            'missing time' => [
-                [
-                    'id' => $reminder->id,
                 ]
             ],
 

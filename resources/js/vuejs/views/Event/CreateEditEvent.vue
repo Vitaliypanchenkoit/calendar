@@ -9,12 +9,12 @@
 				</div>
 				<div class="form-item mb-2">
 						<label>Date</label>
-						<datetime v-model="date" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
+						<datetime v-model="date" :value-zone="'local'" :format="{ year: 'numeric', month: 'long', day: 'numeric' }"></datetime>
 						<span class="text-red-600" v-if="errors.date">{{ errors.date[0] }}</span>data
 				</div>
 				<div class="form-item mb-2">
 						<label>Time</label>
-						<datetime type="time" v-model="time"></datetime>
+						<datetime type="time" :value-zone="'local'" v-model="time"></datetime>
 						<span class="text-red-600" v-if="errors.time">{{ errors.time[0] }}</span>
 				</div>
 				<div class="form-item mb-2">

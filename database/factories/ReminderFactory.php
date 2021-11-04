@@ -22,11 +22,11 @@ class ReminderFactory extends Factory
      */
     public function definition()
     {
-        $futureDate = $this->faker->dateTimeInInterval('+1 days', '+7 days');
+        $futureDate = now()->addDays(2);
         return [
             'title' => $this->faker->title,
             'date' => $futureDate->format('Y-m-d'),
-            'time' => $this->faker->date('H-i-s'),
+            'time' => $this->faker->date('H:i:s'),
             'time_hold' => '00:00:00',
             'author_id' => User::factory(),
             'content' => $this->faker->text
