@@ -8,36 +8,47 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UpdateReminderTest extends TestCase
+class HoldReminderTest extends TestCase
 {
     /**
      * @return void
      */
-    public function test_forbid_an_unauthenticated_user_to_update_a_reminder()
+    public function test_forbid_an_unauthenticated_user_to_hold_a_reminder()
     {
         $reminder = Reminder::factory()->create();
-        $response = $this->json('PUT', '/reminders', [
+        $response = $this->json('PUT', '/reminders/hold', [
             'id' => $reminder->id,
-            'time' => now()->format('H:i:s'),
+            'period' => 30
         ]);
 
         $response->assertUnauthorized();
     }
 
     /**
+     * A basic feature test example.
+     *
      * @return void
      */
-    public function test_update_a_reminder_successfully()
+    public function test_hold_reminder_successfully()
     {
         $reminder = Reminder::factory()->create();
         $user = User::find($reminder->author_id);
-
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', [
-            'id' => $reminder->id,
-            'time' => now(),
-        ]);
+        $response = $this->actingAs($user)->json('PUT', '/reminders/hold', ['id' => $reminder->id, 'period' => 30]);
 
         $response->assertStatus(200);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_user_hasnt_access_to_hold_a_reminder()
+    {
+        $reminder = Reminder::factory()->create();
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->json( 'PUT', '/reminders/hold', ['id' => $reminder->id, 'period' => 30]);
+
+        $response->assertForbidden();
     }
 
     /**
@@ -57,22 +68,9 @@ class UpdateReminderTest extends TestCase
             $user = User::factory()->create();
         }
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', $data);
+        $response = $this->actingAs($user)->json( 'PUT', '/reminders/hold', $data);
 
         $response->assertStatus(422);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_user_hasnt_access_to_update_reminder()
-    {
-        $reminder = Reminder::factory()->create();
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', ['id' => $reminder->id, 'time' => now()]);
-
-        $response->assertForbidden();
     }
 
     /**
@@ -81,27 +79,31 @@ class UpdateReminderTest extends TestCase
      */
     public function provideInvalidData(): array
     {
-        $now = now();
-        $tomorrow = $now->addDay();
         return [
             'missing all fields' => [[]],
             'missing id' => [
                 [
-                    'time' => $tomorrow,
+                    'period' => 30
                 ]
             ],
             'not existing id' => [
                 [
                     'id' => 0,
-                    'time' => $tomorrow,
+                    'period' => 30
                 ]
             ],
-            'missing time' => [
+            'missing period' => [
                 function () {
                     $reminder = Reminder::factory()->create();
                     return ['id' => $reminder->id];
                 }
             ],
+            'non numeric period' => [
+                function () {
+                    $reminder = Reminder::factory()->create();
+                    return ['id' => $reminder->id, 'period' => 'test'];
+                }
+            ]
 
         ];
     }
