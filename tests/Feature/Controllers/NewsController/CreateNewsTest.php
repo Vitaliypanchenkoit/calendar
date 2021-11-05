@@ -1,32 +1,32 @@
 <?php
 
-namespace Tests\Feature\Controllers\ReminderController;
+namespace Tests\Feature\Controllers\NewsController;
 
-use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class EditReminderTest extends TestCase
+class CreateNewsTest extends TestCase
 {
     use RefreshDatabase;
 
-    const ROUTE = '/reminders/edit';
-    const METHOD = 'GET';
+    const ROUTE = '/news';
+    const METHOD = 'POST';
 
     /**
-     * A basic feature test example.
-     *
      * @return void
      */
-    public function test_get_edit_reminder_page_successfully()
+    public function test_create_a_news_successfully()
     {
-        $reminder = Reminder::factory()->create();
-        $user = User::find($reminder->author_id);
-        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $reminder->id]);
+        $user = User::factory()->create();
 
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, [
+            'title' => 'test title',
+            'content' => 'test content',
+        ]);
+
+        $response->assertStatus(201);
     }
 
     /**
@@ -49,13 +49,17 @@ class EditReminderTest extends TestCase
     public function provideInvalidData(): array
     {
         return [
-            'missing id' => [[]],
-            'not existing id' => [
+            'missing all fields' => [[]],
+            'missing title' => [
                 [
-                    'id' => 0
+                    'content' => 'test content',
                 ]
             ],
-
+            'missing content' => [
+                [
+                    'title' => 'test title',
+                ]
+            ]
         ];
     }
 }

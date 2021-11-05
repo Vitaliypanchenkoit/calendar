@@ -10,19 +10,10 @@ use Tests\TestCase;
 
 class UpdateReminderTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function test_forbid_an_unauthenticated_user_to_update_a_reminder()
-    {
-        $reminder = Reminder::factory()->create();
-        $response = $this->json('PUT', '/reminders', [
-            'id' => $reminder->id,
-            'time' => now()->format('H:i:s'),
-        ]);
+    use RefreshDatabase;
 
-        $response->assertUnauthorized();
-    }
+    const ROUTE = '/reminders';
+    const METHOD = 'PUT';
 
     /**
      * @return void
@@ -32,7 +23,7 @@ class UpdateReminderTest extends TestCase
         $reminder = Reminder::factory()->create();
         $user = User::find($reminder->author_id);
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', [
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, [
             'id' => $reminder->id,
             'time' => now(),
         ]);
@@ -57,7 +48,7 @@ class UpdateReminderTest extends TestCase
             $user = User::factory()->create();
         }
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', $data);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, $data);
 
         $response->assertStatus(422);
     }
@@ -70,7 +61,7 @@ class UpdateReminderTest extends TestCase
         $reminder = Reminder::factory()->create();
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders', ['id' => $reminder->id, 'time' => now()]);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, ['id' => $reminder->id, 'time' => now()]);
 
         $response->assertForbidden();
     }

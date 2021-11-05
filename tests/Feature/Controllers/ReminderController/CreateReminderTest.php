@@ -11,20 +11,8 @@ class CreateReminderTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return void
-     */
-    public function test_forbid_an_unauthenticated_user_to_create_a_reminder()
-    {
-        $response = $this->json('POST', '/reminders', [
-            'title' => 'test title',
-            'content' => 'test content',
-            'date' => now()->format('Y-m-d'),
-            'time' => now()->format('H:i:s'),
-        ]);
-
-        $response->assertUnauthorized();
-    }
+    const ROUTE = '/reminders';
+    const METHOD = 'POST';
 
     /**
      * @return void
@@ -34,7 +22,7 @@ class CreateReminderTest extends TestCase
         $user = User::factory()->create();
         $tomorrow = now()->addDay();
 
-        $response = $this->actingAs($user)->json( 'POST', '/reminders', [
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, [
             'title' => 'test title',
             'content' => 'test content',
             'date' => $tomorrow,
@@ -52,7 +40,7 @@ class CreateReminderTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'POST', '/reminders', $data);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, $data);
 
         $response->assertStatus(422);
     }

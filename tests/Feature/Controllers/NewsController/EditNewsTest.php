@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Feature\Controllers\ReminderController;
+namespace Tests\Feature\Controllers\NewsController;
 
-use App\Models\Reminder;
+use App\Models\News;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class EditReminderTest extends TestCase
+class EditNewsTest extends TestCase
 {
     use RefreshDatabase;
 
-    const ROUTE = '/reminders/edit';
+    const ROUTE = '/news/edit';
     const METHOD = 'GET';
 
     /**
@@ -20,11 +20,11 @@ class EditReminderTest extends TestCase
      *
      * @return void
      */
-    public function test_get_edit_reminder_page_successfully()
+    public function test_get_edit_news_page_successfully()
     {
-        $reminder = Reminder::factory()->create();
-        $user = User::find($reminder->author_id);
-        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $reminder->id]);
+        $object = News::factory()->create();
+        $user = User::find($object->author_id);
+        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $object->id]);
 
         $response->assertStatus(200);
     }

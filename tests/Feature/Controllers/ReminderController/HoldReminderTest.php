@@ -10,19 +10,10 @@ use Tests\TestCase;
 
 class HoldReminderTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function test_forbid_an_unauthenticated_user_to_hold_a_reminder()
-    {
-        $reminder = Reminder::factory()->create();
-        $response = $this->json('PUT', '/reminders/hold', [
-            'id' => $reminder->id,
-            'period' => 30
-        ]);
+    use RefreshDatabase;
 
-        $response->assertUnauthorized();
-    }
+    const ROUTE = '/reminders/hold';
+    const METHOD = 'PUT';
 
     /**
      * A basic feature test example.
@@ -33,7 +24,7 @@ class HoldReminderTest extends TestCase
     {
         $reminder = Reminder::factory()->create();
         $user = User::find($reminder->author_id);
-        $response = $this->actingAs($user)->json('PUT', '/reminders/hold', ['id' => $reminder->id, 'period' => 30]);
+        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $reminder->id, 'period' => 30]);
 
         $response->assertStatus(200);
     }
@@ -46,7 +37,7 @@ class HoldReminderTest extends TestCase
         $reminder = Reminder::factory()->create();
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders/hold', ['id' => $reminder->id, 'period' => 30]);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, ['id' => $reminder->id, 'period' => 30]);
 
         $response->assertForbidden();
     }
@@ -68,7 +59,7 @@ class HoldReminderTest extends TestCase
             $user = User::factory()->create();
         }
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders/hold', $data);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, $data);
 
         $response->assertStatus(422);
     }

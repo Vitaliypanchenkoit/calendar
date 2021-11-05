@@ -10,18 +10,10 @@ use Tests\TestCase;
 
 class CompleteReminderTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function test_forbid_an_unauthenticated_user_to_complete_a_reminder()
-    {
-        $reminder = Reminder::factory()->create();
-        $response = $this->json('PUT', '/reminders/complete', [
-            'id' => $reminder->id,
-        ]);
+    use RefreshDatabase;
 
-        $response->assertUnauthorized();
-    }
+    const ROUTE = '/reminders/complete';
+    const METHOD = 'PUT';
 
     /**
      * A basic feature test example.
@@ -30,9 +22,9 @@ class CompleteReminderTest extends TestCase
      */
     public function test_complete_reminder_successfully()
     {
-        $reminder = Reminder::factory()->create();
-        $user = User::find($reminder->author_id);
-        $response = $this->actingAs($user)->json('PUT', '/reminders/complete', ['id' => $reminder->id]);
+        $object = Reminder::factory()->create();
+        $user = User::find($object->author_id);
+        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $object->id]);
 
         $response->assertStatus(200);
     }
@@ -45,7 +37,7 @@ class CompleteReminderTest extends TestCase
         $reminder = Reminder::factory()->create();
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders/complete', ['id' => $reminder->id]);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, ['id' => $reminder->id]);
 
         $response->assertForbidden();
     }
@@ -58,7 +50,7 @@ class CompleteReminderTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->json( 'PUT', '/reminders/complete', $data);
+        $response = $this->actingAs($user)->json( self::METHOD, self::ROUTE, $data);
 
         $response->assertStatus(422);
     }
