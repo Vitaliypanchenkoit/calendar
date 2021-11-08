@@ -3,17 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\Event;
+use App\Models\EventMark;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EventFactory extends Factory
+class EventMarkFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Event::class;
+    protected $model = EventMark::class;
 
     /**
      * Define the model's default state.
@@ -22,13 +23,11 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $futureDate = now()->addDays(2);
         return [
-            'title' => $this->faker->title,
-            'date' => $futureDate->format('Y-m-d'),
-            'time' => $this->faker->date('H:i:s'),
-            'author_id' => User::factory(),
-            'content' => $this->faker->text
+            'event_id' => Event::factory(),
+            'user_id' => User::factory(),
+            'take_part' => rand(0, 1),
+            'not_interesting' => rand(0, 1),
         ];
     }
 }

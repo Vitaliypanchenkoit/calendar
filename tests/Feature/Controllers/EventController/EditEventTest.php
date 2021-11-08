@@ -1,38 +1,39 @@
 <?php
 
-namespace Tests\Feature\Controllers\ReminderController;
+namespace Tests\Feature\Controllers\EventController;
 
-use App\Models\Reminder;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class EditReminderTest extends TestCase
+class EditEventTest extends TestCase
 {
     use RefreshDatabase;
 
-    const ROUTE = '/reminders/edit';
+    const ROUTE = '/events/edit';
     const METHOD = 'GET';
 
     /**
-     *
+     * @test
      * @return void
      */
-    public function test_get_edit_reminder_page_successfully()
+    public function get_event_successfully()
     {
-        $reminder = Reminder::factory()->create();
-        $user = User::find($reminder->author_id);
-        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $reminder->id]);
+        $event = Event::factory()->create();
+        $user = User::find($event->author_id);
+        $response = $this->actingAs($user)->json(self::METHOD, self::ROUTE, ['id' => $event->id]);
 
         $response->assertStatus(200);
     }
 
     /**
+     * @test
      * @dataProvider provideInvalidData
      * @return void
      */
-    public function test_fail_validation(array $data)
+    public function fail_validation(array $data)
     {
         $user = User::factory()->create();
 

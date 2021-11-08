@@ -26,7 +26,7 @@ class MarkEventRequest extends FormRequest
         return [
             'id' => ['required', 'exists:events,id'],
             'key' => ['required', 'in:take_part,not_interesting'],
-            'value' => ['boolean'],
+            'value' => ['required', 'boolean'],
         ];
     }
 }
