@@ -75,7 +75,7 @@ class EventController extends Controller
 
             $event = Event::find($data['id']);
             if ($event->author_id !== auth()->user()->id) {
-                throw new \Exception(__('You haven\'t an access to update this event'));
+                throw new \Exception(__('You haven\'t an access to update this event'), 403);
             }
 
             $persistModule = new PersistEvent();
