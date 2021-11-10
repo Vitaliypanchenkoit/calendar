@@ -24,14 +24,16 @@ class DeleteObjectRequest extends FormRequest
      */
     public function rules()
     {
-        $objectName = request()->get('objectName');
-        $dbTable = '';
-        if ($objectName) {
-            $dbTable = ObjectHelper::getDbTableName($objectName);
-        }
-        return [
-            'objectName' => ['required', 'string', 'in:Reminder,Event,News'],
-            'id' => ['required', 'integer', 'exists:' . $dbTable . ',id'],
+        $result = [
+            'objectName' => ['required', 'string', 'in:Reminder,Event,News']
         ];
+
+        $objectName = request()->get('objectName');
+
+        if (in_array($objectName, ['Reminder', 'Event', 'News'])) {
+            $dbTable = ObjectHelper::getDbTableName($objectName);
+            $result['id'] = ['required', 'integer', 'exists:' . $dbTable . ',id'];
+        }
+        return $result;
     }
 }

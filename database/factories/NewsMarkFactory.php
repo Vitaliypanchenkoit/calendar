@@ -3,17 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\News;
+use App\Models\NewsMark;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class NewsFactory extends Factory
+class NewsMarkFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = News::class;
+    protected $model = NewsMark::class;
 
     /**
      * Define the model's default state.
@@ -22,13 +23,11 @@ class NewsFactory extends Factory
      */
     public function definition()
     {
-        $futureDate = now()->addDays(2);
         return [
-            'title' => $this->faker->title,
-            'date' => $futureDate->format('Y-m-d'),
-            'time' => $futureDate->format('H:i:s'),
-            'author_id' => User::factory(),
-            'content' => $this->faker->text
+            'news_id' => News::factory(),
+            'user_id' => User::factory(),
+            'important' => rand(0, 1),
+            'read' => rand(0, 1),
         ];
     }
 }

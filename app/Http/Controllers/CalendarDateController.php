@@ -94,14 +94,16 @@ class CalendarDateController extends Controller
                 if ($data['shift'] === 'prev') {
                     $start = $start->subDays(7);
                     $end = $end->subDays(7);
-                } else {
+                } elseif($data['shift'] === 'next') {
                     $start = $start->addDays(7);
                     $end = $end->addDays(7);
+                } else {
+                    throw new \Exception(__('Invalid value of the shift'), 422);
                 }
             }
 
-            session(['weekStart' => $start->format('Y-m-d')]);
-            session(['weekEnd' => $end->format('Y-m-d')]);
+            session(['weekStart' => $start->format('Y-m-j')]);
+            session(['weekEnd' => $end->format('Y-m-j')]);
 
             $diffInDays = $end->diffInDays($start) + 1;
 
@@ -112,7 +114,7 @@ class CalendarDateController extends Controller
                 $day = $date->format('j');
 
                 $result['dates'][] = $day;
-                $records = $this->calendarDataService->getDayData($date->format('Y-m-d'));
+                $records = $this->calendarDataService->getDayData($date->format('Y-m-j'));
                 $result['events'][$day] = $records['events'];
                 $result['news'][$day] = $records['news'];
                 $result['reminders'][$day] = $records['reminders'];
