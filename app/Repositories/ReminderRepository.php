@@ -40,7 +40,7 @@ class ReminderRepository implements ReminderRepositoryInterface, ClearDataReposi
     public function getOldData(int $numberOfDays)
     {
         $now = now();
-        $before = $now->subDays($numberOfDays);
+        $before = $now->subDays($numberOfDays)->format('Y-m-d');
         return Reminder::where('date', '<=', $before)->get();
 
     }
