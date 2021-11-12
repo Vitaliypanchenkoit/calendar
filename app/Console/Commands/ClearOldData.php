@@ -75,6 +75,7 @@ class ClearOldData extends Command
         } catch (\Throwable $e) {
             $log = new Logger($e);
             $log->log();
+            return 1;
         }
         return 0;
     }

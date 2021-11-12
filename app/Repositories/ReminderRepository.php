@@ -17,7 +17,7 @@ class ReminderRepository implements ReminderRepositoryInterface, ClearDataReposi
     {
         $now = now();
         return Reminder::where('date', $now->format('Y-m-d'))
-            ->where('time', '<=', $now->startOfMinute()->format('H:i:s'))
+            ->where('time', '<=', $now->endOfMinute()->format('H:i:s'))
             ->where('status', '<>', Reminder::STATUS_COMPLETED)
             ->get();
     }
