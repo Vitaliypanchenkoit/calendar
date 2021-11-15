@@ -88,7 +88,7 @@ class RemindTest extends TestCase
                     $now = now();
                     $object = Reminder::factory()->create();
                     $object->date = $now->format('Y-m-d');
-                    $object->time = $now->format('H:m:s');
+                    $object->time = $now->subMinute()->format('H:m:s');
                     $object->save();
                     return ['object' => $object];
                 }
