@@ -17,6 +17,7 @@ use App\Services\EventService;
 use App\Services\LoggerChainService\Logger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isNull;
 
 class EventController extends Controller
 {
@@ -29,7 +30,11 @@ class EventController extends Controller
             $time = new Carbon($data['time']);
             $data['date'] = $date->format('Y-m-d');
             $data['time'] = $time->format('H:i');
-            $data['participants'] = $data['participants'] ? json_decode($data['participants']) : [];
+            $data['participants'] = !empty($data['participants']) ? json_decode($data['participants']) : [];
+
+            if (is_null($data['participants'])) {
+                throw new \Exception(__('Invalid list of participants'), 422);
+            }
 
             $persistModule = new PersistEvent();
             $event = $persistModule->create($data);
@@ -71,11 +76,15 @@ class EventController extends Controller
             $dateTime = new Carbon($data['date']);
             $data['date'] = $dateTime->format('Y-m-d');
 
-            $data['participants'] = $data['participants'] ? json_decode($data['participants']) : [];
+            $data['participants'] = !empty($data['participants']) ? json_decode($data['participants']) : [];
+
+            if (is_null($data['participants'])) {
+                throw new \Exception(__('Invalid list of participants'), 422);
+            }
 
             $event = Event::find($data['id']);
             if ($event->author_id !== auth()->user()->id) {
-                throw new \Exception(__('You haven\'t an access to update this event'));
+                throw new \Exception(__('You haven\'t an access to update this event'), 403);
             }
 
             $persistModule = new PersistEvent();

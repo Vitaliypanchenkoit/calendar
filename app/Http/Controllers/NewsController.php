@@ -69,7 +69,7 @@ class NewsController extends Controller
 
             $news = $repository->getSingleNews($data['id']);
             if ($news->author_id !== auth()->user()->id) {
-                throw new \Exception(__('You haven\'t an access to update this news'));
+                throw new \Exception(__('You haven\'t an access to update this news'), 403);
             }
 
             $persistModule = new PersistNews();

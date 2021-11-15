@@ -9,6 +9,8 @@ class News extends Model
 {
     use HasFactory;
 
+    const NUMBER_OF_DAYS_FOR_OLD_NEWS = 7;
+
     /**
      * The attributes that are mass assignable.
      *

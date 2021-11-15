@@ -1,5 +1,6 @@
 import reminderApi from '../../api/reminder-api'
 import Vue from "vue";
+import router from '../../router/router'
 
 const apiUrl = '/reminders';
 
@@ -86,14 +87,24 @@ const mutations = {
 						time: '',
 				}
 		},
-		[mutationTypes.saveReminderSuccess](state) {
+		[mutationTypes.saveReminderSuccess](state, payload) {
 				state.isLoading = false
-				state.successMessage = 'The Reminder was created successfully';
-				state.singleReminderData = {
-						title: '',
-						content: '',
-						date: '',
-						time: '',
+				if (router.currentRoute.name === 'createReminder') {
+						state.successMessage = 'The Reminder was created successfully';
+						state.singleReminderData = {
+								title: '',
+								content: '',
+								date: '',
+								time: '',
+						}
+				} else {
+						state.successMessage = 'The Reminder was updated successfully';
+						state.singleReminderData = {
+								title: payload.data.title,
+								content: payload.data.content,
+								date: payload.data.date,
+								time: payload.data.time,
+						}
 				}
 
 		},

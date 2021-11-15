@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Helpers\ObjectHelper;
+use App\Models\News;
 use App\Models\Option;
+use App\Models\Reminder;
 use App\Repositories\NewsRepository;
 use App\Repositories\OptionRepository;
 use App\Repositories\ReminderRepository;
@@ -47,7 +49,7 @@ class ClearOldData extends Command
     {
         try {
             $isTime = $this->checkTime();
-            Log::info(__('Time of clearing old data was checked at') . ' ' . now()->format('Y-m-d H:i:s') . ' ' .  __('Result:') . ' ' . $isTime);
+            Log::info(__('Time of clearing old data was checked at') . ' ' . now()->format('Y-m-d H:i:s') . ' ' .  __('Result:') . ' ' . print_r($isTime, true));
 
             if (!$isTime) {
                 return 0;
@@ -55,8 +57,8 @@ class ClearOldData extends Command
 
             // All repositories should implement ClearDataRepositoryInterface
             $items = [
-                ['repositoryName' => ReminderRepository::class, 'numberOfDays' => 3],
-                ['repositoryName' => NewsRepository::class, 'numberOfDays' => 7],
+                ['repositoryName' => ReminderRepository::class, 'numberOfDays' => Reminder::NUMBER_OF_DAYS_FOR_OLD_REMINDERS],
+                ['repositoryName' => NewsRepository::class, 'numberOfDays' => News::NUMBER_OF_DAYS_FOR_OLD_NEWS],
             ];
 
             foreach ($items as $item) {
@@ -73,14 +75,15 @@ class ClearOldData extends Command
         } catch (\Throwable $e) {
             $log = new Logger($e);
             $log->log();
+            return 1;
         }
         return 0;
     }
 
     /**
-     * @return bool
+     * @return int
      */
-    private function checkTime(): bool
+    private function checkTime(): int
     {
         $repository = new OptionRepository();
         $option = $repository->getOptionByKey(Option::OPTION_TIME_CLEAR_OLD_DATA);
@@ -92,17 +95,17 @@ class ClearOldData extends Command
                 'key' => Option::OPTION_TIME_CLEAR_OLD_DATA,
                 'value' => $nextClear
             ]);
-            return false;
+            return 0;
         }
 
         $shouldClearAt = Carbon::createFromFormat('Y-m-d H', $option->value);
 
         if (now()->greaterThanOrEqualTo($shouldClearAt)) {
             Option::where('key', Option::OPTION_TIME_CLEAR_OLD_DATA)
-                ->update(['value', $nextClear]);
-            return true;
+                ->update(['value' => $nextClear]);
+            return 1;
         }
 
-        return false;
+        return 0;
     }
 }

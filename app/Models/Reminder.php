@@ -15,8 +15,9 @@ class Reminder extends Model
     const STATUSES = [
         self::STATUS_ON_HOLD,
         self::STATUS_COMPLETED
-
     ];
+
+    const NUMBER_OF_DAYS_FOR_OLD_REMINDERS = 3;
 
     /**
      * The attributes that are mass assignable.

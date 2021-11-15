@@ -21,6 +21,7 @@ const createReminder = (apiUrl, title, content, date, time) => {
 
 const updateReminder = (apiUrl, id, time, date) => {
 	let formData = new FormData();
+	console.log(time);
 
 	formData.append('id', id)
 	formData.append('time', time)

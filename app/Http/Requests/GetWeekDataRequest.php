@@ -24,8 +24,8 @@ class GetWeekDataRequest extends FormRequest
     public function rules()
     {
         return [
-            'start' => ['nullable', 'string'],
-            'end' => ['nullable', 'string'],
+            'start' => ['required', 'date_format:Y-m-j'],
+            'end' => ['required', 'date_format:Y-m-j'],
             'shift' => ['nullable', 'string']
         ];
     }

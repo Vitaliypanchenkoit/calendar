@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Helpers\NewsHelper;
 use App\Models\News;
+use App\Models\NewsMark;
 use App\Repositories\Interfaces\ClearDataRepositoryInterface;
 use App\Repositories\Interfaces\NewsRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -53,21 +54,29 @@ class NewsRepository implements NewsRepositoryInterface, ClearDataRepositoryInte
     public function getOldData(int $numberOfDays)
     {
         $now = now();
-        $before = $now->subDays($numberOfDays);
+        $before = $now->subDays($numberOfDays)->format('Y-m-d');
 
-        $importantNews = News::select('news.id')
-            ->join('news_marks', 'news.id', '=', 'news_marks.news_id')
-            ->where('news.date', '<=', $before)
-            ->where('news_marks.important', '=', 1)
+        $allNews = News::select('id')
+            ->where('date', '<=', $before)
             ->get();
 
-        $notImportantNews = News::select('news.id')
-            ->join('news_marks', 'news.id', '=', 'news_marks.news_id')
-            ->where('news.date', '<=', $before)
-            ->where('news_marks.important', '=', 0)
+        if (!$allNews->count()) {
+            return $allNews;
+        }
+
+        $ids = $allNews->keyBy('id')->keys();
+
+        $importantNews = NewsMark::select('news_id')
+            ->whereIn('news_id', $ids)
+            ->where('important', '=', 1)
             ->get();
 
-        return $notImportantNews->diff($importantNews);
+        if (!$importantNews->count()) {
+            return $allNews;
+        }
+
+        /* Return only news that weren't marked as important */
+        return $allNews->whereNotIn('id', $ids);
 
     }
 

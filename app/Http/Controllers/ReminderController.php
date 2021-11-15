@@ -68,18 +68,18 @@ class ReminderController extends Controller
             $dateTime = new Carbon($data['time']);
             $data['time'] = $dateTime->format('H:i');
 
-            $dateTime = new Carbon($data['date']);
-            $data['date'] = $dateTime->format('Y-m-d');
-
             $reminder = Reminder::find($data['id']);
             if ($reminder->author_id !== auth()->user()->id) {
-                throw new \Exception(__('You haven\'t an access to update this reminder'));
+                throw new \Exception(__('You haven\'t an access to update this reminder'), 403);
             }
 
             $persistModule = new PersistReminder();
-            $reminder = $persistModule->update($data);
+            $result = $persistModule->update($data);
 
-            CacheHelper::createOrUpdateRecord(CacheHelper::REMINDERS, $data['date'], $reminder);
+            if ($result) {
+                $reminder->refresh();
+                CacheHelper::createOrUpdateRecord(CacheHelper::REMINDERS, $reminder->date, $reminder);
+            }
 
             return new ReminderResource($reminder);
 

@@ -20,7 +20,6 @@ use App\Http\Controllers\HomeController;
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-//    Route::get('/c/{year}/{month}', [HomeController::class, 'calendarMonth'])->name('calendarMonth');
 
     Route::get('/month', [CalendarDateController::class, 'getMonthData'])->name('getMonthData');
     Route::get('/week', [CalendarDateController::class, 'getWeekData'])->name('getWeekData');
@@ -40,10 +39,10 @@ Route::middleware('auth:web')->group(function () {
     Route::put('/news', [NewsController::class, 'update'])->name('updateNews');
     Route::put('/news/mark', [NewsController::class, 'mark'])->name('markNews');
 
+    Route::get('/events/edit', [EventController::class, 'edit'])->name('editEvent');
     Route::post('/events', [EventController::class, 'create'])->name('createEvent');
     Route::put('/events', [EventController::class, 'update'])->name('updateEvent');
-    Route::get('/events/edit', [EventController::class, 'edit'])->name('editEvent');
-    Route::post('events/mark', [EventController::class, 'mark'])->name('markEvent');
+    Route::post('/events/mark', [EventController::class, 'mark'])->name('markEvent');
 });
 
 require __DIR__.'/auth.php';

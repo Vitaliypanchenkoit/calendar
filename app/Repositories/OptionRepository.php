@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Option;
+use App\Repositories\Interfaces\OptionRepositoryInterface;
 
-class OptionRepository
+class OptionRepository implements OptionRepositoryInterface
 {
     /**
      * @param string $key
